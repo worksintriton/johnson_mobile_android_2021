@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">JohnsonApplication</string>
+    <string name="app_name_with_login">Johnson App Login</string>
+    <string name="app_name_with">Johnson App Login</string>
+    <string name="services">Services</string>
+    <string name="no_service_list">No Service List</string>
+    <string name="logout">Logout</string>
+</resources>
