@@ -1,6 +1,7 @@
 package com.triton.johnsonapp.activity;
 
 
+
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
@@ -93,7 +94,6 @@ public class LoginActivity extends AppCompatActivity {
 
         userNameMaterialEditText.setOnTouchListener((view, motionEvent) -> {
 
-            employeeMaterialEditText.setFocusableInTouchMode(true);
             userNameMaterialEditText.setFocusableInTouchMode(true);
             passwordMaterialEditText.setFocusableInTouchMode(true);
             return false;
@@ -101,7 +101,6 @@ public class LoginActivity extends AppCompatActivity {
 
         passwordMaterialEditText.setOnTouchListener((view, motionEvent) -> {
 
-            employeeMaterialEditText.setFocusableInTouchMode(true);
             userNameMaterialEditText.setFocusableInTouchMode(true);
             passwordMaterialEditText.setFocusableInTouchMode(true);
             return false;
@@ -255,7 +254,7 @@ public class LoginActivity extends AppCompatActivity {
                                     String.valueOf(response.body().getData().getUser_type())
                             );
 
-                            startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                            startActivity(new Intent(LoginActivity.this,ServiceListActivity.class));
 
                         }
 

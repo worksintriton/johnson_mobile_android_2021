@@ -1,5 +1,6 @@
 package com.triton.johnsonapp.activity;
 
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -34,6 +35,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        sessionManager = new SessionManager(this);
 
         Thread timerThread = new Thread() {
             @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -45,21 +47,15 @@ public class SplashActivity extends AppCompatActivity {
                 } finally {
 
 
-                    // check the android sdk version for runtime permission
-                    if (Build.VERSION.SDK_INT >= 23) {
-                /*        Log.w(TAG,"IF"+sessionManager.isLoggedIn());*/
 
-                        insertmappermission();
+                    Log.w(TAG,"ELSE"+sessionManager.isLoggedIn());
 
-                    } else {
 
-                        Log.w(TAG,"ELSE"+sessionManager.isLoggedIn());
-
-                        // check whether user is logged in or not
+                    // check whether user is logged in or not
                         if (sessionManager.isLoggedIn()) {
 
 
-                            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                            Intent intent = new Intent(SplashActivity.this, ServiceListActivity.class);
                             startActivity(intent);
                             overridePendingTransition(R.anim.new_right, R.anim.new_left);
                         }
@@ -72,7 +68,6 @@ public class SplashActivity extends AppCompatActivity {
                         }
 
 
-                    }
 
                 }
             }
@@ -80,47 +75,4 @@ public class SplashActivity extends AppCompatActivity {
         timerThread.start();
     }
 
-
-    @SuppressLint("NewApi")
-    private void insertmappermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-
-            haslocationpermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) | checkSelfPermission(Manifest.permission.CAMERA) | checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-            if (haslocationpermission != PackageManager.PERMISSION_GRANTED) {
-                Log.w(TAG,"insertmappermission  if");
-
-                Intent myIntent = new Intent(SplashActivity.this, Permission_Activity.class);
-                myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(myIntent);
-                finish();
-
-            } else {
-                Log.w(TAG,"insertmappermission  else"+sessionManager.isLoggedIn());
-                Log.w(TAG,"insertmappermission  else"+" user_level : "+user_level);
-
-                if (sessionManager.isLoggedIn()) {
-
-                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.new_right, R.anim.new_left);
-                }
-
-                else {
-
-
-                    Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.new_right, R.anim.new_left);
-                }
-            }
-
-        }else{
-            Log.w(TAG,"insertmappermission else");
-            Intent myIntent = new Intent(SplashActivity.this, Permission_Activity.class);
-            myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(myIntent);
-            finish();
-        }
-
-    }
 }

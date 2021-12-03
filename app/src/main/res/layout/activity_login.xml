@@ -139,12 +139,11 @@
                                 android:layout_alignParentLeft="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginLeft="10dp"
+                                android:fontFamily="@font/sourcesanspro_regular"
                                 android:text="Select station"
                                 android:textColor="#4D4D4D"
                                 android:textSize="12dp"
-                                android:textStyle="normal"
-                                android:fontFamily="@font/sourcesanspro_regular"
-                                />
+                                android:textStyle="normal" />
 
                             <RelativeLayout
                                 android:layout_width="match_parent"
@@ -184,16 +183,16 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
                     android:focusable="false"
-                    android:hint="Phone Number"
+                    android:hint="User ID"
+                    android:inputType="numberPassword"
+                    android:maxLength="10"
+                    android:maxLines="1"
                     android:singleLine="true"
                     android:textSize="12sp"
                     app:met_baseColor="#80000000"
                     app:met_floatingLabel="highlight"
                     app:met_floatingLabelAnimating="true"
-                    app:met_primaryColor="@color/colorPrimary"
-                    android:inputType="numberPassword"
-                    android:maxLength="10"
-                    android:maxLines="1"/>
+                    app:met_primaryColor="@color/colorPrimary" />
 
                 <com.triton.johnsonapp.materialeditext.MaterialEditText
                     android:id="@+id/password"

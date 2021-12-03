@@ -21,6 +21,7 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.triton.johnsonapp", appContext.getPackageName());
+
+        assertEquals("com.cm.cmrl", appContext.getPackageName());
     }
 }

@@ -16,8 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.triton.johnsonapp.activity.LoginActivity;
 import com.triton.johnsonapp.R;
+import com.triton.johnsonapp.activity.LoginActivity;
 import com.triton.johnsonapp.session.SessionManager;
 
 import java.util.HashMap;
