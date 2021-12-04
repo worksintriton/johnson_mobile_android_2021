@@ -81,4 +81,11 @@
     <string name="image">image</string>
     <string name="signature">Signature</string>
 
+    <string-array name="array_name">
+        <item>Select Value</item>
+        <item>OK</item>
+        <item>NOT OK</item>
+        <item>OTHERS</item>
+    </string-array>
+
 </resources>

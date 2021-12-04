@@ -95,70 +95,43 @@
         android:orientation="horizontal">
 
 
-        <LinearLayout
-            android:id="@+id/ll_prev"
+        <Button
+            android:id="@+id/btn_prev"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="5dp"
             android:layout_weight="1"
             android:background="@drawable/edit_background_with_border"
+            android:drawableStart="@drawable/icn_previous"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="@string/previous"
+            android:textAlignment="center"
+            android:textColor="@color/white">
 
-            <ImageView
-                android:id="@+id/img_previous"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/icn_previous" />
+        </Button>
 
-            <TextView
-                android:id="@+id/txt_prev_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="15dp"
-                android:fontFamily="@font/sourcesanspro_regular"
-                android:text="@string/previous"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:visibility="visible" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_next"
+        <Button
+            android:id="@+id/btn_next"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
             android:layout_weight="1"
             android:background="@drawable/blue_button_background_with_radius"
+            android:drawableEnd="@drawable/icn_next"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:text="@string/next"
+            android:textAlignment="center"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textColor="@color/white">
 
-            <TextView
-                android:id="@+id/txt_next_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/sourcesanspro_regular"
-                android:text="@string/next"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:visibility="visible" />
 
-            <ImageView
-                android:id="@+id/img_next"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                app:srcCompat="@drawable/icn_next" />
-
-        </LinearLayout>
+        </Button>
 
     </LinearLayout>
 

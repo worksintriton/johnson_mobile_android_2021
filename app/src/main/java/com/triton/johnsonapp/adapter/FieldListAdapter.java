@@ -13,10 +13,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.triton.johnsonapp.R;
+import com.triton.johnsonapp.interfaces.GetDateTimeListener;
+import com.triton.johnsonapp.interfaces.GetFileUploadListener;
+import com.triton.johnsonapp.interfaces.GetNumberListener;
+import com.triton.johnsonapp.interfaces.GetSpinnerListener;
+import com.triton.johnsonapp.interfaces.GetStringListener;
+import com.triton.johnsonapp.interfaces.GetTextAreaListener;
 import com.triton.johnsonapp.responsepojo.GetFieldListResponse;
 import com.triton.johnsonapp.responsepojo.GetServiceListResponse;
 
@@ -35,11 +42,34 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
     private int size;
 
-    public FieldListAdapter(Context context, List<GetFieldListResponse.DataBean> dataBeanList) {
+    int ITEMS_PER_PAGE;
+
+    int TOTAL_NUM_ITEMS;
+
+    GetStringListener getStringListener;
+
+    GetTextAreaListener getTextAreaListener;
+
+    GetSpinnerListener getSpinnerListener;
+
+    GetNumberListener getNumberListener;
+
+    GetDateTimeListener getDateTimeListener;
+
+    GetFileUploadListener getFileUploadListener;
+
+    public FieldListAdapter(Context context, List<GetFieldListResponse.DataBean> dataBeanList, int ITEMS_PER_PAGE, int TOTAL_NUM_ITEMS, GetStringListener getStringListener, GetTextAreaListener getTextAreaListener,GetSpinnerListener getSpinnerListener,GetNumberListener getNumberListener,GetDateTimeListener getDateTimeListener,
+                            GetFileUploadListener getFileUploadListener) {
         this.context = context;
         this.dataBeanList = dataBeanList;
-
-
+        this.ITEMS_PER_PAGE = ITEMS_PER_PAGE;
+        this.TOTAL_NUM_ITEMS = TOTAL_NUM_ITEMS;
+        this.getStringListener = getStringListener;
+        this.getTextAreaListener = getTextAreaListener;
+        this.getSpinnerListener = getSpinnerListener;
+        this.getNumberListener = getNumberListener;
+        this.getDateTimeListener = getDateTimeListener;
+        this.getFileUploadListener = getFileUploadListener;
     }
 
     @NonNull
@@ -80,30 +110,59 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
                 holder.edt_string.setVisibility(View.VISIBLE);
 
+                getStringListener.getStringListener(holder.edt_string,position,currentItem.getField_length());
+
             }
             else if(currentItem.getField_type().equals("Textarea")){
 
                 holder.edt_textarea.setVisibility(View.VISIBLE);
+
+                getTextAreaListener.getTextAreaListener(holder.edt_textarea,position,currentItem.getField_length());
+
             }
 
             else if(currentItem.getField_type().equals("Number")){
 
                 holder.edt_number.setVisibility(View.VISIBLE);
+
+                getNumberListener.getNumberListener(holder.edt_number,position,currentItem.getField_length());
             }
 
             else if(currentItem.getField_type().equals("Dropdown")){
 
                 holder.ll_dropdown.setVisibility(View.VISIBLE);
+
+                getSpinnerListener.getSpinnerListener(holder.spr_dropdown,position,currentItem.getField_length());
             }
 
             else if(currentItem.getField_type().equals("Date&time")){
 
                 holder.edt_datetime.setVisibility(View.VISIBLE);
+
+                holder.edt_datetime.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getDateTimeListener.getDateTimeListener(holder.edt_datetime,position,currentItem.getField_length());
+                    }
+                });
+
+
             }
 
             else if(currentItem.getField_type().equals("File upload")){
 
                 holder.ll_file_upload.setVisibility(View.VISIBLE);
+
+                holder.ll_file_upload.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        getFileUploadListener.getFileUploadListener(holder.ll_file_upload,position,holder.img_file_upload, holder.img_close,currentItem.getField_length(),holder.cv_image);
+
+
+                    }
+                });
+
             }
 
             else if(currentItem.getField_type().equals("Signature")){
@@ -126,7 +185,7 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemCount() {
-        return dataBeanList.size();
+        return Math.min(dataBeanList.size(), ITEMS_PER_PAGE);
     }
 
 
@@ -143,7 +202,7 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
         public ImageView img_spinner,img_file_upload,img_close,ivdigitalsignature;
         public Button mClearButton,mSaveButton;
         SignaturePad mSignaturePad;
-
+        CardView cv_image;
 
 
 
@@ -169,6 +228,7 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
             mSignaturePad = itemView.findViewById(R.id.signaturePad);
             ivdigitalsignature = itemView.findViewById(R.id.ivdigitalsignature);
             txt_field_length = itemView.findViewById(R.id.txt_field_length);
+            cv_image = itemView.findViewById(R.id.cv_image);
 
         }
 
