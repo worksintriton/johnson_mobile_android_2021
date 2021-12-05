@@ -19,6 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.interfaces.GetDateTimeListener;
+import com.triton.johnsonapp.interfaces.GetDigitalSignUploadAddListener;
+import com.triton.johnsonapp.interfaces.GetDigitalSignUploadClearListener;
+import com.triton.johnsonapp.interfaces.GetDigitalSignUploadListener;
 import com.triton.johnsonapp.interfaces.GetFileUploadListener;
 import com.triton.johnsonapp.interfaces.GetNumberListener;
 import com.triton.johnsonapp.interfaces.GetSpinnerListener;
@@ -58,8 +61,14 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
     GetFileUploadListener getFileUploadListener;
 
+    GetDigitalSignUploadListener getDigitalSignUploadListener;
+
+    GetDigitalSignUploadAddListener getDigitalSignUploadAddListener;
+
+    GetDigitalSignUploadClearListener getDigitalSignUploadClearListener;
+
     public FieldListAdapter(Context context, List<GetFieldListResponse.DataBean> dataBeanList, int ITEMS_PER_PAGE, int TOTAL_NUM_ITEMS, GetStringListener getStringListener, GetTextAreaListener getTextAreaListener,GetSpinnerListener getSpinnerListener,GetNumberListener getNumberListener,GetDateTimeListener getDateTimeListener,
-                            GetFileUploadListener getFileUploadListener) {
+                            GetFileUploadListener getFileUploadListener,GetDigitalSignUploadListener getDigitalSignUploadListener, GetDigitalSignUploadAddListener getDigitalSignUploadAddListener,GetDigitalSignUploadClearListener getDigitalSignUploadClearListener) {
         this.context = context;
         this.dataBeanList = dataBeanList;
         this.ITEMS_PER_PAGE = ITEMS_PER_PAGE;
@@ -70,6 +79,9 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
         this.getNumberListener = getNumberListener;
         this.getDateTimeListener = getDateTimeListener;
         this.getFileUploadListener = getFileUploadListener;
+        this.getDigitalSignUploadListener = getDigitalSignUploadListener;
+        this.getDigitalSignUploadAddListener = getDigitalSignUploadAddListener;
+        this.getDigitalSignUploadClearListener = getDigitalSignUploadClearListener;
     }
 
     @NonNull
@@ -169,9 +181,40 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
                 holder.lldigitalsignature.setVisibility(View.VISIBLE);
 
-                holder.llheaderdigitalsignature.setVisibility(View.VISIBLE);
+              /*  holder.llheaderdigitalsignature.setVisibility(View.VISIBLE);
 
-                holder.ivdigitalsignature.setVisibility(View.VISIBLE);
+                holder.ivdigitalsignature.setVisibility(View.VISIBLE);*/
+
+                holder.lldigitalsignature.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        getDigitalSignUploadListener.getDigitalSignUploadListener(holder.llheaderdigitalsignature,holder.ivdigitalsignature,holder.mSignaturePad,holder.mSaveButton,holder.mClearButton,position,currentItem.getField_length());
+
+
+                    }
+                });
+
+
+                holder.mSaveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        getDigitalSignUploadAddListener.getDigitalSignUploadAddListener(holder.llheaderdigitalsignature,holder.ivdigitalsignature,holder.mSignaturePad,holder.mSaveButton,holder.mClearButton,position,currentItem.getField_length());
+
+
+                    }
+                });
+
+                holder.mClearButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        getDigitalSignUploadClearListener.getDigitalSignUploadClearListener(holder.llheaderdigitalsignature,holder.ivdigitalsignature,holder.mSignaturePad,holder.mSaveButton,holder.mClearButton,position,currentItem.getField_length());
+
+
+                    }
+                });
             }
         }
 

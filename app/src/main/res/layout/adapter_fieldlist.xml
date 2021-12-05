@@ -246,7 +246,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal"
-                android:visibility="gone"
+                android:visibility="visible"
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
@@ -274,7 +274,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/child_back_ground"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <com.github.gcacace.signaturepad.views.SignaturePad
                     android:id="@+id/signaturePad"
@@ -316,7 +316,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 tools:ignore="ContentDescription" />
 
             <TextView

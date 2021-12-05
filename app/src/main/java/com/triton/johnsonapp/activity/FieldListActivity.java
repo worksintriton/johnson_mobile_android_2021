@@ -16,6 +16,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,7 +33,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.canhub.cropper.CropImage;
+import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.google.android.gms.common.util.IOUtils;
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
@@ -40,6 +44,9 @@ import com.triton.johnsonapp.adapter.FieldListAdapter;
 import com.triton.johnsonapp.api.APIInterface;
 import com.triton.johnsonapp.api.RetrofitClient;
 import com.triton.johnsonapp.interfaces.GetDateTimeListener;
+import com.triton.johnsonapp.interfaces.GetDigitalSignUploadAddListener;
+import com.triton.johnsonapp.interfaces.GetDigitalSignUploadClearListener;
+import com.triton.johnsonapp.interfaces.GetDigitalSignUploadListener;
 import com.triton.johnsonapp.interfaces.GetFileUploadListener;
 import com.triton.johnsonapp.interfaces.GetNumberListener;
 import com.triton.johnsonapp.interfaces.GetSpinnerListener;
@@ -75,7 +82,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FieldListActivity extends AppCompatActivity implements GetStringListener, GetTextAreaListener, GetSpinnerListener, GetNumberListener, GetDateTimeListener, GetFileUploadListener {
+public class FieldListActivity extends AppCompatActivity implements GetStringListener, GetTextAreaListener, GetSpinnerListener, GetNumberListener, GetDateTimeListener, GetFileUploadListener, GetDigitalSignUploadListener, GetDigitalSignUploadAddListener, GetDigitalSignUploadClearListener {
 
 
 
@@ -133,11 +140,16 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
             Manifest.permission.CAMERA
     };
 
-    MultipartBody.Part filePart;
+    MultipartBody.Part filePart,siganaturePart;
+
+    String currentDateandTime;
 
     ImageView img_file_upload; ImageView img_close;
 
     CardView cv_img;
+
+    public String digitalSignatureServerUrlImagePath;
+
 
     public  List<GetFieldListResponse.DataBean> generatePage(int currentPage)
     {
@@ -373,7 +385,7 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
         rv_fieldlist.setNestedScrollingEnabled(true);
         rv_fieldlist.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
         rv_fieldlist.setItemAnimator(new DefaultItemAnimator());
-        FieldListAdapter FieldListAdapter = new FieldListAdapter(getApplicationContext(), dataBeanList,ITEMS_PER_PAGE,TOTAL_NUM_ITEMS,this,this,this,this,this,this);
+        FieldListAdapter FieldListAdapter = new FieldListAdapter(getApplicationContext(), dataBeanList,ITEMS_PER_PAGE,TOTAL_NUM_ITEMS,this,this,this,this,this,this,this,this,this);
         rv_fieldlist.setAdapter(FieldListAdapter);
     }
 
@@ -429,8 +441,6 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
             @Override
             public void onClick(View v) {
 
-                chooseImage();
-
                 img_file_upload = img_file_uploads;
 
                 img_close = img_closes;
@@ -438,8 +448,86 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
                 imagepos = position;
 
                 cv_img=cv_image;
+
+                chooseImage();
+
             }
         });
+
+    }
+    @Override
+    public void getDigitalSignUploadListener(LinearLayout llheaderdigitalsignature, ImageView ivdigitalsignature, SignaturePad mSignaturePad, Button mSaveButton, Button mClearButton, int position, String field_length) {
+
+        llheaderdigitalsignature.setVisibility(View.VISIBLE);
+
+
+        mSignaturePad.setOnSignedListener(new SignaturePad.OnSignedListener() {
+            @Override
+            public void onStartSigning() {
+                //Toast.makeText(DoctorBusinessInfoActivity.this, "OnStartSigning", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSigned() {
+                mSaveButton.setEnabled(true);
+                mClearButton.setEnabled(true);
+            }
+
+            @Override
+            public void onClear() {
+                mSaveButton.setEnabled(false);
+                mClearButton.setEnabled(false);
+            }
+        });
+
+    }
+
+
+    @Override
+    public void getDigitalSignUploadAddListener(LinearLayout llheaderdigitalsignature, ImageView ivdigitalsignature, SignaturePad mSignaturePad, Button mSaveButton, Button mClearButton, int position, String field_length) {
+
+        Bitmap signatureBitmap = mSignaturePad.getSignatureBitmap();
+        Log.w(TAG,"signatureBitmap"+signatureBitmap);
+        // Bitmap getTransparentSignatureBitmap = mSignaturePad.getTransparentSignatureBitmap();
+        // Log.w(TAG,"getTransparentSignatureBitmap"+getTransparentSignatureBitmap);
+
+
+
+        // Bitmap photo = (Bitmap) Objects.requireNonNull(data.getExtras()).get("data");
+
+        File file = new File(getFilesDir(), "DoctorSignature" + ".jpg");
+
+        OutputStream os;
+        try {
+            os = new FileOutputStream(file);
+            if (signatureBitmap != null) {
+                signatureBitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+            }
+            os.flush();
+            os.close();
+        } catch (Exception e) {
+            Log.e(getClass().getSimpleName(), "Error writing bitmap", e);
+        }
+
+        RequestBody requestFile = RequestBody.create(MediaType.parse("image*/"), file);
+
+        /* *************** Get Current Date and Time ************************ */
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm aa", Locale.getDefault());
+        currentDateandTime = sdf.format(new Date());
+
+
+
+        siganaturePart = MultipartBody.Part.createFormData("sampleFile",  userid+currentDateandTime+file.getName(), requestFile);
+
+        uploadDigitalSignatureImageRequest(llheaderdigitalsignature,mSignaturePad,ivdigitalsignature);
+
+    }
+
+    @Override
+    public void getDigitalSignUploadClearListener(LinearLayout llheaderdigitalsignature, ImageView ivdigitalsignature, SignaturePad mSignaturePad, Button mSaveButton, Button mClearButton, int position, String field_length) {
+
+        mSignaturePad.clear();
 
     }
 
@@ -789,6 +877,76 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
                 })
                 .setCancelButton("Cancel", SweetAlertDialog::dismissWithAnimation)
                 .show();
+    }
+
+
+    private void uploadDigitalSignatureImageRequest(LinearLayout llheaderdigitalsignature, SignaturePad mSignaturePad, ImageView ivdigitalsignature) {
+
+        APIInterface apiInterface = RetrofitClient.getImageClient().create(APIInterface.class);
+
+        Call<FileUploadResponse> call = apiInterface.getImageStroeResponse(siganaturePart);
+        Log.w(TAG,"url  :%s"+ call.request().url().toString());
+        call.enqueue(new Callback<FileUploadResponse>() {
+            @SuppressLint("LogNotTimber")
+            @Override
+            public void onResponse(@NonNull Call<FileUploadResponse> call, @NonNull Response<FileUploadResponse> response) {
+
+                Log.w(TAG,"Profpic"+ "--->" + new Gson().toJson(response.body()));
+
+                llheaderdigitalsignature.setVisibility(View.GONE);
+                mSignaturePad.clear();
+                Log.w(TAG,"DigitalSignaturepic"+ "--->" + new Gson().toJson(response.body()));
+
+                // Log.w(TAG,"Profile"+ "status " + status);
+                if (response.body() != null && response.body().getCode() == 200) {
+                    if (response.body() != null) {
+                        digitalSignatureServerUrlImagePath = response.body().getData();
+                        Log.w(TAG, "digitalSignatureServerUrlImagePath " + digitalSignatureServerUrlImagePath);
+                        Calendar c = Calendar.getInstance();
+
+
+                        if (digitalSignatureServerUrlImagePath != null && !digitalSignatureServerUrlImagePath.isEmpty()) {
+
+                            Log.w(TAG,"digitalSignatureServerUrlImagePath--->"+digitalSignatureServerUrlImagePath);
+
+                            Glide
+                                    .with(getApplicationContext())
+                                    .load(digitalSignatureServerUrlImagePath)
+                                    .apply(new RequestOptions().override(600, 200))
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                    .into(ivdigitalsignature);
+
+
+
+                        }
+                        else{
+                            Glide.with(getApplicationContext())
+                                    .load(R.drawable.digital_signature)
+                                    .into(ivdigitalsignature);
+
+                        }
+
+
+
+                    } else {
+                        Log.w(TAG, "digitalSignatureServerUrlImagePath " + "response body null part wotking ");
+                    }
+
+                }
+
+
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<FileUploadResponse> call, @NonNull Throwable t) {
+                // avi_indicator.smoothToHide();
+                Log.w(TAG,"DigitalSignaturepic"+ "On failure working"+ t.getMessage());
+                //Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
 
 
