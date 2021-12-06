@@ -73,6 +73,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -140,6 +141,7 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
 
     int PERMISSION_CLINIC = 1;
 
+    LinearLayoutManager linearlayout;
 
     String[] PERMISSIONS = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -232,7 +234,8 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                rv_fieldlist.smoothScrollToPosition(0);
+                linearlayout.scrollToPositionWithOffset(2, 20);
                 currentPage += 1;
                 List<GetFieldListResponse.DataBean> dataBeanListS = new ArrayList<>();
                 int startItem=currentPage*ITEMS_PER_PAGE;
@@ -299,6 +302,8 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
         btn_prev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                rv_fieldlist.smoothScrollToPosition(0);
+                linearlayout.scrollToPositionWithOffset(2, 20);
                 currentPage -= 1;
                 List<GetFieldListResponse.DataBean> dataBeanListS = new ArrayList<>();
                 int startItem=currentPage*ITEMS_PER_PAGE;
@@ -452,7 +457,8 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
     private void setView(List<GetFieldListResponse.DataBean> dataBeanList,int ITEMS_PER_PAGE,int TOTAL_NUM_ITEMS) {
 
         rv_fieldlist.setNestedScrollingEnabled(true);
-        rv_fieldlist.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
+        linearlayout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
+        rv_fieldlist.setLayoutManager(linearlayout);
         rv_fieldlist.setItemAnimator(new DefaultItemAnimator());
         FieldListAdapter FieldListAdapter = new FieldListAdapter(getApplicationContext(), dataBeanList,ITEMS_PER_PAGE,TOTAL_NUM_ITEMS,this,this,this,this,this,this,this,this,this,currentPage);
         rv_fieldlist.setAdapter(FieldListAdapter);
@@ -1058,12 +1064,8 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
 
                     } else {
                         dialog.dismiss();
-                        new SweetAlertDialog(FieldListActivity.this, SweetAlertDialog.ERROR_TYPE)
-                                .setTitleText("JOHNSON")
-                                .setContentText(message)
-                                .setConfirmText("Ok")
-                                .setConfirmClickListener(Dialog::dismiss)
-                                .show();
+                        Toasty.warning(getApplicationContext(),""+message,Toasty.LENGTH_LONG).show();
+
 
                         //showErrorLoading(response.body().getMessage());
                     }

@@ -40,6 +40,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -154,20 +155,10 @@ public class LoginActivity extends AppCompatActivity {
             }
             else {
                 if (Objects.requireNonNull(userNameMaterialEditText.getText()).toString().trim().equalsIgnoreCase("")) {
-                    new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.WARNING_TYPE)
-                            .setTitleText("CMRL")
-                            .setContentText("Enter phone number")
-                            .setConfirmText("Ok")
-                            .setConfirmClickListener(Dialog::dismiss)
-                            .show();
+                    Toasty.warning(getApplicationContext(),"Enter Phone Number",Toasty.LENGTH_LONG).show();
 
                 } else if (Objects.requireNonNull(passwordMaterialEditText.getText()).toString().trim().equalsIgnoreCase("")) {
-                    new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.WARNING_TYPE)
-                            .setTitleText("CMRL")
-                            .setContentText("Enter password")
-                            .setConfirmText("Ok")
-                            .setConfirmClickListener(Dialog::dismiss)
-                            .show();
+                    Toasty.warning(getApplicationContext(),"Enter Password",Toasty.LENGTH_LONG).show();
                 } else {
 
                     LoginResponseCall();
@@ -261,12 +252,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     } else {
                         dialog.dismiss();
-                        new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.ERROR_TYPE)
-                                .setTitleText("JOHNSON")
-                                .setContentText(message)
-                                .setConfirmText("Ok")
-                                .setConfirmClickListener(Dialog::dismiss)
-                                .show();
+                        Toasty.warning(getApplicationContext(),""+message,Toasty.LENGTH_LONG).show();
 
                         //showErrorLoading(response.body().getMessage());
                     }
