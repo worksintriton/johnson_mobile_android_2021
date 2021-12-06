@@ -31,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -52,7 +53,9 @@ import com.triton.johnsonapp.interfaces.GetNumberListener;
 import com.triton.johnsonapp.interfaces.GetSpinnerListener;
 import com.triton.johnsonapp.interfaces.GetStringListener;
 import com.triton.johnsonapp.interfaces.GetTextAreaListener;
+import com.triton.johnsonapp.requestpojo.FormDataStoreRequest;
 import com.triton.johnsonapp.responsepojo.FileUploadResponse;
+import com.triton.johnsonapp.responsepojo.FormDataStoreResponse;
 import com.triton.johnsonapp.responsepojo.GetFieldListResponse;
 import com.triton.johnsonapp.session.SessionManager;
 import com.triton.johnsonapp.utils.ConnectionDetector;
@@ -116,6 +119,10 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
     @BindView(R.id.btn_next)
     Button btn_next;
 
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.btn_success)
+    Button btn_success;
+
     int datetimepos,imagepos;
     private int totalPages;
     private int currentPage = 0;
@@ -150,6 +157,9 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
 
     public String digitalSignatureServerUrlImagePath;
 
+    String string_value,message,service_id;
+
+    int string_value_pos;
 
     public  List<GetFieldListResponse.DataBean> generatePage(int currentPage)
     {
@@ -193,6 +203,11 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
 
         ButterKnife.bind(this);
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            service_id = extras.getString("service_id");
+        }
+
         SessionManager session = new SessionManager(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
         userid = user.get(SessionManager.KEY_ID);
@@ -225,23 +240,60 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
                 int ITEMS_REMAINING=TOTAL_NUM_ITEMS % ITEMS_PER_PAGE;
                 int LAST_PAGE=TOTAL_NUM_ITEMS/ITEMS_PER_PAGE;
                 if(currentPage==LAST_PAGE){
-                    condition = startItem+ITEMS_REMAINING;
+
+                   condition = startItem+ITEMS_REMAINING;
+
+                    for (int i=startItem;i<condition;i++)
+                    {
+                        Log.w(TAG,"generatePage: dataBeanList" + new Gson().toJson(dataBeanList.get(i)));
+
+                        dataBeanListS.add(dataBeanList.get(i));
+
+
+                    }
+
+                    Log.w(TAG,"btnnext dataBeanList" + new Gson().toJson(dataBeanList));
+
+
+
+                    setView(dataBeanListS,ITEMS_PER_PAGE,TOTAL_NUM_ITEMS);
+                    // enableDisableButtons();
+                    // rv.setAdapter(new MyAdapter(MainActivity.this, p.generatePage(currentPage)));
+                    btn_next.setEnabled(false);
+
+                    toggleButtons();
                 }
+
                 else {
-                    condition = startItem+ITEMS_PER_PAGE;
-                }
-                for (int i=startItem;i<condition;i++)
-                {
-                    Log.w(TAG,"generatePage: dataBeanList" + new Gson().toJson(dataBeanList.get(i)));
 
-                    dataBeanListS.add(dataBeanList.get(i));
+                        condition = startItem+ITEMS_PER_PAGE;
 
+                    for (int i=startItem;i<condition;i++)
+                    {
+                        Log.w(TAG,"generatePage: dataBeanList" + new Gson().toJson(dataBeanList.get(i)));
+
+                        dataBeanListS.add(dataBeanList.get(i));
+
+
+                    }
+
+                    Log.w(TAG,"btnnext dataBeanList" + new Gson().toJson(dataBeanList));
+
+
+
+                    setView(dataBeanListS,ITEMS_PER_PAGE,TOTAL_NUM_ITEMS);
+                    // enableDisableButtons();
+                    // rv.setAdapter(new MyAdapter(MainActivity.this, p.generatePage(currentPage)));
+
+                    Log.w(TAG,"dataBeanListN" + dataBeanList.get(1).getField_value());
+
+                    Log.w(TAG,"dataBeanListN" + new Gson().toJson(dataBeanList));
+
+
+                    toggleButtons();
                 }
-                setView(dataBeanListS,ITEMS_PER_PAGE,TOTAL_NUM_ITEMS);
-                // enableDisableButtons();
-               // rv.setAdapter(new MyAdapter(MainActivity.this, p.generatePage(currentPage)));
-                toggleButtons();
-                Log.w(TAG,"dataBeanListN" + new Gson().toJson(dataBeanList));
+
+
             }
         });
         btn_prev.setOnClickListener(new View.OnClickListener() {
@@ -253,7 +305,7 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
                 int condition;
                 int ITEMS_REMAINING=TOTAL_NUM_ITEMS % ITEMS_PER_PAGE;
                 int LAST_PAGE=TOTAL_NUM_ITEMS/ITEMS_PER_PAGE;
-                if(currentPage==0){
+                if(currentPage==0||(currentPage >= 1 && currentPage <= totalPages)){
                     condition = startItem+ITEMS_PER_PAGE;
                 }
                 else {
@@ -266,6 +318,11 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
                     dataBeanListS.add(dataBeanList.get(i));
 
                 }
+
+
+                Log.w(TAG,"btnprev dataBeanList" + new Gson().toJson(dataBeanList));
+
+
                 setView(dataBeanListS,ITEMS_PER_PAGE,TOTAL_NUM_ITEMS);
                // rv.setAdapter(new MyAdapter(MainActivity.this, p.generatePage(currentPage)));
 
@@ -273,7 +330,23 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
             }
         });
 
+        btn_success.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (networkStatus.equalsIgnoreCase("Not connected to Internet")) {
 
+                    Toasty.warning(getApplicationContext(),"No Internet",Toasty.LENGTH_LONG).show();
+
+                }
+                else {
+
+                    getformdataListResponseCall();
+                }
+
+                Log.w(TAG,"dataBeanListN" + new Gson().toJson(dataBeanList));
+
+            }
+        });
 
     }
 
@@ -282,6 +355,8 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
         if (currentPage == 0) {
             btn_next.setBackgroundResource(R.drawable.blue_button_background_with_radius);
             btn_next.setTextColor(getResources().getColor(R.color.white));
+            btn_success.setVisibility(View.GONE);
+            btn_next.setVisibility(View.VISIBLE);
             btn_next.setEnabled(true);
             btn_prev.setEnabled(false);
             btn_prev.setBackgroundResource(R.drawable.edit_background_with_border);
@@ -290,14 +365,16 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
             btn_prev.setBackgroundResource(R.drawable.blue_button_background_with_radius);
             btn_prev.setTextColor(getResources().getColor(R.color.white));
             btn_prev.setEnabled(true);
-            btn_next.setEnabled(false);
-            btn_next.setBackgroundResource(R.drawable.edit_background_with_border);
-            btn_next.setTextColor(getResources().getColor(R.color.colorPrimary));
+            btn_next.setVisibility(View.GONE);
+            btn_success.setVisibility(View.VISIBLE);
+
         } else if (currentPage >= 1 && currentPage <= totalPages) {
             btn_next.setBackgroundResource(R.drawable.blue_button_background_with_radius);
             btn_next.setTextColor(getResources().getColor(R.color.white));
             btn_prev.setEnabled(true);
             btn_next.setEnabled(true);
+            btn_success.setVisibility(View.GONE);
+            btn_next.setVisibility(View.VISIBLE);
             btn_prev.setBackgroundResource(R.drawable.blue_button_background_with_radius);
             btn_prev.setTextColor(getResources().getColor(R.color.white));
         }
@@ -305,14 +382,6 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
 
 
 
-    // default back button action
-    public void onBackPressed() {
-        Intent intent = new Intent(FieldListActivity.this,ServiceListActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.new_right, R.anim.new_left);
-
-        //super.onBackPressed();
-    }
 
     @SuppressLint("LogNotTimber")
     public void getfieldListResponseCall(){
@@ -385,36 +454,36 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
         rv_fieldlist.setNestedScrollingEnabled(true);
         rv_fieldlist.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
         rv_fieldlist.setItemAnimator(new DefaultItemAnimator());
-        FieldListAdapter FieldListAdapter = new FieldListAdapter(getApplicationContext(), dataBeanList,ITEMS_PER_PAGE,TOTAL_NUM_ITEMS,this,this,this,this,this,this,this,this,this);
+        FieldListAdapter FieldListAdapter = new FieldListAdapter(getApplicationContext(), dataBeanList,ITEMS_PER_PAGE,TOTAL_NUM_ITEMS,this,this,this,this,this,this,this,this,this,currentPage);
         rv_fieldlist.setAdapter(FieldListAdapter);
     }
 
     @Override
-    public void getStringListener(EditText edt_string, int position, String field_length) {
+    public void getStringListener(EditText edt_string, String s, int position, String field_length) {
 
-        dataBeanList.get(position).setField_update_reason(edt_string.getText().toString());
+
+        dataBeanList.get(position).setField_value(s);
 
     }
 
 
     @Override
-    public void getTextAreaListener(EditText edt_textarea, int position, String field_length) {
+    public void getTextAreaListener(EditText edt_textarea, String s, int position, String field_length) {
 
-        dataBeanList.get(position).setField_update_reason(edt_textarea.getText().toString());
+        dataBeanList.get(position).setField_value(s);
 
     }
 
     @Override
-    public void getNumberListener(EditText edt_number, int position, String field_length) {
+    public void getNumberListener(EditText edt_number, String s, int position, String field_length) {
 
-        dataBeanList.get(position).setField_update_reason(edt_number.getText().toString());
+        dataBeanList.get(position).setField_value(s);
     }
 
     @Override
-    public void getSpinnerListener(Spinner spr_dropdown, int position, String field_length) {
+    public void getSpinnerListener(Spinner spr_dropdown, int positions, String sprvalue, String field_length) {
 
-        dataBeanList.get(position).setField_update_reason(spr_dropdown.getSelectedItem().toString());
-
+        dataBeanList.get(positions).setField_value(sprvalue);
     }
 
 
@@ -457,6 +526,8 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
     }
     @Override
     public void getDigitalSignUploadListener(LinearLayout llheaderdigitalsignature, ImageView ivdigitalsignature, SignaturePad mSignaturePad, Button mSaveButton, Button mClearButton, int position, String field_length) {
+
+        Log.w(TAG,"currentItem POS DS"+position);
 
         llheaderdigitalsignature.setVisibility(View.VISIBLE);
 
@@ -518,9 +589,11 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
 
 
 
-        siganaturePart = MultipartBody.Part.createFormData("sampleFile",  userid+currentDateandTime+file.getName(), requestFile);
+        siganaturePart = MultipartBody.Part.createFormData("sampleFile",  userid+file.getName(), requestFile);
 
-        uploadDigitalSignatureImageRequest(llheaderdigitalsignature,mSignaturePad,ivdigitalsignature);
+        Log.w(TAG,"currentItem POS DS"+position);
+
+        uploadDigitalSignatureImageRequest(llheaderdigitalsignature,mSignaturePad,ivdigitalsignature,position);
 
     }
 
@@ -528,6 +601,10 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
     public void getDigitalSignUploadClearListener(LinearLayout llheaderdigitalsignature, ImageView ivdigitalsignature, SignaturePad mSignaturePad, Button mSaveButton, Button mClearButton, int position, String field_length) {
 
         mSignaturePad.clear();
+
+        Log.w(TAG,"currentItem POS DS"+position);
+
+        dataBeanList.get(position).setField_value("");
 
     }
 
@@ -594,7 +671,7 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
             // Show selected date
             edt_datetime.setText(Selecteddate);
 
-            dataBeanList.get(datetimepos).setField_update_reason(edt_datetime.getText().toString());
+            dataBeanList.get(datetimepos).setField_value(edt_datetime.getText().toString());
 
         }
     };
@@ -676,7 +753,7 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
                             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm aa", Locale.getDefault());
                             String currentDateandTime = sdf.format(new Date());
 
-                            filePart = MultipartBody.Part.createFormData("sampleFile", userid + currentDateandTime + filename, RequestBody.create(MediaType.parse("image/*"), file));
+                            filePart = MultipartBody.Part.createFormData("sampleFile", filename, RequestBody.create(MediaType.parse("image/*"), file));
 
                             uploadImage();
 
@@ -741,7 +818,7 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
 
                             }
 
-                            dataBeanList.get(imagepos).setField_update_reason(uploadimagepath);
+                            dataBeanList.get(imagepos).setField_value(uploadimagepath);
 
                         img_close.setVisibility(View.VISIBLE);
 
@@ -880,7 +957,7 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
     }
 
 
-    private void uploadDigitalSignatureImageRequest(LinearLayout llheaderdigitalsignature, SignaturePad mSignaturePad, ImageView ivdigitalsignature) {
+    private void uploadDigitalSignatureImageRequest(LinearLayout llheaderdigitalsignature, SignaturePad mSignaturePad, ImageView ivdigitalsignature, int position) {
 
         APIInterface apiInterface = RetrofitClient.getImageClient().create(APIInterface.class);
 
@@ -902,10 +979,10 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
                     if (response.body() != null) {
                         digitalSignatureServerUrlImagePath = response.body().getData();
                         Log.w(TAG, "digitalSignatureServerUrlImagePath " + digitalSignatureServerUrlImagePath);
-                        Calendar c = Calendar.getInstance();
-
-
+                        ivdigitalsignature.setVisibility(View.VISIBLE);
                         if (digitalSignatureServerUrlImagePath != null && !digitalSignatureServerUrlImagePath.isEmpty()) {
+                            dataBeanList.get(position).setField_value(digitalSignatureServerUrlImagePath);
+                            Log.w(TAG,"digitalSignatureServerUrlImagePath pos--->"+position);
 
                             Log.w(TAG,"digitalSignatureServerUrlImagePath--->"+digitalSignatureServerUrlImagePath);
 
@@ -949,5 +1026,134 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
 
     }
 
+
+    @SuppressLint("LogNotTimber")
+    private void getformdataListResponseCall() {
+        dialog = new Dialog(FieldListActivity.this, R.style.NewProgressDialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.progroess_popup);
+        dialog.show();
+
+        APIInterface apiInterface = RetrofitClient.getClient().create(APIInterface.class);
+        Call<FormDataStoreResponse> call = apiInterface.getformdataListResponseCall(RestUtils.getContentType(), FormDataStoreRequest());
+        Log.w(TAG,"SignupResponse url  :%s"+" "+ call.request().url().toString());
+
+        call.enqueue(new Callback<FormDataStoreResponse>() {
+            @SuppressLint("LogNotTimber")
+            @Override
+            public void onResponse(@NonNull Call<FormDataStoreResponse> call, @NonNull Response<FormDataStoreResponse> response) {
+
+                Log.w(TAG,"SignupResponse" + new Gson().toJson(response.body()));
+                if (response.body() != null) {
+                    message = response.body().getMessage();
+                    if (200 == response.body().getCode()) {
+                        if(response.body().getData() != null){
+
+                            Toasty.success(getApplicationContext(),""+message,Toasty.LENGTH_LONG).show();
+
+                            startActivity(new Intent(FieldListActivity.this,ServiceListActivity.class));
+
+                        }
+
+
+                    } else {
+                        dialog.dismiss();
+                        new SweetAlertDialog(FieldListActivity.this, SweetAlertDialog.ERROR_TYPE)
+                                .setTitleText("JOHNSON")
+                                .setContentText(message)
+                                .setConfirmText("Ok")
+                                .setConfirmClickListener(Dialog::dismiss)
+                                .show();
+
+                        //showErrorLoading(response.body().getMessage());
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<FormDataStoreResponse> call, @NonNull Throwable t) {
+                dialog.dismiss();
+                Log.e(TAG, "--->" + t.getMessage());
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+    private FormDataStoreRequest FormDataStoreRequest() {
+
+        /**
+         * user_id : 123456
+         * cat_id : 123456
+         * service_id : 123456
+         * job_no : 123456
+         * data_store : [{"__v":0,"_id":"61aa033385104f58378b3b1d","cat_id":"61a8b8752d9a15335c1e511f","created_by":"Admin","date_of_create":"12/3/2021, 5:14:51 PM","date_of_update":"12/3/2021, 5:14:51 PM","field_comments":"filed Length should be 10 digit","field_length":"10","field_name":"Field 1","field_type":"String","field_update_reason":"","field_value":"","updated_by":"Admin"}]
+         * start_time : 23-10-2021 11:00 AM
+         * pause_time : 23-10-2021 11:00 AM
+         * stop_time : 23-10-2021 11:00 AM
+         * storage_status : Temp
+         * date_of_create : 23-10-2021 11:00 AM
+         * date_of_update :
+         * created_by : 123456
+         * updated_by :
+         * update_reason :
+         */
+
+        List<FormDataStoreRequest.DataStoreBean> dataStoreBeanList = new ArrayList<>();
+        if(dataBeanList!=null&&dataBeanList.size()>0){
+
+            for (int i=0;i<dataBeanList.size();i++){
+
+                FormDataStoreRequest.DataStoreBean dataStoreBean = new FormDataStoreRequest.DataStoreBean();
+
+                dataStoreBean.set__v(dataBeanList.get(i).get__v());
+                dataStoreBean.set_id(dataBeanList.get(i).get_id());
+                dataStoreBean.setCat_id(dataBeanList.get(i).getCat_id());
+                dataStoreBean.setCreated_by(dataBeanList.get(i).getCreated_by());
+                dataStoreBean.setDate_of_create(dataBeanList.get(i).getDate_of_create());
+                dataStoreBean.setDate_of_update(dataBeanList.get(i).getDate_of_update());
+                dataStoreBean.setField_comments(dataBeanList.get(i).getField_comments());
+                dataStoreBean.setField_length(dataBeanList.get(i).getField_length());
+                dataStoreBean.setField_name(dataBeanList.get(i).getField_name());
+                dataStoreBean.setField_type(dataBeanList.get(i).getField_type());
+                dataStoreBean.setField_update_reason(dataBeanList.get(i).getField_update_reason());
+                dataStoreBean.setField_value(dataBeanList.get(i).getField_value());
+
+                dataStoreBeanList.add(dataStoreBean);
+            }
+
+        }
+        FormDataStoreRequest FormDataStoreRequest = new FormDataStoreRequest();
+        FormDataStoreRequest.setUser_id(userid);
+        FormDataStoreRequest.setCat_id("");
+        FormDataStoreRequest.setJob_no("");
+        FormDataStoreRequest.setService_id(service_id);
+        FormDataStoreRequest.setData_store(dataStoreBeanList);
+        FormDataStoreRequest.setStart_time("");
+        FormDataStoreRequest.setPause_time("");
+        FormDataStoreRequest.setStop_time("");
+        FormDataStoreRequest.setStorage_status("");
+        FormDataStoreRequest.setDate_of_create("");
+        FormDataStoreRequest.setDate_of_update("");
+        FormDataStoreRequest.setCreated_by("");
+        FormDataStoreRequest.setUpdated_by("");
+        FormDataStoreRequest.setUpdate_reason("");
+
+        Log.w(TAG,"FormDataStoreRequest "+ new Gson().toJson(FormDataStoreRequest));
+        return FormDataStoreRequest;
+    }
+
+    // default back button action
+    public void onBackPressed() {
+
+      /*  Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.new_right, R.anim.new_left);*/
+
+        //super.onBackPressed();
+
+        Toasty.warning(getApplicationContext(),"This option is disabled ",Toasty.LENGTH_LONG).show();
+    }
 
 }

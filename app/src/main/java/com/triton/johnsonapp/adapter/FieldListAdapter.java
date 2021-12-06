@@ -2,9 +2,14 @@ package com.triton.johnsonapp.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,8 +21,12 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.triton.johnsonapp.R;
+import com.triton.johnsonapp.activity.FieldListActivity;
 import com.triton.johnsonapp.interfaces.GetDateTimeListener;
 import com.triton.johnsonapp.interfaces.GetDigitalSignUploadAddListener;
 import com.triton.johnsonapp.interfaces.GetDigitalSignUploadClearListener;
@@ -30,6 +39,7 @@ import com.triton.johnsonapp.interfaces.GetTextAreaListener;
 import com.triton.johnsonapp.responsepojo.GetFieldListResponse;
 import com.triton.johnsonapp.responsepojo.GetServiceListResponse;
 
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -67,8 +77,14 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
     GetDigitalSignUploadClearListener getDigitalSignUploadClearListener;
 
-    public FieldListAdapter(Context context, List<GetFieldListResponse.DataBean> dataBeanList, int ITEMS_PER_PAGE, int TOTAL_NUM_ITEMS, GetStringListener getStringListener, GetTextAreaListener getTextAreaListener,GetSpinnerListener getSpinnerListener,GetNumberListener getNumberListener,GetDateTimeListener getDateTimeListener,
-                            GetFileUploadListener getFileUploadListener,GetDigitalSignUploadListener getDigitalSignUploadListener, GetDigitalSignUploadAddListener getDigitalSignUploadAddListener,GetDigitalSignUploadClearListener getDigitalSignUploadClearListener) {
+    String digitalSignatureServerUrlImagePath;
+
+    int currentPage;
+
+    int check = 0;
+
+    public FieldListAdapter(Context context, List<GetFieldListResponse.DataBean> dataBeanList, int ITEMS_PER_PAGE, int TOTAL_NUM_ITEMS, GetStringListener getStringListener, GetTextAreaListener getTextAreaListener, GetSpinnerListener getSpinnerListener, GetNumberListener getNumberListener, GetDateTimeListener getDateTimeListener,
+                            GetFileUploadListener getFileUploadListener, GetDigitalSignUploadListener getDigitalSignUploadListener, GetDigitalSignUploadAddListener getDigitalSignUploadAddListener, GetDigitalSignUploadClearListener getDigitalSignUploadClearListener, int currentPage) {
         this.context = context;
         this.dataBeanList = dataBeanList;
         this.ITEMS_PER_PAGE = ITEMS_PER_PAGE;
@@ -82,6 +98,7 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
         this.getDigitalSignUploadListener = getDigitalSignUploadListener;
         this.getDigitalSignUploadAddListener = getDigitalSignUploadAddListener;
         this.getDigitalSignUploadClearListener = getDigitalSignUploadClearListener;
+        this.currentPage=currentPage;
     }
 
     @NonNull
@@ -93,6 +110,19 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    /*   int ITEMS_REMAINING=TOTAL_NUM_ITEMS % ITEMS_PER_PAGE;
+        int LAST_PAGE=TOTAL_NUM_ITEMS/ITEMS_PER_PAGE;
+
+        if(currentPage==LAST_PAGE){
+            position = startItem+ITEMS_REMAINING;
+        }
+        else {
+            position = startItem+ITEMS_PER_PAGE;
+        }*/
+   /*     int startItem=currentPage*ITEMS_PER_PAGE+position;
+
+        Log.w(TAG,"currentItem startItem "+startItem);
+*/
         initLayoutOne((ViewHolderOne) holder, position);
 
 
@@ -102,6 +132,12 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
     private void initLayoutOne(ViewHolderOne holder, final int position) {
 
         currentItem = dataBeanList.get(position);
+
+        int startItem=currentPage*ITEMS_PER_PAGE+position;
+
+        Log.w(TAG,"currentItem startItem "+startItem);
+
+        Log.w(TAG,"currentItem POS "+position);
 
         if(currentItem.getField_name() != null && !currentItem.getField_name().equals("")){
             holder.txt_field_title.setText(currentItem.getField_name());
@@ -122,60 +158,242 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
                 holder.edt_string.setVisibility(View.VISIBLE);
 
-                getStringListener.getStringListener(holder.edt_string,position,currentItem.getField_length());
+                if(currentItem.getField_value()!=null&&!currentItem.getField_value().equals("")){
+
+                    holder.edt_string.setText(currentItem.getField_value());
+                }
+
+                holder.edt_string.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        getStringListener.getStringListener(holder.edt_textarea,s.toString(),startItem,currentItem.getField_length());
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
 
             }
+
+
             else if(currentItem.getField_type().equals("Textarea")){
 
                 holder.edt_textarea.setVisibility(View.VISIBLE);
 
-                getTextAreaListener.getTextAreaListener(holder.edt_textarea,position,currentItem.getField_length());
+                if(currentItem.getField_value()!=null&&!currentItem.getField_value().equals("")){
+
+                    holder.edt_textarea.setText(currentItem.getField_value());
+                }
+
+                holder.edt_textarea.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        getTextAreaListener.getTextAreaListener(holder.edt_textarea,s.toString(),startItem,currentItem.getField_length());
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
+
 
             }
+
 
             else if(currentItem.getField_type().equals("Number")){
 
                 holder.edt_number.setVisibility(View.VISIBLE);
 
-                getNumberListener.getNumberListener(holder.edt_number,position,currentItem.getField_length());
+                if(currentItem.getField_value()!=null&&!currentItem.getField_value().equals("")){
+
+                    holder.edt_number.setText(currentItem.getField_value());
+                }
+                else {
+
+                    holder.edt_number.setText("");
+                }
+
+
+                holder.edt_number.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        getNumberListener.getNumberListener(holder.edt_number,s.toString(),startItem,currentItem.getField_length());
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
+
+
             }
+
 
             else if(currentItem.getField_type().equals("Dropdown")){
 
                 holder.ll_dropdown.setVisibility(View.VISIBLE);
 
-                getSpinnerListener.getSpinnerListener(holder.spr_dropdown,position,currentItem.getField_length());
+                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context, R.array.array_name, android.R.layout.simple_spinner_item);
+
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                if(currentItem.getField_value()!=null&&!currentItem.getField_value().equals("")){
+
+                    String compareValue = currentItem.getField_value();
+
+                    holder.spr_dropdown.setAdapter(adapter);
+
+                    if (compareValue != null) {
+                        int spinnerPosition = adapter.getPosition(compareValue);
+                        holder.spr_dropdown.setSelection(spinnerPosition);
+
+                    }
+                    holder.spr_dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+
+                            if(++check > 1) {
+
+                                Log.w(TAG,"currentItem POS "+startItem);
+
+                                Log.w(TAG,"currentItem POS "+parent.getItemAtPosition(pos));
+
+                                getSpinnerListener.getSpinnerListener(holder.spr_dropdown,startItem,parent.getItemAtPosition(pos).toString(),currentItem.getField_length());
+
+                            }
+
+                        }
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+
+                        }
+                    });
+
+                }
+                else {
+
+
+                    holder.spr_dropdown.setAdapter(adapter);
+
+                    holder.spr_dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                            if(++check > 1) {
+
+                                Log.w(TAG,"currentItem POS "+startItem);
+
+                                Log.w(TAG,"currentItem POS "+parent.getItemAtPosition(pos));
+
+                                getSpinnerListener.getSpinnerListener(holder.spr_dropdown,startItem,parent.getItemAtPosition(pos).toString(),currentItem.getField_length());
+
+                            }
+                        }
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+
+                        }
+                    });
+
+
+                }
+
+
             }
+
 
             else if(currentItem.getField_type().equals("Date&time")){
 
                 holder.edt_datetime.setVisibility(View.VISIBLE);
 
-                holder.edt_datetime.setOnClickListener(new View.OnClickListener() {
+                if(currentItem.getField_value()!=null&&!currentItem.getField_value().equals("")) {
+
+                    holder.edt_datetime.setText(currentItem.getField_value());
+
+
+                }
+
+                    holder.edt_datetime.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        getDateTimeListener.getDateTimeListener(holder.edt_datetime,position,currentItem.getField_length());
+                        getDateTimeListener.getDateTimeListener(holder.edt_datetime,startItem,currentItem.getField_length());
                     }
                 });
 
 
             }
+
 
             else if(currentItem.getField_type().equals("File upload")){
 
                 holder.ll_file_upload.setVisibility(View.VISIBLE);
 
+
+                if(currentItem.getField_value()!=null&&!currentItem.getField_value().equals("")){
+
+                    String uploadimagepath = currentItem.getField_value();
+
+                    holder.cv_image.setVisibility(View.VISIBLE);
+
+                    holder.img_file_upload.setVisibility(View.VISIBLE);
+
+
+                    if (uploadimagepath!=null) {
+                        Glide.with(context)
+                                .load(uploadimagepath)
+                                .into(holder.img_file_upload);
+
+                    }
+
+                }
+
+
+                holder.img_close.setVisibility(View.VISIBLE);
+
+                holder.img_close.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                      //  dataBeanList.get(position).setField_update_reason("");
+
+                        notifyDataSetChanged();
+
+                        holder.img_file_upload.setVisibility(View.GONE);
+                    }
+                });
+
                 holder.ll_file_upload.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        getFileUploadListener.getFileUploadListener(holder.ll_file_upload,position,holder.img_file_upload, holder.img_close,currentItem.getField_length(),holder.cv_image);
+                        getFileUploadListener.getFileUploadListener(holder.ll_file_upload,startItem,holder.img_file_upload, holder.img_close,currentItem.getField_length(),holder.cv_image);
 
 
                     }
                 });
 
             }
+
 
             else if(currentItem.getField_type().equals("Signature")){
 
@@ -185,11 +403,51 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
                 holder.ivdigitalsignature.setVisibility(View.VISIBLE);*/
 
+                if(currentItem.getField_value()!=null&&!currentItem.getField_value().equals("")){
+
+                    //holder.llheaderdigitalsignature.setVisibility(View.VISIBLE);
+
+                    holder.ivdigitalsignature.setVisibility(View.VISIBLE);
+
+                    digitalSignatureServerUrlImagePath = currentItem.getField_value();
+
+                    Log.w(TAG, "digitalSignatureServerUrlImagePath " + digitalSignatureServerUrlImagePath);
+
+                    holder.ivdigitalsignature.setVisibility(View.VISIBLE);
+                    if (digitalSignatureServerUrlImagePath != null && !digitalSignatureServerUrlImagePath.isEmpty()) {
+                       // dataBeanList.get(position).setField_value("");
+
+                        Log.w(TAG,"digitalSignatureServerUrlImagePath--->"+digitalSignatureServerUrlImagePath);
+
+                        Glide
+                                .with(context)
+                                .load(digitalSignatureServerUrlImagePath)
+                                .apply(new RequestOptions().override(600, 200))
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .into(holder.ivdigitalsignature);
+
+
+
+                    }
+                    else{
+                        Glide.with(context)
+                                .load(R.drawable.digital_signature)
+                                .into(holder.ivdigitalsignature);
+
+                    }
+
+
+
+
+                }
+
                 holder.lldigitalsignature.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        getDigitalSignUploadListener.getDigitalSignUploadListener(holder.llheaderdigitalsignature,holder.ivdigitalsignature,holder.mSignaturePad,holder.mSaveButton,holder.mClearButton,position,currentItem.getField_length());
+                        Log.w(TAG,"currentItem POS DS"+startItem);
+
+                        getDigitalSignUploadListener.getDigitalSignUploadListener(holder.llheaderdigitalsignature,holder.ivdigitalsignature,holder.mSignaturePad,holder.mSaveButton,holder.mClearButton,startItem,currentItem.getField_length());
 
 
                     }
@@ -200,7 +458,10 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                     @Override
                     public void onClick(View v) {
 
-                        getDigitalSignUploadAddListener.getDigitalSignUploadAddListener(holder.llheaderdigitalsignature,holder.ivdigitalsignature,holder.mSignaturePad,holder.mSaveButton,holder.mClearButton,position,currentItem.getField_length());
+                        Log.w(TAG,"currentItem POS DS"+startItem);
+
+
+                        getDigitalSignUploadAddListener.getDigitalSignUploadAddListener(holder.llheaderdigitalsignature,holder.ivdigitalsignature,holder.mSignaturePad,holder.mSaveButton,holder.mClearButton,startItem,currentItem.getField_length());
 
 
                     }
@@ -210,7 +471,9 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                     @Override
                     public void onClick(View v) {
 
-                        getDigitalSignUploadClearListener.getDigitalSignUploadClearListener(holder.llheaderdigitalsignature,holder.ivdigitalsignature,holder.mSignaturePad,holder.mSaveButton,holder.mClearButton,position,currentItem.getField_length());
+                        Log.w(TAG,"currentItem POS DS"+startItem);
+
+                        getDigitalSignUploadClearListener.getDigitalSignUploadClearListener(holder.llheaderdigitalsignature,holder.ivdigitalsignature,holder.mSignaturePad,holder.mSaveButton,holder.mClearButton,startItem,currentItem.getField_length());
 
 
                     }

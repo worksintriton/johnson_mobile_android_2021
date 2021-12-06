@@ -1,8 +1,10 @@
 package com.triton.johnsonapp.api;
 
 import com.google.android.gms.common.internal.GetServiceRequest;
+import com.triton.johnsonapp.requestpojo.FormDataStoreRequest;
 import com.triton.johnsonapp.requestpojo.LoginRequest;
 import com.triton.johnsonapp.responsepojo.FileUploadResponse;
+import com.triton.johnsonapp.responsepojo.FormDataStoreResponse;
 import com.triton.johnsonapp.responsepojo.GetFieldListResponse;
 import com.triton.johnsonapp.responsepojo.GetServiceListResponse;
 import com.triton.johnsonapp.responsepojo.LoginResponse;
@@ -38,7 +40,11 @@ public interface APIInterface {
     /*Image upload*/
     @Multipart
     @POST("upload")
-    Call<FileUploadResponse> getImageStroeResponse(@Part MultipartBody.Part file);
+    Call<FileUploadResponse> getImageStroeResponse(@Part MultipartBody.Part file); /*Image upload*/
 
+
+    /*form store*/
+    @POST("data_store_management/create")
+    Call<FormDataStoreResponse> getformdataListResponseCall(@Header("Content-Type") String type, @Body FormDataStoreRequest formDataStoreRequest);
 
 }

@@ -8,7 +8,7 @@ public class GetFieldListResponse {
     /**
      * Status : Success
      * Message : field management
-     * Data : [{"_id":"61a8c350975d0b358f608713","cat_id":"61a8b8752d9a15335c1e511f","field_name":"field","field_type":"File upload","field_length":"100","field_comments":"asdasd","field_update_reason":"","date_of_create":"12/2/2021, 6:30:00 PM","date_of_update":"12/2/2021, 6:30:00 PM","created_by":"Admin","updated_by":"Admin","__v":0}]
+     * Data : [{"_id":"61aa033385104f58378b3b1d","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 1","field_type":"String","field_value":"","field_length":"10","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:14:51 PM","date_of_update":"12/3/2021, 5:14:51 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"_id":"61aa033a85104f58378b3b20","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 2","field_type":"Textarea","field_value":"","field_length":"100","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:14:58 PM","date_of_update":"12/3/2021, 5:14:58 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"_id":"61aa034285104f58378b3b23","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 3","field_type":"Number","field_value":"","field_length":"3","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:15:06 PM","date_of_update":"12/3/2021, 5:15:06 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"_id":"61aa034985104f58378b3b26","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 4","field_type":"Dropdown","field_value":"","field_length":"1","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:15:13 PM","date_of_update":"12/3/2021, 5:15:13 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"_id":"61aa034f85104f58378b3b29","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 5","field_type":"Date&time","field_value":"","field_length":"1","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:15:18 PM","date_of_update":"12/3/2021, 5:15:18 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"_id":"61aa035585104f58378b3b2c","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 6","field_type":"File upload","field_value":"","field_length":"1","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:15:25 PM","date_of_update":"12/3/2021, 5:15:25 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"_id":"61aa035d85104f58378b3b2f","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 7","field_type":"Signature","field_value":"","field_length":"1","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:15:32 PM","date_of_update":"12/3/2021, 5:15:32 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"_id":"61aa040585104f58378b3b32","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 8","field_type":"Dropdown","field_value":"","field_length":"1","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:18:21 PM","date_of_update":"12/3/2021, 5:18:21 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"_id":"61aa041285104f58378b3b35","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 9","field_type":"Textarea","field_value":"","field_length":"10","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:18:33 PM","date_of_update":"12/3/2021, 5:18:33 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"_id":"61aa041885104f58378b3b38","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 10","field_type":"String","field_value":"","field_length":"10","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:18:40 PM","date_of_update":"12/3/2021, 5:18:40 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"_id":"61aa041c85104f58378b3b3b","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 11","field_type":"String","field_value":"","field_length":"10","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:18:44 PM","date_of_update":"12/3/2021, 5:18:44 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"_id":"61aa041e85104f58378b3b3e","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 12","field_type":"String","field_value":"","field_length":"10","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:18:46 PM","date_of_update":"12/3/2021, 5:18:46 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"_id":"61aa042185104f58378b3b41","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 13","field_type":"String","field_value":"","field_length":"10","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:18:49 PM","date_of_update":"12/3/2021, 5:18:49 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"_id":"61aa042385104f58378b3b44","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 14","field_type":"String","field_value":"","field_length":"10","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:18:51 PM","date_of_update":"12/3/2021, 5:18:51 PM","created_by":"Admin","updated_by":"Admin","__v":0}]
      * Code : 200
      */
 
@@ -16,15 +16,16 @@ public class GetFieldListResponse {
     private String Message;
     private int Code;
     /**
-     * _id : 61a8c350975d0b358f608713
+     * _id : 61aa033385104f58378b3b1d
      * cat_id : 61a8b8752d9a15335c1e511f
-     * field_name : field
-     * field_type : File upload
-     * field_length : 100
-     * field_comments : asdasd
+     * field_name : Field 1
+     * field_type : String
+     * field_value :
+     * field_length : 10
+     * field_comments : filed Length should be 10 digit
      * field_update_reason :
-     * date_of_create : 12/2/2021, 6:30:00 PM
-     * date_of_update : 12/2/2021, 6:30:00 PM
+     * date_of_create : 12/3/2021, 5:14:51 PM
+     * date_of_update : 12/3/2021, 5:14:51 PM
      * created_by : Admin
      * updated_by : Admin
      * __v : 0
@@ -69,6 +70,7 @@ public class GetFieldListResponse {
         private String cat_id;
         private String field_name;
         private String field_type;
+        private String field_value;
         private String field_length;
         private String field_comments;
         private String field_update_reason;
@@ -108,6 +110,14 @@ public class GetFieldListResponse {
 
         public void setField_type(String field_type) {
             this.field_type = field_type;
+        }
+
+        public String getField_value() {
+            return field_value;
+        }
+
+        public void setField_value(String field_value) {
+            this.field_value = field_value;
         }
 
         public String getField_length() {

@@ -115,7 +115,6 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
-                    android:entries="@array/array_name"
                     android:fontFamily="@font/sourcesanspro_regular"
                     android:textSize="16sp" />
 
@@ -123,7 +122,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="end"
-                    android:gravity="end|center_vertical">
+                    android:gravity="end|center_vertical"
+                    android:visibility="gone">
 
                     <ImageView
                         android:id="@+id/img_spinner"
@@ -166,7 +166,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/child_back_ground"
+                    android:background="@color/float_transparent"
                     android:focusable="false"
                     android:fontFamily="@font/sourcesanspro_regular"
                     android:hint="@string/choose"
@@ -246,7 +246,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal"
-                android:visibility="visible"
+                android:visibility="gone"
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
@@ -274,7 +274,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/child_back_ground"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <com.github.gcacace.signaturepad.views.SignaturePad
                     android:id="@+id/signaturePad"
@@ -316,7 +316,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 tools:ignore="ContentDescription" />
 
             <TextView

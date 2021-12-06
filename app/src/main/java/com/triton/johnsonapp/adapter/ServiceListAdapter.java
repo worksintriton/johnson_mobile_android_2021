@@ -97,6 +97,8 @@ public class ServiceListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewH
 
                Intent intent = new Intent(context,FieldListActivity.class);
 
+               intent.putExtra("service_id",currentItem.get_id());
+
                context.startActivity(intent);
             }
         });
