@@ -1,4 +1,4 @@
-package com.triton.johnsonapp.activity;
+package com.triton.johnsonapp.Forms;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -41,6 +41,7 @@ import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.google.android.gms.common.util.IOUtils;
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
+import com.triton.johnsonapp.activity.SubGroupListActivity;
 import com.triton.johnsonapp.adapter.FieldListAdapter;
 import com.triton.johnsonapp.api.APIInterface;
 import com.triton.johnsonapp.api.RetrofitClient;
@@ -73,7 +74,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -86,11 +86,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FieldListActivity extends AppCompatActivity implements GetStringListener, GetTextAreaListener, GetSpinnerListener, GetNumberListener, GetDateTimeListener, GetFileUploadListener, GetDigitalSignUploadListener, GetDigitalSignUploadAddListener, GetDigitalSignUploadClearListener {
+public class InputValueFormListActivity extends AppCompatActivity implements GetStringListener, GetTextAreaListener, GetSpinnerListener, GetNumberListener, GetDateTimeListener, GetFileUploadListener, GetDigitalSignUploadListener, GetDigitalSignUploadAddListener, GetDigitalSignUploadClearListener {
 
 
 
-    private String TAG ="FieldListActivity";
+    private String TAG ="InputValueFormListActivity";
 
     String userid,username;
 
@@ -201,13 +201,16 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_field_list);
+        setContentView(R.layout.activity_input_value_form_list);
 
         ButterKnife.bind(this);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             service_id = extras.getString("service_id");
+
+            Log.w(TAG,"service_id" + service_id);
+
         }
 
         SessionManager session = new SessionManager(getApplicationContext());
@@ -390,7 +393,7 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
 
     @SuppressLint("LogNotTimber")
     public void getfieldListResponseCall(){
-        dialog = new Dialog(FieldListActivity.this, R.style.NewProgressDialog);
+        dialog = new Dialog(InputValueFormListActivity.this, R.style.NewProgressDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progroess_popup);
         dialog.show();
@@ -696,7 +699,7 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
             {
 
 
-                CropImage.activity().start(FieldListActivity.this);
+                CropImage.activity().start(InputValueFormListActivity.this);
 
                 /*CropImage.activity().start(AddYourPetImageOlduserActivity.this);*/
             }
@@ -736,7 +739,7 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
 
                         Log.w("filename", " " + filename);
 
-                        String filePath = getFilePathFromURI(FieldListActivity.this, resultUri);
+                        String filePath = getFilePathFromURI(InputValueFormListActivity.this, resultUri);
 
                         assert filePath != null;
 
@@ -768,7 +771,7 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
 
                     } else {
 
-                        Toasty.warning(FieldListActivity.this, "Image Error!!Please upload Some other image", Toasty.LENGTH_LONG).show();
+                        Toasty.warning(InputValueFormListActivity.this, "Image Error!!Please upload Some other image", Toasty.LENGTH_LONG).show();
                     }
 
 
@@ -818,7 +821,7 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
 
 
                             if (uploadimagepath!=null) {
-                                Glide.with(FieldListActivity.this)
+                                Glide.with(InputValueFormListActivity.this)
                                         .load(uploadimagepath)
                                         .into(img_file_upload);
 
@@ -913,7 +916,7 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
 
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                CropImage.activity().start(FieldListActivity.this);
+                CropImage.activity().start(InputValueFormListActivity.this);
 
             } else {
                 new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
@@ -1035,7 +1038,7 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
 
     @SuppressLint("LogNotTimber")
     private void getformdataListResponseCall() {
-        dialog = new Dialog(FieldListActivity.this, R.style.NewProgressDialog);
+        dialog = new Dialog(InputValueFormListActivity.this, R.style.NewProgressDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progroess_popup);
         dialog.show();
@@ -1057,7 +1060,7 @@ public class FieldListActivity extends AppCompatActivity implements GetStringLis
 
                             Toasty.success(getApplicationContext(),""+message,Toasty.LENGTH_LONG).show();
 
-                            startActivity(new Intent(FieldListActivity.this,ServiceListActivity.class));
+                            startActivity(new Intent(InputValueFormListActivity.this, SubGroupListActivity.class));
 
                         }
 

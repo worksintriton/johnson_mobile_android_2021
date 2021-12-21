@@ -39,7 +39,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -245,7 +244,7 @@ public class LoginActivity extends AppCompatActivity {
                                     String.valueOf(response.body().getData().getUser_type())
                             );
 
-                            startActivity(new Intent(LoginActivity.this,ServiceListActivity.class));
+                            startActivity(new Intent(LoginActivity.this, ActivityBasedActivity.class));
 
                         }
 

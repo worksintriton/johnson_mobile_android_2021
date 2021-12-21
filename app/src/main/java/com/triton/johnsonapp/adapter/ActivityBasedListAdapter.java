@@ -14,18 +14,19 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.triton.johnsonapp.Forms.ImageBasedInputFormActivity;
+import com.triton.johnsonapp.Forms.InputValueFormListActivity;
 import com.triton.johnsonapp.Forms.JointInspectorInputFormActivity;
 import com.triton.johnsonapp.Forms.RowBasedInputFormActivity;
 import com.triton.johnsonapp.R;
-import com.triton.johnsonapp.Forms.InputValueFormListActivity;
+import com.triton.johnsonapp.activity.JobDetailActivity;
 import com.triton.johnsonapp.responsepojo.GetServiceListResponse;
 
 import java.util.List;
 
 
-public class ServiceListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ActivityBasedListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private  String TAG = "ServiceListAdapter";
+    private  String TAG = "ActivityBasedListAdapter";
     private List<GetServiceListResponse.DataBean> dataBeanList;
     private Context context;
 
@@ -33,7 +34,7 @@ public class ServiceListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewH
 
     private int size;
 
-    public ServiceListAdapter(Context context, List<GetServiceListResponse.DataBean> dataBeanList) {
+    public ActivityBasedListAdapter(Context context, List<GetServiceListResponse.DataBean> dataBeanList) {
         this.context = context;
         this.dataBeanList = dataBeanList;
 
@@ -82,36 +83,10 @@ public class ServiceListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewH
 
         holder.cv_root.setOnClickListener(v -> {
 
-           if(position==0){
+            Intent intent = new Intent(context, JobDetailActivity.class);
 
-               Intent intent = new Intent(context, RowBasedInputFormActivity.class);
+            context.startActivity(intent);
 
-               context.startActivity(intent);
-
-           }
-
-           else if(position==1){
-
-               Intent intent = new Intent(context, ImageBasedInputFormActivity.class);
-
-               context.startActivity(intent);
-           }
-
-           else if(position==2){
-
-               Intent intent = new Intent(context, JointInspectorInputFormActivity.class);
-
-               context.startActivity(intent);
-           }
-
-           else if(position==3){
-
-               Intent intent = new Intent(context, InputValueFormListActivity.class);
-
-               intent.putExtra("service_id","61a8b8ac2d9a15335c1e5125");
-
-               context.startActivity(intent);
-           }
 
 
         });

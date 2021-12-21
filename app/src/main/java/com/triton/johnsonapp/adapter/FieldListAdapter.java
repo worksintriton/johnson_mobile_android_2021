@@ -26,7 +26,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.triton.johnsonapp.R;
-import com.triton.johnsonapp.activity.FieldListActivity;
 import com.triton.johnsonapp.interfaces.GetDateTimeListener;
 import com.triton.johnsonapp.interfaces.GetDigitalSignUploadAddListener;
 import com.triton.johnsonapp.interfaces.GetDigitalSignUploadClearListener;
@@ -37,12 +36,8 @@ import com.triton.johnsonapp.interfaces.GetSpinnerListener;
 import com.triton.johnsonapp.interfaces.GetStringListener;
 import com.triton.johnsonapp.interfaces.GetTextAreaListener;
 import com.triton.johnsonapp.responsepojo.GetFieldListResponse;
-import com.triton.johnsonapp.responsepojo.GetServiceListResponse;
 
-import java.util.Calendar;
 import java.util.List;
-
-import butterknife.BindView;
 
 
 public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder> {

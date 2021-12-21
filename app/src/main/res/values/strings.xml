@@ -81,6 +81,20 @@
     <string name="image">image</string>
     <string name="signature">Signature</string>
     <string name="success">Submit</string>
+    <string name="sub_group">Sub Group List</string>
+    <string name="row_based">Input Form</string>
+    <string name="activitybased">Activity Based</string>
+    <string name="jobdetail">Job Detail</string>
+    <string name="group">Group List</string>
+    <string name="info">i</string>
+    <string name="s_no">S.No</string>
+    <string name="dim_x1">Dim X1</string>
+    <string name="dim_x2">Dim X2</string>
+    <string name="dim_x3">Dim X3</string>
+    <string name="dim_x4">Dim X4</string>
+    <string name="dim_y1">Dim Y1</string>
+    <string name="dim_y2">Dim Y2</string>
+    <string name="remarks">Remarks</string>
 
     <string-array name="array_name">
         <item>Select Value</item>
@@ -88,5 +102,33 @@
         <item>NOT OK</item>
         <item>OTHERS</item>
     </string-array>
+    <style name="table_header" parent="@android:style/TextAppearance.Small">
+        <item name="android:fontFamily">@font/sourcesanspro_regular</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/_10sp</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:layout_marginRight">@dimen/_1dp</item>
+        <item name="android:layout_marginEnd">@dimen/_1dp</item>
+        <item name="android:paddingStart">@dimen/_10dp</item>
+        <item name="android:paddingLeft">@dimen/_10dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/_40dp</item>
+    </style>
+
+    <style name="table_row_item" parent="@android:style/TextAppearance.Small">
+        <item name="android:fontFamily">@font/sourcesanspro_regular</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/_10sp</item>
+        <item name="android:background">@drawable/rectangular_corner_bg_lightgrey</item>
+        <item name="android:layout_marginRight">@dimen/_1dp</item>
+        <item name="android:layout_marginEnd">@dimen/_1dp</item>
+        <item name="android:paddingStart">@dimen/_10dp</item>
+        <item name="android:paddingLeft">@dimen/_10dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/_45dp</item>
+    </style>
 
 </resources>

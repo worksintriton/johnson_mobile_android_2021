@@ -1,11 +1,8 @@
 package com.triton.johnsonapp.activity;
 
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.session.SessionManager;
-import com.triton.johnsonapp.utils.Permission_Activity;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -55,7 +51,7 @@ public class SplashActivity extends AppCompatActivity {
                         if (sessionManager.isLoggedIn()) {
 
 
-                            Intent intent = new Intent(SplashActivity.this, ServiceListActivity.class);
+                            Intent intent = new Intent(SplashActivity.this, ActivityBasedActivity.class);
                             startActivity(intent);
                             overridePendingTransition(R.anim.new_right, R.anim.new_left);
                         }

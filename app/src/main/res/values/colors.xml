@@ -34,9 +34,7 @@
     <color name="johnson_green">#00a551</color>
     <color name="johnson_blue">#213e9a</color>
     <color name="lightgray">#efefef</color>
-
-
-
+    <color name="grey_color">#F2F2F2</color>
 
 
 </resources>

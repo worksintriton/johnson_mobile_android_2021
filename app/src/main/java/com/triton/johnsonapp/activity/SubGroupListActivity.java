@@ -9,15 +9,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.adapter.ServiceListAdapter;
@@ -28,6 +26,7 @@ import com.triton.johnsonapp.session.SessionManager;
 import com.triton.johnsonapp.utils.ConnectionDetector;
 import com.triton.johnsonapp.utils.RestUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -38,11 +37,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ServiceListActivity extends AppCompatActivity {
+public class SubGroupListActivity extends AppCompatActivity {
 
 
 
-    private String TAG ="ServiceListActivity";
+    private String TAG ="SubGroupListActivity";
 
     String userid,username;
 
@@ -53,8 +52,8 @@ public class ServiceListActivity extends AppCompatActivity {
 
 
     @SuppressLint("NonConstantResourceId")
-    @BindView(R.id.rv_servicelist)
-    RecyclerView rv_servicelist;
+    @BindView(R.id.rv_subgrouplist)
+    RecyclerView rv_subgrouplist;
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.txt_no_records)
@@ -64,11 +63,18 @@ public class ServiceListActivity extends AppCompatActivity {
 
     String networkStatus = "";
 
+    int number=0;
+
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.img_back)
+    ImageView img_back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_service_list);
+        setContentView(R.layout.activity_sub_group_list);
         ButterKnife.bind(this);
+        Log.w(TAG,"Oncreate -->");
 
         SessionManager session = new SessionManager(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
@@ -86,9 +92,17 @@ public class ServiceListActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 session.logoutUser();
-                startActivity(new Intent(ServiceListActivity.this,LoginActivity.class));
+                startActivity(new Intent(SubGroupListActivity.this,LoginActivity.class));
             }
         });*/
+
+        img_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                onBackPressed();
+            }
+        });
 
         networkStatus = ConnectionDetector.getConnectivityStatusString(getApplicationContext());
         if (networkStatus.equalsIgnoreCase("Not connected to Internet")) {
@@ -98,7 +112,27 @@ public class ServiceListActivity extends AppCompatActivity {
         }
         else {
 
-            getServiceListResponseCall();
+        /*    getServiceListResponseCall();*/
+
+            List<GetServiceListResponse.DataBean> dataBeanList = new ArrayList<>();
+
+
+            for(int i=0;i<=3;i++){
+
+                number++;
+                GetServiceListResponse.DataBean dataBean = new  GetServiceListResponse.DataBean();
+
+                Log.w(TAG,"number "+ number);
+
+                dataBean.setService_name("Sub Group "+number);
+
+                dataBeanList.add(dataBean);
+            }
+
+
+            if(dataBeanList != null && dataBeanList.size()>0){
+                setView(dataBeanList);
+            }
         }
 
 
@@ -109,17 +143,18 @@ public class ServiceListActivity extends AppCompatActivity {
     // default back button action
     public void onBackPressed() {
 
-      /*  Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+
+        super.onBackPressed();
+        Intent intent = new Intent(SubGroupListActivity.this, GroupListActivity.class);
         startActivity(intent);
-        overridePendingTransition(R.anim.new_right, R.anim.new_left);*/
+        overridePendingTransition(R.anim.new_right, R.anim.new_left);
 
-        //super.onBackPressed();
+
     }
-
 
     @SuppressLint("LogNotTimber")
     public void getServiceListResponseCall(){
-        dialog = new Dialog(ServiceListActivity.this, R.style.NewProgressDialog);
+        dialog = new Dialog(SubGroupListActivity.this, R.style.NewProgressDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progroess_popup);
         dialog.show();
@@ -180,10 +215,10 @@ public class ServiceListActivity extends AppCompatActivity {
     private void setView(List<GetServiceListResponse.DataBean> dataBeanList) {
 
 
-        rv_servicelist.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
-        rv_servicelist.setItemAnimator(new DefaultItemAnimator());
+        rv_subgrouplist.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
+        rv_subgrouplist.setItemAnimator(new DefaultItemAnimator());
         ServiceListAdapter serviceListAdapter = new ServiceListAdapter(this, dataBeanList);
-        rv_servicelist.setAdapter(serviceListAdapter);
+        rv_subgrouplist.setAdapter(serviceListAdapter);
     }
 
 }
