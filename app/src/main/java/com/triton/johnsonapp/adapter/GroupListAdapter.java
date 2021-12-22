@@ -13,10 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.triton.johnsonapp.Forms.ImageBasedInputFormActivity;
+import com.triton.johnsonapp.Forms.InputValueFormListActivity;
+import com.triton.johnsonapp.Forms.JointInspectorInputFormActivity;
 import com.triton.johnsonapp.Forms.RowBasedInputFormActivity;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.activity.SubGroupListActivity;
-import com.triton.johnsonapp.responsepojo.GetServiceListResponse;
+import com.triton.johnsonapp.responsepojo.GroupDetailManagementResponse;
 
 import java.util.List;
 
@@ -24,17 +27,20 @@ import java.util.List;
 public class GroupListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private  String TAG = "GroupListAdapter";
-    private List<GetServiceListResponse.DataBean> dataBeanList;
+    private List<GroupDetailManagementResponse.DataBean> dataBeanList;
     private Context context;
 
-    GetServiceListResponse.DataBean currentItem;
+    GroupDetailManagementResponse.DataBean currentItem;
 
     private int size;
+    String activity_id;
+    String job_id;
 
-    public GroupListAdapter(Context context, List<GetServiceListResponse.DataBean> dataBeanList) {
+    public GroupListAdapter(Context context, List<GroupDetailManagementResponse.DataBean> dataBeanList, String activity_id, String job_id) {
         this.context = context;
         this.dataBeanList = dataBeanList;
-
+        this.activity_id = activity_id;
+        this.job_id = job_id;
 
     }
 
@@ -57,8 +63,8 @@ public class GroupListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
         currentItem = dataBeanList.get(position);
 
-        if(currentItem.getService_name() != null && !currentItem.getService_name().equals("")){
-            holder.txt_serv_title.setText(currentItem.getService_name());
+        if(dataBeanList.get(position).getGroup_detail_name() != null && !dataBeanList.get(position).getGroup_detail_name().equals("")){
+            holder.txt_serv_title.setText(dataBeanList.get(position).getGroup_detail_name());
         }else{
             holder.txt_serv_title.setText("");
 
@@ -80,10 +86,62 @@ public class GroupListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
         holder.cv_root.setOnClickListener(v -> {
 
-            Intent intent = new Intent(context, SubGroupListActivity.class);
+            if(dataBeanList.get(position).getSub_group_status()!=null&&dataBeanList.get(position).getSub_group_status().equals("true")){
 
-            context.startActivity(intent);
+                Intent intent = new Intent(context, SubGroupListActivity.class);
+                intent.putExtra("activity_id",activity_id);
+                intent.putExtra("job_id",job_id);
+                intent.putExtra("group_id",dataBeanList.get(position).get_id());
 
+                context.startActivity(intent);
+
+            }
+
+            else {
+
+                if(dataBeanList.get(position).getForm_type()!=null){
+
+                    if(dataBeanList.get(position).getForm_type().equals("1")){
+
+                        Intent intent = new Intent(context, InputValueFormListActivity.class);
+                        intent.putExtra("activity_id",activity_id);
+                        intent.putExtra("job_id",job_id);
+                        intent.putExtra("group_id",dataBeanList.get(position).get_id());
+
+                        context.startActivity(intent);
+                    }
+
+                    else if(dataBeanList.get(position).getForm_type().equals("2")){
+
+                        Intent intent = new Intent(context, ImageBasedInputFormActivity.class);
+                        intent.putExtra("activity_id",activity_id);
+                        intent.putExtra("job_id",job_id);
+                        intent.putExtra("group_id",dataBeanList.get(position).get_id());
+
+                        context.startActivity(intent);
+                    }
+                    else if(dataBeanList.get(position).getForm_type().equals("3")){
+
+                        Intent intent = new Intent(context, RowBasedInputFormActivity.class);
+                        intent.putExtra("activity_id",activity_id);
+                        intent.putExtra("job_id",job_id);
+                        intent.putExtra("group_id",dataBeanList.get(position).get_id());
+
+                        context.startActivity(intent);
+                    }
+
+                    else if(dataBeanList.get(position).getForm_type().equals("4")){
+
+                        Intent intent = new Intent(context, JointInspectorInputFormActivity.class);
+                        intent.putExtra("activity_id",activity_id);
+                        intent.putExtra("job_id",job_id);
+                        intent.putExtra("group_id",dataBeanList.get(position).get_id());
+
+                        context.startActivity(intent);
+                    }
+                }
+
+            }
 
 
         });

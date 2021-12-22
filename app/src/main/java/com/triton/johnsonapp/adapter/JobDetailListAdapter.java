@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.triton.johnsonapp.Forms.RowBasedInputFormActivity;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.activity.GroupListActivity;
-import com.triton.johnsonapp.responsepojo.GetServiceListResponse;
+import com.triton.johnsonapp.responsepojo.JobNoManagementResponse;
 
 import java.util.List;
 
@@ -24,17 +24,18 @@ import java.util.List;
 public class JobDetailListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private  String TAG = "JobDetailListAdapter";
-    private List<GetServiceListResponse.DataBean> dataBeanList;
+    private List<JobNoManagementResponse.DataBean> dataBeanList;
     private Context context;
 
-    GetServiceListResponse.DataBean currentItem;
+    JobNoManagementResponse.DataBean currentItem;
 
     private int size;
+    String activity_id;
 
-    public JobDetailListAdapter(Context context, List<GetServiceListResponse.DataBean> dataBeanList) {
+    public JobDetailListAdapter(Context context, List<JobNoManagementResponse.DataBean> dataBeanList, String activity_id) {
         this.context = context;
         this.dataBeanList = dataBeanList;
-
+        this.activity_id=activity_id;
 
     }
 
@@ -57,8 +58,8 @@ public class JobDetailListAdapter extends  RecyclerView.Adapter<RecyclerView.Vie
 
         currentItem = dataBeanList.get(position);
 
-        if(currentItem.getService_name() != null && !currentItem.getService_name().equals("")){
-            holder.txt_serv_title.setText(currentItem.getService_name());
+        if(dataBeanList.get(position).getJob_detail_no() != null && !dataBeanList.get(position).getJob_detail_no().equals("")){
+            holder.txt_serv_title.setText(dataBeanList.get(position).getJob_detail_no());
         }else{
             holder.txt_serv_title.setText("");
 
@@ -81,6 +82,10 @@ public class JobDetailListAdapter extends  RecyclerView.Adapter<RecyclerView.Vie
         holder.cv_root.setOnClickListener(v -> {
 
             Intent intent = new Intent(context, GroupListActivity.class);
+
+            intent.putExtra("activity_id",activity_id);
+
+            intent.putExtra("job_id",dataBeanList.get(position).get_id());
 
             context.startActivity(intent);
 

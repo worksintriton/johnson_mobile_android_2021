@@ -106,6 +106,9 @@ dependencies {
     implementation 'com.github.CanHub:Android-Image-Cropper:3.1.1'
 
 
+    implementation 'com.github.tntkhang:full-screen-image-view-library:1.1.0'
+
+
 }
 // Add the following line:
 apply plugin: 'com.google.gms.google-services'  // Google Services plugin

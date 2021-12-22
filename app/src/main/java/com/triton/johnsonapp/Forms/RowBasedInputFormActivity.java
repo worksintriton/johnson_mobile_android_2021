@@ -1,11 +1,7 @@
 package com.triton.johnsonapp.Forms;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,15 +9,18 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.github.tntkhang.fullscreenimageview.library.FullScreenImageViewActivity;
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
-import com.triton.johnsonapp.adapter.JobDetailListAdapter;
 import com.triton.johnsonapp.adapter.RowBasedArrayListAdapter;
 import com.triton.johnsonapp.model.RowDataFormModel;
-import com.triton.johnsonapp.responsepojo.GetServiceListResponse;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +34,10 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.img_load)
     ImageView img_load;
+
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.txt_image_info)
+    TextView txt_image_info;
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.edt_sno)
@@ -78,12 +81,35 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
 
     ArrayList<RowDataFormModel> rowdatalist = new ArrayList<>();
 
+    String string_value,message,service_id,activity_id,job_id,group_id,subgroup_id;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_row_based_input_form);
         ButterKnife.bind(this);
         Log.w(TAG,"Oncreate -->");
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            service_id = extras.getString("service_id");
+
+            group_id = extras.getString("group_id");
+
+            activity_id = extras.getString("activity_id");
+
+            job_id = extras.getString("job_id");
+
+            subgroup_id= extras.getString("subgroup_id");
+
+            Log.w(TAG,"activity_id -->"+activity_id);
+
+            Log.w(TAG,"group_id -->"+group_id);
+
+            Log.w(TAG,"service_id" + service_id);
+
+        }
 
         img_add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,9 +148,43 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
 
                     Log.w(TAG,"rowdatalist" + new Gson().toJson(rowdatalist));
 
+                    edt_sno.setText("");
+                    edt_dimx1.setText("");
+                    edt_dimx2.setText("");
+                    edt_dimx3.setText("");
+                    edt_dimx4.setText("");
+                    edt_dimy1.setText("");
+                    edt_dimy2.setText("");
+                    edt_rem.setText("");
 
                     setView(rowdatalist);
                 }
+
+            }
+        });
+
+        txt_image_info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                img_load.setVisibility(View.VISIBLE);
+
+                img_load.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        ArrayList<String> uriString = new ArrayList<>();
+
+                        uriString.add("https://kubalubra.is/wp-content/uploads/2017/11/default-thumbnail.jpg");
+                        Intent fullImageIntent = new Intent(RowBasedInputFormActivity.this, FullScreenImageViewActivity.class);
+// uriString is an ArrayList<String> of URI of all images
+                        fullImageIntent.putExtra(FullScreenImageViewActivity.URI_LIST_DATA, uriString);
+// pos is the position of image will be showned when open
+                        fullImageIntent.putExtra(FullScreenImageViewActivity.IMAGE_FULL_SCREEN_CURRENT_POS, 0);
+                        startActivity(fullImageIntent);
+                    }
+                });
+
 
             }
         });

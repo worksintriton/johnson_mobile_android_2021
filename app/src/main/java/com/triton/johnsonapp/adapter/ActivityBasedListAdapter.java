@@ -3,6 +3,7 @@ package com.triton.johnsonapp.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,7 @@ import com.triton.johnsonapp.Forms.JointInspectorInputFormActivity;
 import com.triton.johnsonapp.Forms.RowBasedInputFormActivity;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.activity.JobDetailActivity;
-import com.triton.johnsonapp.responsepojo.GetServiceListResponse;
+import com.triton.johnsonapp.responsepojo.ActivityListManagementResponse;
 
 import java.util.List;
 
@@ -27,14 +28,14 @@ import java.util.List;
 public class ActivityBasedListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private  String TAG = "ActivityBasedListAdapter";
-    private List<GetServiceListResponse.DataBean> dataBeanList;
+    private List<ActivityListManagementResponse.DataBean> dataBeanList;
     private Context context;
 
-    GetServiceListResponse.DataBean currentItem;
+    ActivityListManagementResponse.DataBean currentItem;
 
     private int size;
 
-    public ActivityBasedListAdapter(Context context, List<GetServiceListResponse.DataBean> dataBeanList) {
+    public ActivityBasedListAdapter(Context context, List<ActivityListManagementResponse.DataBean> dataBeanList) {
         this.context = context;
         this.dataBeanList = dataBeanList;
 
@@ -60,8 +61,8 @@ public class ActivityBasedListAdapter extends  RecyclerView.Adapter<RecyclerView
 
         currentItem = dataBeanList.get(position);
 
-        if(currentItem.getService_name() != null && !currentItem.getService_name().equals("")){
-            holder.txt_serv_title.setText(currentItem.getService_name());
+        if(dataBeanList.get(position).getActivedetail_name()!= null && !dataBeanList.get(position).getActivedetail_name().equals("")){
+            holder.txt_serv_title.setText(dataBeanList.get(position).getActivedetail_name());
         }else{
             holder.txt_serv_title.setText("");
 
@@ -81,9 +82,15 @@ public class ActivityBasedListAdapter extends  RecyclerView.Adapter<RecyclerView
 
         }*/
 
+
+
         holder.cv_root.setOnClickListener(v -> {
 
             Intent intent = new Intent(context, JobDetailActivity.class);
+
+            intent.putExtra("activity_id",dataBeanList.get(position).get_id());
+
+            Log.w(TAG,"id -->"+dataBeanList.get(position).get_id());
 
             context.startActivity(intent);
 

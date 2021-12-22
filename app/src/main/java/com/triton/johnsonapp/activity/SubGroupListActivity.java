@@ -15,13 +15,16 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.adapter.ServiceListAdapter;
 import com.triton.johnsonapp.api.APIInterface;
 import com.triton.johnsonapp.api.RetrofitClient;
+import com.triton.johnsonapp.requestpojo.SubGroupDetailManagementRequest;
 import com.triton.johnsonapp.responsepojo.GetServiceListResponse;
+import com.triton.johnsonapp.responsepojo.SubGroupDetailManagementResponse;
 import com.triton.johnsonapp.session.SessionManager;
 import com.triton.johnsonapp.utils.ConnectionDetector;
 import com.triton.johnsonapp.utils.RestUtils;
@@ -61,7 +64,7 @@ public class SubGroupListActivity extends AppCompatActivity {
 
     Dialog  dialog;
 
-    String networkStatus = "";
+    String networkStatus = "",message,activity_id,job_id,group_id;
 
     int number=0;
 
@@ -81,6 +84,21 @@ public class SubGroupListActivity extends AppCompatActivity {
         userid = user.get(SessionManager.KEY_ID);
 
         username = user.get(SessionManager.KEY_USERNAME);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+
+            group_id = extras.getString("group_id");
+
+            activity_id = extras.getString("activity_id");
+
+            job_id = extras.getString("job_id");
+
+            Log.w(TAG,"activity_id -->"+activity_id);
+
+            Log.w(TAG,"group_id -->"+group_id);
+
+        }
 /*
         if(username!=null){
 
@@ -112,9 +130,9 @@ public class SubGroupListActivity extends AppCompatActivity {
         }
         else {
 
-        /*    getServiceListResponseCall();*/
+            subgroupdetailmanagmentResponseCall();
 
-            List<GetServiceListResponse.DataBean> dataBeanList = new ArrayList<>();
+           /* List<GetServiceListResponse.DataBean> dataBeanList = new ArrayList<>();
 
 
             for(int i=0;i<=3;i++){
@@ -132,7 +150,7 @@ public class SubGroupListActivity extends AppCompatActivity {
 
             if(dataBeanList != null && dataBeanList.size()>0){
                 setView(dataBeanList);
-            }
+            }*/
         }
 
 
@@ -146,6 +164,8 @@ public class SubGroupListActivity extends AppCompatActivity {
 
         super.onBackPressed();
         Intent intent = new Intent(SubGroupListActivity.this, GroupListActivity.class);
+        intent.putExtra("activity_id",activity_id);
+        intent.putExtra("job_id",job_id);
         startActivity(intent);
         overridePendingTransition(R.anim.new_right, R.anim.new_left);
 
@@ -153,71 +173,84 @@ public class SubGroupListActivity extends AppCompatActivity {
     }
 
     @SuppressLint("LogNotTimber")
-    public void getServiceListResponseCall(){
+    private void subgroupdetailmanagmentResponseCall() {
         dialog = new Dialog(SubGroupListActivity.this, R.style.NewProgressDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progroess_popup);
         dialog.show();
 
-        //Creating an object of our api interface
         APIInterface apiInterface = RetrofitClient.getClient().create(APIInterface.class);
-        Call<GetServiceListResponse> call = apiInterface.getServiceListResponseCall(RestUtils.getContentType());
-        Log.w(TAG,"url  :%s"+ call.request().url().toString());
+        Call<SubGroupDetailManagementResponse> call = apiInterface.subgroupdetailmanagmentResponseCall(RestUtils.getContentType(), SubGroupDetailManagementRequest());
+        Log.w(TAG,"SubGroupDetailManagementResponse url  :%s"+" "+ call.request().url().toString());
 
-        call.enqueue(new Callback<GetServiceListResponse>() {
+        call.enqueue(new Callback<SubGroupDetailManagementResponse>() {
             @SuppressLint("LogNotTimber")
             @Override
-            public void onResponse(@NonNull Call<GetServiceListResponse> call, @NonNull Response<GetServiceListResponse> response) {
-                dialog.dismiss();
+            public void onResponse(@NonNull Call<SubGroupDetailManagementResponse> call, @NonNull Response<SubGroupDetailManagementResponse> response) {
 
-
+                Log.w(TAG,"SubGroupDetailManagementResponse" + new Gson().toJson(response.body()));
                 if (response.body() != null) {
-                    if(200 == response.body().getCode()){
-                        Log.w(TAG,"GetServiceListResponse" + new Gson().toJson(response.body()));
+                    message = response.body().getMessage();
+                    if (200 == response.body().getCode()) {
+                        if(response.body().getData() != null){
 
-                        if(response.body().getData()!= null){
-
-                            List<GetServiceListResponse.DataBean> dataBeanList = response.body().getData();
+                            dialog.dismiss();
+                            List<SubGroupDetailManagementResponse.DataBean> dataBeanList = response.body().getData();
 
 
                             if(dataBeanList != null && dataBeanList.size()>0){
                                 setView(dataBeanList);
                             }
+                            {
+                                txt_no_records.setVisibility(View.VISIBLE);
+
+                                txt_no_records.setText("No Sub-Groups Available");
+                            }
+
                         }
 
 
+                    } else {
+                        dialog.dismiss();
+                        Toasty.warning(getApplicationContext(),""+message,Toasty.LENGTH_LONG).show();
+
+                        //showErrorLoading(response.body().getMessage());
                     }
-
-
-
                 }
-
-
-
-
-
-
 
 
             }
 
-
+            @SuppressLint("LongLogTag")
             @Override
-            public void onFailure(@NonNull Call<GetServiceListResponse> call, @NonNull  Throwable t) {
+            public void onFailure(@NonNull Call<SubGroupDetailManagementResponse> call, @NonNull Throwable t) {
                 dialog.dismiss();
-                Log.w(TAG,"GetServiceListResponse flr"+t.getMessage());
+                Log.e("SubGroupDetailManagementResponse", "--->" + t.getMessage());
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
     }
+    private SubGroupDetailManagementRequest SubGroupDetailManagementRequest() {
 
+
+
+        /**
+         * group_id : 61c1e5e09934282617679543
+         */
+        SubGroupDetailManagementRequest SubGroupDetailManagementRequest = new SubGroupDetailManagementRequest();
+        SubGroupDetailManagementRequest.setGroup_id(group_id);
+
+        Log.w(TAG,"SubGroupDetailManagementRequest "+ new Gson().toJson(SubGroupDetailManagementRequest));
+        return SubGroupDetailManagementRequest;
+    }
     @SuppressLint("LogNotTimber")
-    private void setView(List<GetServiceListResponse.DataBean> dataBeanList) {
+    private void setView(List<SubGroupDetailManagementResponse.DataBean> dataBeanList) {
 
 
         rv_subgrouplist.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
         rv_subgrouplist.setItemAnimator(new DefaultItemAnimator());
-        ServiceListAdapter serviceListAdapter = new ServiceListAdapter(this, dataBeanList);
+        ServiceListAdapter serviceListAdapter = new ServiceListAdapter(this, dataBeanList,activity_id,job_id, group_id);
         rv_subgrouplist.setAdapter(serviceListAdapter);
     }
 

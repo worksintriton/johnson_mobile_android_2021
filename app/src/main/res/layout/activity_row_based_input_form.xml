@@ -50,7 +50,8 @@
                 android:layout_gravity="center"
                 android:scaleType="fitXY"
                 android:src="@drawable/image_thumbnail"
-                android:contentDescription="@string/image" />
+                android:contentDescription="@string/image"
+                android:visibility="invisible"/>
 
             <TextView
                 android:id="@+id/txt_image_info"
@@ -688,6 +689,18 @@
         android:layout_marginBottom="20dp">
 
 
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="@dimen/_160dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@drawable/blue_button_background"
+            android:elevation="1dp"
+            android:stateListAnimator="@animator/button_elevation"
+            android:text="@string/save"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp" />
     </LinearLayout>
 
 

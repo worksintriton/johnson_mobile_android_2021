@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.triton.johnsonapp.Forms.ImageBasedInputFormActivity;
@@ -23,7 +24,9 @@ import com.triton.johnsonapp.adapter.GroupListAdapter;
 import com.triton.johnsonapp.adapter.JobDetailListAdapter;
 import com.triton.johnsonapp.api.APIInterface;
 import com.triton.johnsonapp.api.RetrofitClient;
+import com.triton.johnsonapp.requestpojo.GroupDetailManagementRequest;
 import com.triton.johnsonapp.responsepojo.GetServiceListResponse;
+import com.triton.johnsonapp.responsepojo.GroupDetailManagementResponse;
 import com.triton.johnsonapp.session.SessionManager;
 import com.triton.johnsonapp.utils.ConnectionDetector;
 import com.triton.johnsonapp.utils.RestUtils;
@@ -65,7 +68,7 @@ public class GroupListActivity extends AppCompatActivity {
 
     Dialog dialog;
 
-    String networkStatus = "";
+    String networkStatus = "",message,activity_id,job_id;
 
     int number=0;
 
@@ -81,6 +84,18 @@ public class GroupListActivity extends AppCompatActivity {
         userid = user.get(SessionManager.KEY_ID);
 
         username = user.get(SessionManager.KEY_USERNAME);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+
+            activity_id = extras.getString("activity_id");
+
+            job_id = extras.getString("job_id");
+
+            Log.w(TAG,"activity_id -->"+activity_id);
+
+        }
+
 /*
         if(username!=null){
 
@@ -112,9 +127,9 @@ public class GroupListActivity extends AppCompatActivity {
         }
         else {
 
-            /*    getServiceListResponseCall();*/
+                groupdetailmanagmentResponseCall();
 
-            List<GetServiceListResponse.DataBean> dataBeanList = new ArrayList<>();
+       /*     List<GetServiceListResponse.DataBean> dataBeanList = new ArrayList<>();
 
 
             for(int i=0;i<=3;i++){
@@ -132,7 +147,7 @@ public class GroupListActivity extends AppCompatActivity {
 
             if(dataBeanList != null && dataBeanList.size()>0){
                 setView(dataBeanList);
-            }
+            }*/
         }
 
 
@@ -146,79 +161,94 @@ public class GroupListActivity extends AppCompatActivity {
 
         super.onBackPressed();
         Intent intent = new Intent(GroupListActivity.this, JobDetailActivity.class);
+        intent.putExtra("activity_id",activity_id);
         startActivity(intent);
         overridePendingTransition(R.anim.new_right, R.anim.new_left);
 
 
     }
 
-
     @SuppressLint("LogNotTimber")
-    public void getServiceListResponseCall(){
+    private void groupdetailmanagmentResponseCall() {
         dialog = new Dialog(GroupListActivity.this, R.style.NewProgressDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progroess_popup);
         dialog.show();
 
-        //Creating an object of our api interface
         APIInterface apiInterface = RetrofitClient.getClient().create(APIInterface.class);
-        Call<GetServiceListResponse> call = apiInterface.getServiceListResponseCall(RestUtils.getContentType());
-        Log.w(TAG,"url  :%s"+ call.request().url().toString());
+        Call<GroupDetailManagementResponse> call = apiInterface.groupdetailmanagmentResponseCall(RestUtils.getContentType(), GroupDetailManagementRequest());
+        Log.w(TAG,"GroupDetailManagementResponse url  :%s"+" "+ call.request().url().toString());
 
-        call.enqueue(new Callback<GetServiceListResponse>() {
+        call.enqueue(new Callback<GroupDetailManagementResponse>() {
             @SuppressLint("LogNotTimber")
             @Override
-            public void onResponse(@NonNull Call<GetServiceListResponse> call, @NonNull Response<GetServiceListResponse> response) {
-                dialog.dismiss();
+            public void onResponse(@NonNull Call<GroupDetailManagementResponse> call, @NonNull Response<GroupDetailManagementResponse> response) {
 
-
+                Log.w(TAG,"GroupDetailManagementResponse" + new Gson().toJson(response.body()));
                 if (response.body() != null) {
-                    if(200 == response.body().getCode()){
-                        Log.w(TAG,"GetServiceListResponse" + new Gson().toJson(response.body()));
+                    message = response.body().getMessage();
+                    if (200 == response.body().getCode()) {
+                        if(response.body().getData() != null){
 
-                        if(response.body().getData()!= null){
-
-                            List<GetServiceListResponse.DataBean> dataBeanList = response.body().getData();
+                            dialog.dismiss();
+                            List<GroupDetailManagementResponse.DataBean> dataBeanList = response.body().getData();
 
 
                             if(dataBeanList != null && dataBeanList.size()>0){
                                 setView(dataBeanList);
                             }
+                            {
+                                txt_no_records.setVisibility(View.VISIBLE);
+
+                                txt_no_records.setText("No Groups Available");
+                            }
+
                         }
 
 
+                    } else {
+                        dialog.dismiss();
+                        Toasty.warning(getApplicationContext(),""+message,Toasty.LENGTH_LONG).show();
+
+                        //showErrorLoading(response.body().getMessage());
                     }
-
-
-
                 }
-
-
-
-
-
-
 
 
             }
 
-
+            @SuppressLint("LongLogTag")
             @Override
-            public void onFailure(@NonNull Call<GetServiceListResponse> call, @NonNull  Throwable t) {
+            public void onFailure(@NonNull Call<GroupDetailManagementResponse> call, @NonNull Throwable t) {
                 dialog.dismiss();
-                Log.w(TAG,"GetServiceListResponse flr"+t.getMessage());
+                Log.e("GroupDetailManagementResponse", "--->" + t.getMessage());
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
     }
+    private GroupDetailManagementRequest GroupDetailManagementRequest() {
+
+
+
+        /**
+         * user_id : 61c1e5e09934282617679543
+         */
+
+        GroupDetailManagementRequest GroupDetailManagementRequest = new GroupDetailManagementRequest();
+        GroupDetailManagementRequest.setUser_id(userid);
+
+        Log.w(TAG,"GroupDetailManagementRequest "+ new Gson().toJson(GroupDetailManagementRequest));
+        return GroupDetailManagementRequest;
+    }
 
     @SuppressLint("LogNotTimber")
-    private void setView(List<GetServiceListResponse.DataBean> dataBeanList) {
+    private void setView(List<GroupDetailManagementResponse.DataBean> dataBeanList) {
 
 
         rv_grouplist.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
         rv_grouplist.setItemAnimator(new DefaultItemAnimator());
-        GroupListAdapter groupListAdapter = new GroupListAdapter(this, dataBeanList);
+        GroupListAdapter groupListAdapter = new GroupListAdapter(this, dataBeanList,activity_id,job_id);
         rv_grouplist.setAdapter(groupListAdapter);
     }
 

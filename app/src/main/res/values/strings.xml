@@ -95,6 +95,8 @@
     <string name="dim_y1">Dim Y1</string>
     <string name="dim_y2">Dim Y2</string>
     <string name="remarks">Remarks</string>
+    <string name="save">SAVE</string>
+    <string name="version">Version 2.12.21.1</string>
 
     <string-array name="array_name">
         <item>Select Value</item>

@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
@@ -22,7 +23,9 @@ import com.triton.johnsonapp.adapter.ActivityBasedListAdapter;
 import com.triton.johnsonapp.adapter.JobDetailListAdapter;
 import com.triton.johnsonapp.api.APIInterface;
 import com.triton.johnsonapp.api.RetrofitClient;
+import com.triton.johnsonapp.requestpojo.JobNoManagementRequest;
 import com.triton.johnsonapp.responsepojo.GetServiceListResponse;
+import com.triton.johnsonapp.responsepojo.JobNoManagementResponse;
 import com.triton.johnsonapp.session.SessionManager;
 import com.triton.johnsonapp.utils.ConnectionDetector;
 import com.triton.johnsonapp.utils.RestUtils;
@@ -60,7 +63,7 @@ public class JobDetailActivity extends AppCompatActivity {
 
     Dialog dialog;
 
-    String networkStatus = "";
+    String networkStatus = "",message,activity_id;
 
     int number=0;
 
@@ -80,6 +83,13 @@ public class JobDetailActivity extends AppCompatActivity {
         userid = user.get(SessionManager.KEY_ID);
 
         username = user.get(SessionManager.KEY_USERNAME);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            activity_id = extras.getString("activity_id");
+            Log.w(TAG,"activity_id -->"+activity_id);
+
+        }
 /*
         if(username!=null){
 
@@ -111,9 +121,9 @@ public class JobDetailActivity extends AppCompatActivity {
         }
         else {
 
-            /*    getServiceListResponseCall();*/
+                jobnomanagmentResponseCall();
 
-            List<GetServiceListResponse.DataBean> dataBeanList = new ArrayList<>();
+           /* List<GetServiceListResponse.DataBean> dataBeanList = new ArrayList<>();
 
 
             for(int i=0;i<=3;i++){
@@ -131,7 +141,7 @@ public class JobDetailActivity extends AppCompatActivity {
 
             if(dataBeanList != null && dataBeanList.size()>0){
                 setView(dataBeanList);
-            }
+            }*/
         }
 
 
@@ -153,71 +163,88 @@ public class JobDetailActivity extends AppCompatActivity {
 
 
     @SuppressLint("LogNotTimber")
-    public void getServiceListResponseCall(){
+    private void jobnomanagmentResponseCall() {
         dialog = new Dialog(JobDetailActivity.this, R.style.NewProgressDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progroess_popup);
         dialog.show();
 
-        //Creating an object of our api interface
         APIInterface apiInterface = RetrofitClient.getClient().create(APIInterface.class);
-        Call<GetServiceListResponse> call = apiInterface.getServiceListResponseCall(RestUtils.getContentType());
-        Log.w(TAG,"url  :%s"+ call.request().url().toString());
+        Call<JobNoManagementResponse> call = apiInterface.jobnomanagmentResponseCall(RestUtils.getContentType(), JobNoManagementRequest());
+        Log.w(TAG,"JobNoManagementResponse url  :%s"+" "+ call.request().url().toString());
 
-        call.enqueue(new Callback<GetServiceListResponse>() {
+        call.enqueue(new Callback<JobNoManagementResponse>() {
             @SuppressLint("LogNotTimber")
             @Override
-            public void onResponse(@NonNull Call<GetServiceListResponse> call, @NonNull Response<GetServiceListResponse> response) {
-                dialog.dismiss();
+            public void onResponse(@NonNull Call<JobNoManagementResponse> call, @NonNull Response<JobNoManagementResponse> response) {
 
-
+                Log.w(TAG,"JobNoManagementResponse" + new Gson().toJson(response.body()));
                 if (response.body() != null) {
-                    if(200 == response.body().getCode()){
-                        Log.w(TAG,"GetServiceListResponse" + new Gson().toJson(response.body()));
+                    message = response.body().getMessage();
+                    if (200 == response.body().getCode()) {
+                        if(response.body().getData() != null){
 
-                        if(response.body().getData()!= null){
-
-                            List<GetServiceListResponse.DataBean> dataBeanList = response.body().getData();
+                            dialog.dismiss();
+                            List<JobNoManagementResponse.DataBean> dataBeanList = response.body().getData();
 
 
                             if(dataBeanList != null && dataBeanList.size()>0){
                                 setView(dataBeanList);
                             }
+
+                            {
+                                txt_no_records.setVisibility(View.VISIBLE);
+
+                                txt_no_records.setText("No Job Detail Available");
+                            }
+
                         }
 
 
+                    } else {
+                        dialog.dismiss();
+                        Toasty.warning(getApplicationContext(),""+message,Toasty.LENGTH_LONG).show();
+
+                        //showErrorLoading(response.body().getMessage());
                     }
-
-
-
                 }
-
-
-
-
-
-
 
 
             }
 
-
+            @SuppressLint("LongLogTag")
             @Override
-            public void onFailure(@NonNull Call<GetServiceListResponse> call, @NonNull  Throwable t) {
+            public void onFailure(@NonNull Call<JobNoManagementResponse> call, @NonNull Throwable t) {
                 dialog.dismiss();
-                Log.w(TAG,"GetServiceListResponse flr"+t.getMessage());
+                Log.e("JobNoManagementResponse", "--->" + t.getMessage());
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
     }
+    private JobNoManagementRequest JobNoManagementRequest() {
+
+
+
+        /**
+         * activedetail__id : 61c1e43497057923644090bd
+         */
+
+
+        JobNoManagementRequest JobNoManagementRequest = new JobNoManagementRequest();
+        JobNoManagementRequest.setActivedetail__id(activity_id);
+
+        Log.w(TAG,"JobNoManagementRequest "+ new Gson().toJson(JobNoManagementRequest));
+        return JobNoManagementRequest;
+    }
 
     @SuppressLint("LogNotTimber")
-    private void setView(List<GetServiceListResponse.DataBean> dataBeanList) {
+    private void setView(List<JobNoManagementResponse.DataBean> dataBeanList) {
 
 
         rv_jobdetaillist.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
         rv_jobdetaillist.setItemAnimator(new DefaultItemAnimator());
-        JobDetailListAdapter jobDetailListAdapter = new JobDetailListAdapter(this, dataBeanList);
+        JobDetailListAdapter jobDetailListAdapter = new JobDetailListAdapter(this, dataBeanList,activity_id);
         rv_jobdetaillist.setAdapter(jobDetailListAdapter);
     }
 
