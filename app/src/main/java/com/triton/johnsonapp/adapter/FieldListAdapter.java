@@ -35,6 +35,7 @@ import com.triton.johnsonapp.interfaces.GetNumberListener;
 import com.triton.johnsonapp.interfaces.GetSpinnerListener;
 import com.triton.johnsonapp.interfaces.GetStringListener;
 import com.triton.johnsonapp.interfaces.GetTextAreaListener;
+import com.triton.johnsonapp.interfaces.GetInputFieldListener;
 import com.triton.johnsonapp.responsepojo.GetFieldListResponse;
 
 import java.util.List;
@@ -72,6 +73,8 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
     GetDigitalSignUploadClearListener getDigitalSignUploadClearListener;
 
+    GetInputFieldListener getInputFieldListener;
+
     String digitalSignatureServerUrlImagePath;
 
     int currentPage;
@@ -79,7 +82,7 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
     int check = 0;
 
     public FieldListAdapter(Context context, List<GetFieldListResponse.DataBean> dataBeanList, int ITEMS_PER_PAGE, int TOTAL_NUM_ITEMS, GetStringListener getStringListener, GetTextAreaListener getTextAreaListener, GetSpinnerListener getSpinnerListener, GetNumberListener getNumberListener, GetDateTimeListener getDateTimeListener,
-                            GetFileUploadListener getFileUploadListener, GetDigitalSignUploadListener getDigitalSignUploadListener, GetDigitalSignUploadAddListener getDigitalSignUploadAddListener, GetDigitalSignUploadClearListener getDigitalSignUploadClearListener, int currentPage) {
+                            GetFileUploadListener getFileUploadListener, GetDigitalSignUploadListener getDigitalSignUploadListener, GetDigitalSignUploadAddListener getDigitalSignUploadAddListener, GetDigitalSignUploadClearListener getDigitalSignUploadClearListener,  GetInputFieldListener getInputFieldListener,int currentPage) {
         this.context = context;
         this.dataBeanList = dataBeanList;
         this.ITEMS_PER_PAGE = ITEMS_PER_PAGE;
@@ -94,6 +97,7 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
         this.getDigitalSignUploadAddListener = getDigitalSignUploadAddListener;
         this.getDigitalSignUploadClearListener = getDigitalSignUploadClearListener;
         this.currentPage=currentPage;
+        this.getInputFieldListener = getInputFieldListener;
     }
 
     @NonNull
@@ -474,6 +478,20 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                     }
                 });
             }
+
+            else if(currentItem.getField_type().equals("Liftno")){
+
+                if(currentItem.getField_length() != null && !currentItem.getField_length().equals("")){
+
+                    Log.w(TAG,"currentItem POS Lift"+startItem);
+
+                    int size = Integer.parseInt(currentItem.getField_length());
+
+                    holder.rv_liftinputlist.setVisibility(View.VISIBLE);
+
+                    getInputFieldListener.getInputFieldListener(holder.rv_liftinputlist,startItem,currentItem.getField_length());
+                }
+            }
         }
 
         if(currentItem.getField_length() != null && !currentItem.getField_length().equals("")){
@@ -503,6 +521,7 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
         public ImageView img_spinner,img_file_upload,img_close,ivdigitalsignature;
         public Button mClearButton,mSaveButton;
         SignaturePad mSignaturePad;
+        RecyclerView rv_liftinputlist;
         CardView cv_image;
 
 
@@ -530,7 +549,7 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
             ivdigitalsignature = itemView.findViewById(R.id.ivdigitalsignature);
             txt_field_length = itemView.findViewById(R.id.txt_field_length);
             cv_image = itemView.findViewById(R.id.cv_image);
-
+            rv_liftinputlist = itemView.findViewById(R.id.rv_liftinputlist);
         }
 
 

@@ -36,8 +36,8 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
     ImageView img_load;
 
     @SuppressLint("NonConstantResourceId")
-    @BindView(R.id.txt_image_info)
-    TextView txt_image_info;
+    @BindView(R.id.img_info)
+    ImageView img_info;
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.edt_sno)
@@ -83,6 +83,8 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
 
     String string_value,message,service_id,activity_id,job_id,group_id,subgroup_id;
 
+    int i=0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +117,7 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(edt_sno.getText().toString().equals("")||edt_dimx1.getText().toString().equals("")||edt_dimx2.getText().toString().equals("")
+                if(edt_dimx1.getText().toString().equals("")||edt_dimx2.getText().toString().equals("")
 
                 ||edt_dimx3.getText().toString().equals("")||edt_dimx4.getText().toString().equals("")||edt_dimy1.getText().toString().equals("")||edt_dimy2.getText().toString().equals("")
 
@@ -126,9 +128,11 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
 
                 else {
 
+                    i=i+1;
+
                     RowDataFormModel  rowDataFormModel = new RowDataFormModel();
 
-                    rowDataFormModel.setSno(edt_sno.getText().toString());
+                    rowDataFormModel.setSno(String.valueOf(i));
 
                     rowDataFormModel.setDimx1(edt_dimx1.getText().toString());
 
@@ -148,7 +152,7 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
 
                     Log.w(TAG,"rowdatalist" + new Gson().toJson(rowdatalist));
 
-                    edt_sno.setText("");
+              //      edt_sno.setText("");
                     edt_dimx1.setText("");
                     edt_dimx2.setText("");
                     edt_dimx3.setText("");
@@ -163,7 +167,7 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
             }
         });
 
-        txt_image_info.setOnClickListener(new View.OnClickListener() {
+        img_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

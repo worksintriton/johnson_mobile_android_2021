@@ -43,13 +43,16 @@ import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.activity.SubGroupListActivity;
 import com.triton.johnsonapp.adapter.FieldListAdapter;
+import com.triton.johnsonapp.adapter.LiftInputTypeListAdapter;
 import com.triton.johnsonapp.api.APIInterface;
 import com.triton.johnsonapp.api.RetrofitClient;
+import com.triton.johnsonapp.interfaces.EditTextValueChangedListener;
 import com.triton.johnsonapp.interfaces.GetDateTimeListener;
 import com.triton.johnsonapp.interfaces.GetDigitalSignUploadAddListener;
 import com.triton.johnsonapp.interfaces.GetDigitalSignUploadClearListener;
 import com.triton.johnsonapp.interfaces.GetDigitalSignUploadListener;
 import com.triton.johnsonapp.interfaces.GetFileUploadListener;
+import com.triton.johnsonapp.interfaces.GetInputFieldListener;
 import com.triton.johnsonapp.interfaces.GetNumberListener;
 import com.triton.johnsonapp.interfaces.GetSpinnerListener;
 import com.triton.johnsonapp.interfaces.GetStringListener;
@@ -86,7 +89,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class InputValueFormListActivity extends AppCompatActivity implements GetStringListener, GetTextAreaListener, GetSpinnerListener, GetNumberListener, GetDateTimeListener, GetFileUploadListener, GetDigitalSignUploadListener, GetDigitalSignUploadAddListener, GetDigitalSignUploadClearListener {
+public class InputValueFormListActivity extends AppCompatActivity implements GetStringListener, GetTextAreaListener, GetSpinnerListener, GetNumberListener, GetDateTimeListener, GetFileUploadListener, GetDigitalSignUploadListener, GetDigitalSignUploadAddListener, GetDigitalSignUploadClearListener, GetInputFieldListener, EditTextValueChangedListener {
 
 
 
@@ -360,10 +363,11 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                 }
                 else {
 
-                    getformdataListResponseCall();
+                    Log.w(TAG,"dataBeanListN" + new Gson().toJson(dataBeanList));
+                    Log.w(TAG,"dataBeanListN" + new Gson().toJson(dataBeanList.get(14).getField_value()));
+                   // getformdataListResponseCall();
+                    Log.w(TAG,"dataBeanListN" + new Gson().toJson(dataBeanList.get(15).getField_value()));
                 }
-
-                Log.w(TAG,"dataBeanListN" + new Gson().toJson(dataBeanList));
 
             }
         });
@@ -475,7 +479,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         linearlayout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
         rv_fieldlist.setLayoutManager(linearlayout);
         rv_fieldlist.setItemAnimator(new DefaultItemAnimator());
-        FieldListAdapter FieldListAdapter = new FieldListAdapter(getApplicationContext(), dataBeanList,ITEMS_PER_PAGE,TOTAL_NUM_ITEMS,this,this,this,this,this,this,this,this,this,currentPage);
+        FieldListAdapter FieldListAdapter = new FieldListAdapter(getApplicationContext(), dataBeanList,ITEMS_PER_PAGE,TOTAL_NUM_ITEMS,this,this,this,this,this,this,this,this,this,this,currentPage);
         rv_fieldlist.setAdapter(FieldListAdapter);
     }
 
@@ -629,6 +633,39 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
     }
 
+    @Override
+    public void getInputFieldListener(RecyclerView rv_liftinputlist, int startItem, String field_length) {
+
+        rv_liftinputlist.setNestedScrollingEnabled(true);
+        LinearLayoutManager linearlayout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
+        rv_liftinputlist.setLayoutManager(linearlayout);
+        rv_liftinputlist.setItemAnimator(new DefaultItemAnimator());
+        LiftInputTypeListAdapter liftInputTypeListAdapter = new LiftInputTypeListAdapter(getApplicationContext(), Integer.parseInt(field_length),startItem,this);
+        rv_liftinputlist.setAdapter(liftInputTypeListAdapter);
+
+    }
+
+    @Override
+    public void editTextValueListener(int startItem, String s, int size, int position) {
+
+        String[] strAr= new String[size];
+
+        Log.w(TAG,"currentItem POS DS"+position);
+
+        strAr[position] = s;
+
+        String str = convertStringArrayToString(strAr, ",");
+
+        dataBeanList.get(startItem).setField_value(str);
+
+    }
+
+    private static String convertStringArrayToString(String[] strArr, String delimiter) {
+        StringBuilder sb = new StringBuilder();
+        for (String str : strArr)
+            sb.append(str).append(delimiter);
+        return sb.substring(0, sb.length() - 1);
+    }
     private void SelectDate() {
 
         final Calendar c = Calendar.getInstance();
@@ -1172,5 +1209,6 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
         Toasty.warning(getApplicationContext(),"This option is disabled ",Toasty.LENGTH_LONG).show();
     }
+
 
 }

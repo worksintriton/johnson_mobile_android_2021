@@ -238,10 +238,12 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/textView12"
                             style="@style/table_header"
-                            android:layout_width="@dimen/_60dp"
+                            android:layout_width="match_parent"
                             android:layout_height="@dimen/_35dp"
                             android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
                             android:gravity="center"
                             android:text="@string/dim_y2"
                             android:textAlignment="center" />

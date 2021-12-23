@@ -21,12 +21,13 @@
         <entry key="..\:/Workspace/johnson_android_2021/app/src/main/res/layout/activity_joint_inspector_input_form.xml" value="0.2604166666666667" />
         <entry key="..\:/Workspace/johnson_android_2021/app/src/main/res/layout/activity_login.xml" value="0.2" />
         <entry key="..\:/Workspace/johnson_android_2021/app/src/main/res/layout/activity_main.xml" value="0.2" />
-        <entry key="..\:/Workspace/johnson_android_2021/app/src/main/res/layout/activity_row_based_input_form.xml" value="0.2" />
+        <entry key="..\:/Workspace/johnson_android_2021/app/src/main/res/layout/activity_row_based_input_form.xml" value="0.27447916666666666" />
         <entry key="..\:/Workspace/johnson_android_2021/app/src/main/res/layout/activity_service_list.xml" value="0.1859375" />
         <entry key="..\:/Workspace/johnson_android_2021/app/src/main/res/layout/activity_splash.xml" value="0.2" />
         <entry key="..\:/Workspace/johnson_android_2021/app/src/main/res/layout/activity_sub_group_list.xml" value="0.27447916666666666" />
         <entry key="..\:/Workspace/johnson_android_2021/app/src/main/res/layout/adapter_fieldlist.xml" value="0.21197916666666666" />
-        <entry key="..\:/Workspace/johnson_android_2021/app/src/main/res/layout/adapter_rowdatalist.xml" value="0.2864583333333333" />
+        <entry key="..\:/Workspace/johnson_android_2021/app/src/main/res/layout/adapter_liftinputlist.xml" value="0.27447916666666666" />
+        <entry key="..\:/Workspace/johnson_android_2021/app/src/main/res/layout/adapter_rowdatalist.xml" value="0.536" />
         <entry key="..\:/Workspace/johnson_android_2021/app/src/main/res/layout/adapter_servicelist.xml" value="0.2" />
         <entry key="..\:/Workspace/johnson_android_2021/app/src/main/res/layout/adapter_staticdatalist.xml" value="0.2864583333333333" />
         <entry key="..\:/Workspace/johnson_android_2021/app/src/main/res/layout/loading_screen.xml" value="0.2" />
