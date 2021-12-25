@@ -200,8 +200,9 @@ public class SubGroupListActivity extends AppCompatActivity {
 
                             if(dataBeanList != null && dataBeanList.size()>0){
                                 setView(dataBeanList);
+                                txt_no_records.setVisibility(View.GONE);
                             }
-                            {
+                           else  {
                                 txt_no_records.setVisibility(View.VISIBLE);
 
                                 txt_no_records.setText("No Sub-Groups Available");
@@ -240,6 +241,8 @@ public class SubGroupListActivity extends AppCompatActivity {
          */
         SubGroupDetailManagementRequest SubGroupDetailManagementRequest = new SubGroupDetailManagementRequest();
         SubGroupDetailManagementRequest.setGroup_id(group_id);
+
+
 
         Log.w(TAG,"SubGroupDetailManagementRequest "+ new Gson().toJson(SubGroupDetailManagementRequest));
         return SubGroupDetailManagementRequest;

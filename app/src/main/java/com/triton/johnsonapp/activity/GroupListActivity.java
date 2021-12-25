@@ -196,8 +196,10 @@ public class GroupListActivity extends AppCompatActivity {
 
                             if(dataBeanList != null && dataBeanList.size()>0){
                                 setView(dataBeanList);
+
+                                txt_no_records.setVisibility(View.GONE);
                             }
-                            {
+                            else {
                                 txt_no_records.setVisibility(View.VISIBLE);
 
                                 txt_no_records.setText("No Groups Available");

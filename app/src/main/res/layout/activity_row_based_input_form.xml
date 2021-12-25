@@ -48,21 +48,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_gravity="center"
+                android:contentDescription="@string/image"
                 android:scaleType="fitXY"
                 android:src="@drawable/image_thumbnail"
-                android:contentDescription="@string/image"
-                android:visibility="invisible"/>
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/img_info"
                 android:layout_width="80dp"
                 android:layout_height="@dimen/_60dp"
                 android:layout_gravity="center|end"
-                android:fontFamily="@font/sourcesanspro_regular"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="@dimen/_10dp"
                 android:layout_marginBottom="@dimen/_10dp"
-                android:src="@drawable/info"/>
+                android:fontFamily="@font/sourcesanspro_regular"
+                android:src="@drawable/info"
+                android:visibility="gone" />
 
   <!--      <LinearLayout
             android:layout_width="match_parent"

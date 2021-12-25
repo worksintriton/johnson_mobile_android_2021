@@ -168,14 +168,17 @@ public class ActivityBasedActivity extends AppCompatActivity {
                         if(response.body().getData() != null){
 
                             dialog.dismiss();
+
                             List<ActivityListManagementResponse.DataBean> dataBeanList = response.body().getData();
 
-
                             if(dataBeanList != null && dataBeanList.size()>0){
+
                                 setView(dataBeanList);
+
+                                txt_no_records.setVisibility(View.GONE);
                             }
 
-                            {
+                            else {
                                 txt_no_records.setVisibility(View.VISIBLE);
 
                                 txt_no_records.setText("No Activity Available");

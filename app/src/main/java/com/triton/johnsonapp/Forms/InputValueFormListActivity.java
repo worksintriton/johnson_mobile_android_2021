@@ -41,6 +41,7 @@ import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.google.android.gms.common.util.IOUtils;
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
+import com.triton.johnsonapp.activity.ActivityBasedActivity;
 import com.triton.johnsonapp.activity.SubGroupListActivity;
 import com.triton.johnsonapp.adapter.FieldListAdapter;
 import com.triton.johnsonapp.adapter.LiftInputTypeListAdapter;
@@ -57,7 +58,10 @@ import com.triton.johnsonapp.interfaces.GetNumberListener;
 import com.triton.johnsonapp.interfaces.GetSpinnerListener;
 import com.triton.johnsonapp.interfaces.GetStringListener;
 import com.triton.johnsonapp.interfaces.GetTextAreaListener;
+import com.triton.johnsonapp.model.EditModel;
 import com.triton.johnsonapp.requestpojo.FormDataStoreRequest;
+import com.triton.johnsonapp.requestpojo.GetFieldListRequest;
+import com.triton.johnsonapp.requestpojo.SubGroupDetailManagementRequest;
 import com.triton.johnsonapp.responsepojo.FileUploadResponse;
 import com.triton.johnsonapp.responsepojo.FormDataStoreResponse;
 import com.triton.johnsonapp.responsepojo.GetFieldListResponse;
@@ -363,10 +367,15 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                 }
                 else {
 
-                    Log.w(TAG,"dataBeanListN" + new Gson().toJson(dataBeanList));
-                    Log.w(TAG,"dataBeanListN" + new Gson().toJson(dataBeanList.get(14).getField_value()));
-                   // getformdataListResponseCall();
-                    Log.w(TAG,"dataBeanListN" + new Gson().toJson(dataBeanList.get(15).getField_value()));
+                    /*for (int i = 0; i < LiftInputTypeListAdapter.list.size(); i++){
+
+                        dataBeanList.get(LiftInputTypeListAdapter.list.get(i).getStartItem()).setField_value(LiftInputTypeListAdapter.list.get(i).getEditTextValue());
+                    }*/
+
+                   // Log.w(TAG,"dataBeanListN" + new Gson().toJson(dataBeanList));
+                 //   Log.w(TAG,"dataBeanListN" + new Gson().toJson(dataBeanList.get(14).getField_value()));
+                   getformdataListResponseCall();
+               //     Log.w(TAG,"dataBeanListN" + new Gson().toJson(dataBeanList.get(15).getField_value()));
                 }
 
             }
@@ -416,7 +425,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
         //Creating an object of our api interface
         APIInterface apiInterface = RetrofitClient.getClient().create(APIInterface.class);
-        Call<GetFieldListResponse> call = apiInterface.getfieldListResponseCall(RestUtils.getContentType());
+        Call<GetFieldListResponse> call = apiInterface.getfieldListResponseCall(RestUtils.getContentType(),getFieldListRequest());
         Log.w(TAG,"url  :%s"+ call.request().url().toString());
 
         call.enqueue(new Callback<GetFieldListResponse>() {
@@ -442,6 +451,12 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                                 dialog.dismiss();
 
                                 setView(dataBeanList,ITEMS_PER_PAGE,TOTAL_NUM_ITEMS);
+                                txt_no_records.setVisibility(View.GONE);
+                            }
+                            else  {
+                                txt_no_records.setVisibility(View.VISIBLE);
+
+                                txt_no_records.setText("No Input Fields Available");
                             }
                         }
 
@@ -471,6 +486,20 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
     }
 
+    private GetFieldListRequest getFieldListRequest() {
+
+
+
+        /**
+         * group_id : 61c1e5e09934282617679543
+         */
+        GetFieldListRequest getFieldListRequest = new GetFieldListRequest();
+        getFieldListRequest.setGroup_id(group_id);
+        getFieldListRequest.setSub_group_id(subgroup_id);
+
+        Log.w(TAG,"GetFieldListRequest "+ new Gson().toJson(getFieldListRequest));
+        return getFieldListRequest;
+    }
 
     @SuppressLint("LogNotTimber")
     private void setView(List<GetFieldListResponse.DataBean> dataBeanList,int ITEMS_PER_PAGE,int TOTAL_NUM_ITEMS) {
@@ -634,13 +663,21 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
     }
 
     @Override
-    public void getInputFieldListener(RecyclerView rv_liftinputlist, int startItem, String field_length) {
+    public void getInputFieldListener(RecyclerView rv_liftinputlist, int startItem, int size) {
 
         rv_liftinputlist.setNestedScrollingEnabled(true);
         LinearLayoutManager linearlayout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
         rv_liftinputlist.setLayoutManager(linearlayout);
         rv_liftinputlist.setItemAnimator(new DefaultItemAnimator());
-        LiftInputTypeListAdapter liftInputTypeListAdapter = new LiftInputTypeListAdapter(getApplicationContext(), Integer.parseInt(field_length),startItem,this);
+        ArrayList<EditModel> list = new ArrayList<>();
+
+        for(int i = 0; i < size; i++){
+            EditModel editModel = new EditModel();
+            editModel.setEditTextValue("");
+            editModel.setStartItem(startItem);
+            list.add(editModel);
+        }
+        LiftInputTypeListAdapter liftInputTypeListAdapter = new LiftInputTypeListAdapter(getApplicationContext(), size,startItem,this,list);
         rv_liftinputlist.setAdapter(liftInputTypeListAdapter);
 
     }
@@ -1109,7 +1146,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
                             Toasty.success(getApplicationContext(),""+message,Toasty.LENGTH_LONG).show();
 
-                            startActivity(new Intent(InputValueFormListActivity.this, SubGroupListActivity.class));
+                            startActivity(new Intent(InputValueFormListActivity.this, ActivityBasedActivity.class));
 
                         }
 

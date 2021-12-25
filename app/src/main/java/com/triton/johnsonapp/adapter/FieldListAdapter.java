@@ -489,7 +489,7 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
                     holder.rv_liftinputlist.setVisibility(View.VISIBLE);
 
-                    getInputFieldListener.getInputFieldListener(holder.rv_liftinputlist,startItem,currentItem.getField_length());
+                    getInputFieldListener.getInputFieldListener(holder.rv_liftinputlist,startItem,size);
                 }
             }
         }

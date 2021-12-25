@@ -1,11 +1,8 @@
 package com.triton.johnsonapp.requestpojo;
 
-public class SubGroupDetailManagementRequest {
+import java.util.List;
 
-
-    /**
-     * group_id : 61c1e5e09934282617679543
-     */
+public class GetFieldListRequest {
 
     private String group_id;
     private String sub_group_id;

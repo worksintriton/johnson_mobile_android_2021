@@ -3,6 +3,7 @@ package com.triton.johnsonapp.api;
 import com.google.android.gms.common.internal.GetServiceRequest;
 import com.triton.johnsonapp.requestpojo.ActivityListManagementRequest;
 import com.triton.johnsonapp.requestpojo.FormDataStoreRequest;
+import com.triton.johnsonapp.requestpojo.GetFieldListRequest;
 import com.triton.johnsonapp.requestpojo.GroupDetailManagementRequest;
 import com.triton.johnsonapp.requestpojo.JobNoManagementRequest;
 import com.triton.johnsonapp.requestpojo.LoginRequest;
@@ -57,8 +58,8 @@ public interface APIInterface {
     Call<GetServiceListResponse> getServiceListResponseCall(@Header("Content-Type") String type);
 
     /*field screen list*/
-    @GET("field_management/getlist")
-    Call<GetFieldListResponse> getfieldListResponseCall(@Header("Content-Type") String type);
+    @POST("field_management/getlist_id")
+    Call<GetFieldListResponse> getfieldListResponseCall(@Header("Content-Type") String type, @Body GetFieldListRequest getFieldListRequest);
 
 
     /*Image upload*/

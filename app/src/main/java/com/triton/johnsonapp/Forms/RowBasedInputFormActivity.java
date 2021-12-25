@@ -30,14 +30,14 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
 
 
     private String TAG ="RowBasedInputFormActivity";
-
+/*
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.img_load)
-    ImageView img_load;
-
+    ImageView img_load;*/
+/*
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.img_info)
-    ImageView img_info;
+    ImageView img_info;*/
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.edt_sno)
@@ -167,7 +167,7 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
             }
         });
 
-        img_info.setOnClickListener(new View.OnClickListener() {
+        /*img_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -191,7 +191,7 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
 
 
             }
-        });
+        });*/
 
     }
 
