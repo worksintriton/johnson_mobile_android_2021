@@ -65,6 +65,27 @@ public class RowBasedArrayListAdapter extends  RecyclerView.Adapter<RecyclerView
 
         }*/
 
+        if(position==0){
+            holder.textView.setVisibility(View.VISIBLE);
+            holder.txt_dimx1.setVisibility(View.VISIBLE);
+            holder.txt_dimx2.setVisibility(View.VISIBLE);
+            holder.txt_dimx3.setVisibility(View.VISIBLE);
+            holder.txt_dimx4.setVisibility(View.VISIBLE);
+            holder.txt_dimy1.setVisibility(View.VISIBLE);
+            holder.txt_dimy2.setVisibility(View.VISIBLE);
+            holder.txt_rem.setVisibility(View.VISIBLE);
+
+        }
+        else {
+            holder.textView.setVisibility(View.GONE);
+            holder.txt_dimx1.setVisibility(View.GONE);
+            holder.txt_dimx2.setVisibility(View.GONE);
+            holder.txt_dimx3.setVisibility(View.GONE);
+            holder.txt_dimx4.setVisibility(View.GONE);
+            holder.txt_dimy1.setVisibility(View.GONE);
+            holder.txt_dimy2.setVisibility(View.GONE);
+            holder.txt_rem.setVisibility(View.GONE);
+        }
         if(dataBeanLists.get(position).getSno()!= null && !dataBeanLists.get(position).getSno().equals("")){
             holder.edt_sno.setText(""+dataBeanLists.get(position).getSno());
         }else{
@@ -142,6 +163,7 @@ public class RowBasedArrayListAdapter extends  RecyclerView.Adapter<RecyclerView
 
     static class ViewHolderOne extends RecyclerView.ViewHolder {
         EditText edt_sno, edt_dimx1,edt_dimx2, edt_dimx3,edt_dimx4,edt_dimy1,edt_dimy2,edt_rem;
+        TextView textView,txt_dimx1,txt_dimx2,txt_dimx3,txt_dimx4,txt_dimy1,txt_dimy2,txt_rem;
 
         public ViewHolderOne(View itemView) {
             super(itemView);
@@ -153,9 +175,14 @@ public class RowBasedArrayListAdapter extends  RecyclerView.Adapter<RecyclerView
             edt_dimy1=itemView.findViewById(R.id.edt_dimy1);
             edt_dimy2=itemView.findViewById(R.id.edt_dimy2);
             edt_rem=itemView.findViewById(R.id.edt_rem);
-
-
-
+            textView=itemView.findViewById(R.id.textView);
+            txt_dimx1=itemView.findViewById(R.id.txt_dimx1);
+            txt_dimx2=itemView.findViewById(R.id.txt_dimx2);
+            txt_dimx3=itemView.findViewById(R.id.txt_dimx3);
+            txt_dimx4=itemView.findViewById(R.id.txt_dimx4);
+            txt_dimy1=itemView.findViewById(R.id.txt_dimy1);
+            txt_dimy2=itemView.findViewById(R.id.txt_dimy2);
+            txt_rem=itemView.findViewById(R.id.txt_rem);
         }
 
 

@@ -117,7 +117,7 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(edt_dimx1.getText().toString().equals("")||edt_dimx2.getText().toString().equals("")
+               /* if(edt_dimx1.getText().toString().equals("")||edt_dimx2.getText().toString().equals("")
 
                 ||edt_dimx3.getText().toString().equals("")||edt_dimx4.getText().toString().equals("")||edt_dimy1.getText().toString().equals("")||edt_dimy2.getText().toString().equals("")
 
@@ -127,7 +127,7 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
                 }
 
                 else {
-
+*/
                     i=i+1;
 
                     RowDataFormModel  rowDataFormModel = new RowDataFormModel();
@@ -162,7 +162,7 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
                     edt_rem.setText("");
 
                     setView(rowdatalist);
-                }
+               /* }*/
 
             }
         });

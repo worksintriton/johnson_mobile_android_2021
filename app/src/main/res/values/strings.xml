@@ -96,8 +96,9 @@
     <string name="dim_y2">Dim Y2</string>
     <string name="remarks">Remarks</string>
     <string name="save">SAVE</string>
-    <string name="version">Version 24.12.21.1</string>
+    <string name="version">Version 28.12.21.1</string>
     <string name="input_value">Input Value</string>
+    <string name="add_row_based_input_form">Add Row Based Input Form</string>
 
     <string-array name="array_name">
         <item>Select Value</item>
@@ -108,14 +109,10 @@
     <style name="table_header" parent="@android:style/TextAppearance.Small">
         <item name="android:fontFamily">@font/sourcesanspro_regular</item>
         <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">@dimen/_10sp</item>
-        <item name="android:background">@color/colorPrimary</item>
-        <item name="android:layout_marginRight">@dimen/_1dp</item>
-        <item name="android:layout_marginEnd">@dimen/_1dp</item>
-        <item name="android:paddingStart">@dimen/_10dp</item>
-        <item name="android:paddingLeft">@dimen/_10dp</item>
+        <item name="android:background">@drawable/rectangular_corner_bg_lightgreyy</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">@dimen/_40dp</item>
     </style>
@@ -126,10 +123,6 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">@dimen/_10sp</item>
         <item name="android:background">@drawable/rectangular_corner_bg_lightgrey</item>
-        <item name="android:layout_marginRight">@dimen/_1dp</item>
-        <item name="android:layout_marginEnd">@dimen/_1dp</item>
-        <item name="android:paddingStart">@dimen/_10dp</item>
-        <item name="android:paddingLeft">@dimen/_10dp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">@dimen/_45dp</item>
     </style>
