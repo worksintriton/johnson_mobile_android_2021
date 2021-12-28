@@ -17,8 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.interfaces.EditTextValueChangedListener;
 import com.triton.johnsonapp.model.EditModel;
+import com.triton.johnsonapp.responsepojo.GetFieldListResponse;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class LiftInputTypeListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -31,9 +33,9 @@ public class LiftInputTypeListAdapter extends  RecyclerView.Adapter<RecyclerView
 
     EditTextValueChangedListener editTextValueChangedListener;
 
-    public static ArrayList<EditModel> list;
+    public List<GetFieldListResponse.DataBean.LiftListBean> list;
 
-    public LiftInputTypeListAdapter(Context context, int size, int startItem, EditTextValueChangedListener editTextValueChangedListene, ArrayList<EditModel> list) {
+    public LiftInputTypeListAdapter(Context context, int size, int startItem, EditTextValueChangedListener editTextValueChangedListene, List<GetFieldListResponse.DataBean.LiftListBean> list) {
         this.context = context;
         this.size = size;
         this.startItem=startItem;
@@ -62,11 +64,25 @@ public class LiftInputTypeListAdapter extends  RecyclerView.Adapter<RecyclerView
 
         Log.w(TAG,"id -->"+size);
 
-        if(list.get(position).getEditTextValue()!=null&&!list.get(position).getEditTextValue().equals("")){
+        if(list.get(position).getLeft()!=null&&!list.get(position).getLeft().equals("")){
 
-            holder.edt_inputValue.setText(list.get(position).getEditTextValue());
+            holder.edt_inputValue.setText(list.get(position).getLeft());
 
         }
+
+        holder.edt_inputValue.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                editTextValueChangedListener.editTextValueListener(startItem,charSequence.toString(),size,position);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
 
 
     }
@@ -94,19 +110,6 @@ public class LiftInputTypeListAdapter extends  RecyclerView.Adapter<RecyclerView
             edt_inputValue = itemView.findViewById(R.id.edt_inputValue);
 
             cv_root = itemView.findViewById(R.id.cv_root);
-
-            edt_inputValue.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    list.get(getAdapterPosition()).setEditTextValue(edt_inputValue.getText().toString());
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {}
-            });
 
 
 

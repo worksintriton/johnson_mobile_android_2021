@@ -7,8 +7,8 @@ public class GetFieldListResponse {
 
     /**
      * Status : Success
-     * Message : field management
-     * Data : [{"_id":"61aa033385104f58378b3b1d","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 1","field_type":"String","field_value":"","field_length":"10","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:14:51 PM","date_of_update":"12/3/2021, 5:14:51 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"_id":"61aa033a85104f58378b3b20","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 2","field_type":"Textarea","field_value":"","field_length":"100","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:14:58 PM","date_of_update":"12/3/2021, 5:14:58 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"_id":"61aa034285104f58378b3b23","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 3","field_type":"Number","field_value":"","field_length":"3","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:15:06 PM","date_of_update":"12/3/2021, 5:15:06 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"_id":"61aa034985104f58378b3b26","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 4","field_type":"Dropdown","field_value":"","field_length":"1","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:15:13 PM","date_of_update":"12/3/2021, 5:15:13 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"_id":"61aa034f85104f58378b3b29","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 5","field_type":"Date&time","field_value":"","field_length":"1","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:15:18 PM","date_of_update":"12/3/2021, 5:15:18 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"_id":"61aa035585104f58378b3b2c","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 6","field_type":"File upload","field_value":"","field_length":"1","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:15:25 PM","date_of_update":"12/3/2021, 5:15:25 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"_id":"61aa035d85104f58378b3b2f","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 7","field_type":"Signature","field_value":"","field_length":"1","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:15:32 PM","date_of_update":"12/3/2021, 5:15:32 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"_id":"61aa040585104f58378b3b32","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 8","field_type":"Dropdown","field_value":"","field_length":"1","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:18:21 PM","date_of_update":"12/3/2021, 5:18:21 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"_id":"61aa041285104f58378b3b35","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 9","field_type":"Textarea","field_value":"","field_length":"10","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:18:33 PM","date_of_update":"12/3/2021, 5:18:33 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"_id":"61aa041885104f58378b3b38","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 10","field_type":"String","field_value":"","field_length":"10","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:18:40 PM","date_of_update":"12/3/2021, 5:18:40 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"_id":"61aa041c85104f58378b3b3b","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 11","field_type":"String","field_value":"","field_length":"10","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:18:44 PM","date_of_update":"12/3/2021, 5:18:44 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"_id":"61aa041e85104f58378b3b3e","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 12","field_type":"String","field_value":"","field_length":"10","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:18:46 PM","date_of_update":"12/3/2021, 5:18:46 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"_id":"61aa042185104f58378b3b41","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 13","field_type":"String","field_value":"","field_length":"10","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:18:49 PM","date_of_update":"12/3/2021, 5:18:49 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"_id":"61aa042385104f58378b3b44","cat_id":"61a8b8752d9a15335c1e511f","field_name":"Field 14","field_type":"String","field_value":"","field_length":"10","field_comments":"filed Length should be 10 digit","field_update_reason":"","date_of_create":"12/3/2021, 5:18:51 PM","date_of_update":"12/3/2021, 5:18:51 PM","created_by":"Admin","updated_by":"Admin","__v":0}]
+     * Message : field management List
+     * Data : [{"drop_down":[],"lift_list":[{"left":""},{"left":""},{"left":""},{"left":""}],"_id":"61c56ce268c36706da6a3cfc","cat_id":"61a8b8752d9a15335c1e511f","group_id":"61c566fe3c5cfc7d49dfa219","sub_group_id":"","field_name":"OTHERS ","field_type":"LIFT","field_value":"","field_length":"4","field_comments":"MACHINE ROOM HEIGHT","field_update_reason":"","date_of_create":"12/24/2021, 12:16:58 PM","date_of_update":"12/24/2021, 12:16:58 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"drop_down":[],"lift_list":[],"_id":"61c56eb168c36706da6a3d0f","cat_id":"61a8b8752d9a15335c1e511f","group_id":"61c566fe3c5cfc7d49dfa219","sub_group_id":"","field_name":" Feedback","field_type":"Textarea","field_value":"","field_length":"200","field_comments":"Enter your Feedback","field_update_reason":"","date_of_create":"12/24/2021, 12:24:40 PM","date_of_update":"12/24/2021, 12:24:40 PM","created_by":"Admin","updated_by":"Admin","__v":0},{"drop_down":[],"lift_list":[],"_id":"61c5761edef68307b2715c64","cat_id":"61a8b8752d9a15335c1e511f","group_id":"61c566fe3c5cfc7d49dfa219","sub_group_id":"","field_name":"Signature","field_type":"Signature","field_value":"","field_length":"1","field_comments":"Enter Signature","field_update_reason":"","date_of_create":"12/24/2021, 12:56:21 PM","date_of_update":"12/24/2021, 12:56:21 PM","created_by":"Admin","updated_by":"Admin","__v":0}]
      * Code : 200
      */
 
@@ -16,16 +16,20 @@ public class GetFieldListResponse {
     private String Message;
     private int Code;
     /**
-     * _id : 61aa033385104f58378b3b1d
+     * drop_down : []
+     * lift_list : [{"left":""},{"left":""},{"left":""},{"left":""}]
+     * _id : 61c56ce268c36706da6a3cfc
      * cat_id : 61a8b8752d9a15335c1e511f
-     * field_name : Field 1
-     * field_type : String
+     * group_id : 61c566fe3c5cfc7d49dfa219
+     * sub_group_id :
+     * field_name : OTHERS
+     * field_type : LIFT
      * field_value :
-     * field_length : 10
-     * field_comments : filed Length should be 10 digit
+     * field_length : 4
+     * field_comments : MACHINE ROOM HEIGHT
      * field_update_reason :
-     * date_of_create : 12/3/2021, 5:14:51 PM
-     * date_of_update : 12/3/2021, 5:14:51 PM
+     * date_of_create : 12/24/2021, 12:16:58 PM
+     * date_of_update : 12/24/2021, 12:16:58 PM
      * created_by : Admin
      * updated_by : Admin
      * __v : 0
@@ -68,6 +72,8 @@ public class GetFieldListResponse {
     public static class DataBean {
         private String _id;
         private String cat_id;
+        private String group_id;
+        private String sub_group_id;
         private String field_name;
         private String field_type;
         private String field_value;
@@ -79,6 +85,12 @@ public class GetFieldListResponse {
         private String created_by;
         private String updated_by;
         private int __v;
+        private List<?> drop_down;
+        /**
+         * left :
+         */
+
+        private List<LiftListBean> lift_list;
 
         public String get_id() {
             return _id;
@@ -94,6 +106,22 @@ public class GetFieldListResponse {
 
         public void setCat_id(String cat_id) {
             this.cat_id = cat_id;
+        }
+
+        public String getGroup_id() {
+            return group_id;
+        }
+
+        public void setGroup_id(String group_id) {
+            this.group_id = group_id;
+        }
+
+        public String getSub_group_id() {
+            return sub_group_id;
+        }
+
+        public void setSub_group_id(String sub_group_id) {
+            this.sub_group_id = sub_group_id;
         }
 
         public String getField_name() {
@@ -182,6 +210,34 @@ public class GetFieldListResponse {
 
         public void set__v(int __v) {
             this.__v = __v;
+        }
+
+        public List<?> getDrop_down() {
+            return drop_down;
+        }
+
+        public void setDrop_down(List<?> drop_down) {
+            this.drop_down = drop_down;
+        }
+
+        public List<LiftListBean> getLift_list() {
+            return lift_list;
+        }
+
+        public void setLift_list(List<LiftListBean> lift_list) {
+            this.lift_list = lift_list;
+        }
+
+        public static class LiftListBean {
+            private String left;
+
+            public String getLeft() {
+                return left;
+            }
+
+            public void setLeft(String left) {
+                this.left = left;
+            }
         }
     }
 }

@@ -42,7 +42,6 @@ import com.google.android.gms.common.util.IOUtils;
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.activity.ActivityBasedActivity;
-import com.triton.johnsonapp.activity.SubGroupListActivity;
 import com.triton.johnsonapp.adapter.FieldListAdapter;
 import com.triton.johnsonapp.adapter.LiftInputTypeListAdapter;
 import com.triton.johnsonapp.api.APIInterface;
@@ -61,7 +60,6 @@ import com.triton.johnsonapp.interfaces.GetTextAreaListener;
 import com.triton.johnsonapp.model.EditModel;
 import com.triton.johnsonapp.requestpojo.FormDataStoreRequest;
 import com.triton.johnsonapp.requestpojo.GetFieldListRequest;
-import com.triton.johnsonapp.requestpojo.SubGroupDetailManagementRequest;
 import com.triton.johnsonapp.responsepojo.FileUploadResponse;
 import com.triton.johnsonapp.responsepojo.FormDataStoreResponse;
 import com.triton.johnsonapp.responsepojo.GetFieldListResponse;
@@ -133,11 +131,11 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
     int datetimepos,imagepos;
     private int totalPages;
-    private int currentPage = 0;
+    private int currentPage =0;
 
     public  int TOTAL_NUM_ITEMS;
     public  int ITEMS_PER_PAGE=6;
-    public  int ITEMS_REMAINING=TOTAL_NUM_ITEMS % ITEMS_PER_PAGE;
+    public  int ITEMS_REMAINING;
     public  int LAST_PAGE=TOTAL_NUM_ITEMS/ITEMS_PER_PAGE;
     List<GetFieldListResponse.DataBean> dataBeanList;
     private int year, month, day;
@@ -169,6 +167,8 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
     String string_value,message,service_id,activity_id,job_id,group_id,subgroup_id;
 
     int string_value_pos;
+
+    List<GetFieldListResponse.DataBean.LiftListBean> list = new ArrayList<>();
 
     public  List<GetFieldListResponse.DataBean> generatePage(int currentPage)
     {
@@ -256,17 +256,44 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                rv_fieldlist.smoothScrollToPosition(0);
-                linearlayout.scrollToPositionWithOffset(2, 20);
-                currentPage += 1;
-                List<GetFieldListResponse.DataBean> dataBeanListS = new ArrayList<>();
-                int startItem=currentPage*ITEMS_PER_PAGE;
-                int condition;
-                int ITEMS_REMAINING=TOTAL_NUM_ITEMS % ITEMS_PER_PAGE;
-                int LAST_PAGE=TOTAL_NUM_ITEMS/ITEMS_PER_PAGE;
-                if(currentPage==LAST_PAGE){
 
-                   condition = startItem+ITEMS_REMAINING;
+                rv_fieldlist.smoothScrollToPosition(0);
+
+                linearlayout.scrollToPositionWithOffset(2, 20);
+
+                currentPage += 1;
+
+                Log.w(TAG,"btnnext currentPage" + currentPage);
+
+                List<GetFieldListResponse.DataBean> dataBeanListS = new ArrayList<>();
+
+                int startItem=currentPage*ITEMS_PER_PAGE;
+
+                Log.w(TAG,"btnnext startItem" + startItem);
+
+                int condition;
+
+                ITEMS_REMAINING=ITEMS_REMAINING - ITEMS_PER_PAGE;
+
+                Log.w(TAG,"btnnext ITEMS_REMAINING" + ITEMS_REMAINING);
+
+                int LAST_PAGE=(TOTAL_NUM_ITEMS/ITEMS_PER_PAGE);
+
+                Log.w(TAG,"btnnext LAST_PAGE" + LAST_PAGE);
+
+                if(currentPage==LAST_PAGE-1){
+
+                   if(ITEMS_REMAINING==0){
+
+                       condition = startItem+ITEMS_PER_PAGE;
+
+                   }
+                   else
+                   {
+
+                       condition = startItem+ITEMS_REMAINING;
+
+                   }
 
                     for (int i=startItem;i<condition;i++)
                     {
@@ -278,7 +305,6 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                     }
 
                     Log.w(TAG,"btnnext dataBeanList" + new Gson().toJson(dataBeanList));
-
 
 
                     setView(dataBeanListS,ITEMS_PER_PAGE,TOTAL_NUM_ITEMS);
@@ -286,12 +312,16 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                     // rv.setAdapter(new MyAdapter(MainActivity.this, p.generatePage(currentPage)));
                     btn_next.setEnabled(false);
 
-                    toggleButtons();
+                    btn_prev.setBackgroundResource(R.drawable.blue_button_background_with_radius);
+                    btn_prev.setTextColor(getResources().getColor(R.color.white));
+                    btn_prev.setEnabled(true);
+                    btn_next.setVisibility(View.GONE);
+                    btn_success.setVisibility(View.VISIBLE);
                 }
 
                 else {
 
-                        condition = startItem+ITEMS_PER_PAGE;
+                    condition = startItem+ITEMS_PER_PAGE;
 
                     for (int i=startItem;i<condition;i++)
                     {
@@ -309,11 +339,6 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                     setView(dataBeanListS,ITEMS_PER_PAGE,TOTAL_NUM_ITEMS);
                     // enableDisableButtons();
                     // rv.setAdapter(new MyAdapter(MainActivity.this, p.generatePage(currentPage)));
-
-                    Log.w(TAG,"dataBeanListN" + dataBeanList.get(1).getField_value());
-
-                    Log.w(TAG,"dataBeanListN" + new Gson().toJson(dataBeanList));
-
 
                     toggleButtons();
                 }
@@ -442,15 +467,24 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
                              dataBeanList = response.body().getData();
 
+                            Log.w(TAG,"dataBeanList Size" + dataBeanList.size());
+
                             if(dataBeanList != null && dataBeanList.size()>0){
 
                                totalPages = dataBeanList.size() / 6;
 
+                                Log.w(TAG,"totalPages" + totalPages);
+
                                 TOTAL_NUM_ITEMS = dataBeanList.size();
+
+                                ITEMS_REMAINING = TOTAL_NUM_ITEMS-ITEMS_PER_PAGE;
+
+                                Log.w(TAG,"TOTAL_NUM_ITEMS" + TOTAL_NUM_ITEMS);
 
                                 dialog.dismiss();
 
                                 setView(dataBeanList,ITEMS_PER_PAGE,TOTAL_NUM_ITEMS);
+
                                 txt_no_records.setVisibility(View.GONE);
                             }
                             else  {
@@ -663,19 +697,18 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
     }
 
     @Override
-    public void getInputFieldListener(RecyclerView rv_liftinputlist, int startItem, int size) {
+    public void getInputFieldListener(RecyclerView rv_liftinputlist, int startItem, int size, List<GetFieldListResponse.DataBean.LiftListBean> lift_list) {
 
         rv_liftinputlist.setNestedScrollingEnabled(true);
         LinearLayoutManager linearlayout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
         rv_liftinputlist.setLayoutManager(linearlayout);
         rv_liftinputlist.setItemAnimator(new DefaultItemAnimator());
-        ArrayList<EditModel> list = new ArrayList<>();
+
 
         for(int i = 0; i < size; i++){
-            EditModel editModel = new EditModel();
-            editModel.setEditTextValue("");
-            editModel.setStartItem(startItem);
-            list.add(editModel);
+            GetFieldListResponse.DataBean.LiftListBean liftListBean = new GetFieldListResponse.DataBean.LiftListBean();
+            liftListBean.setLeft("");
+            list.add(liftListBean);
         }
         LiftInputTypeListAdapter liftInputTypeListAdapter = new LiftInputTypeListAdapter(getApplicationContext(), size,startItem,this,list);
         rv_liftinputlist.setAdapter(liftInputTypeListAdapter);
@@ -685,15 +718,13 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
     @Override
     public void editTextValueListener(int startItem, String s, int size, int position) {
 
-        String[] strAr= new String[size];
 
-        Log.w(TAG,"currentItem POS DS"+position);
+        Log.w(TAG,"currentItem POS EDTX"+position);
 
-        strAr[position] = s;
 
-        String str = convertStringArrayToString(strAr, ",");
+        list.get(position).setLeft(s);
 
-        dataBeanList.get(startItem).setField_value(str);
+        dataBeanList.get(startItem).setLift_list(list);
 
     }
 

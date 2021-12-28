@@ -38,6 +38,7 @@ import com.triton.johnsonapp.interfaces.GetTextAreaListener;
 import com.triton.johnsonapp.interfaces.GetInputFieldListener;
 import com.triton.johnsonapp.responsepojo.GetFieldListResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -255,7 +256,19 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
                 holder.ll_dropdown.setVisibility(View.VISIBLE);
 
-                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context, R.array.array_name, android.R.layout.simple_spinner_item);
+                ArrayList<String> arrayList = new ArrayList<>();
+
+                arrayList.add("Select Value");
+
+                for (int i = 0; i < currentItem.getDrop_down().size(); i++) {
+
+                    String string = currentItem.getDrop_down().get(i).toString();
+                    Log.w(TAG, "spr string-->" + string);
+                    arrayList.add(string);
+
+                }
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, arrayList);
 
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -479,7 +492,7 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                 });
             }
 
-            else if(currentItem.getField_type().equals("Liftno")){
+            else if(currentItem.getField_type().equals("LIFT")){
 
                 if(currentItem.getField_length() != null && !currentItem.getField_length().equals("")){
 
@@ -489,7 +502,7 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
                     holder.rv_liftinputlist.setVisibility(View.VISIBLE);
 
-                    getInputFieldListener.getInputFieldListener(holder.rv_liftinputlist,startItem,size);
+                    getInputFieldListener.getInputFieldListener(holder.rv_liftinputlist,startItem,size,currentItem.getLift_list());
                 }
             }
         }
