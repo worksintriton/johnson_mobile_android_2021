@@ -99,6 +99,7 @@
     <string name="version">Version 28.12.21.1</string>
     <string name="input_value">Input Value</string>
     <string name="add_row_based_input_form">Add Row Based Input Form</string>
+    <string name="search">Search</string>
 
     <string-array name="array_name">
         <item>Select Value</item>
