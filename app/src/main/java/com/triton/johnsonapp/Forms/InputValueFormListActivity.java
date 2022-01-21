@@ -22,6 +22,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -248,10 +249,13 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                rv_fieldlist.smoothScrollToPosition(0);
-
-                linearlayout.scrollToPositionWithOffset(2, 20);
+                rv_fieldlist.scrollToPosition(0);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        rv_fieldlist.smoothScrollToPosition(0);
+                    }
+                }, 50);
 
                 currentPage += 1;
 
@@ -261,9 +265,12 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
                 int startItem = currentPage * ITEMS_PER_PAGE;
 
+
                 Log.w(TAG, "btnnext ITEMS_PER_PAGE : " + ITEMS_PER_PAGE);
                 Log.w(TAG, "btnnext ITEMS_REMAINING : " + ITEMS_REMAINING);
                 Log.w(TAG, "btnnext startItem : "  + startItem);
+
+
 
                 int condition = 0;
 
@@ -336,8 +343,13 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         btn_prev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                rv_fieldlist.smoothScrollToPosition(0);
-                linearlayout.scrollToPositionWithOffset(2, 20);
+                rv_fieldlist.scrollToPosition(0);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        rv_fieldlist.smoothScrollToPosition(0);
+                    }
+                }, 50);
                 currentPage -= 1;
                 List<GetFieldListResponse.DataBean> dataBeanListS = new ArrayList<>();
                 int startItem = currentPage * ITEMS_PER_PAGE;

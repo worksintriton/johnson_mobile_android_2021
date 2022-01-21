@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -46,22 +47,16 @@
         </RelativeLayout>
 
     </LinearLayout>
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/scrollablContent"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/footerView"
-        android:layout_below="@+id/headerView"
-        android:layout_marginBottom="20dp"
-        android:fillViewport="true"
-        android:descendantFocusability="blocksDescendants">
 
         <LinearLayout
             android:id="@+id/content"
+            android:layout_above="@+id/footerView"
+            android:layout_below="@+id/headerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:layout_marginBottom="20dp">
 
 
             <RelativeLayout
@@ -98,12 +93,13 @@
                     android:id="@+id/rv_fieldlist"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:visibility="visible" />
+                    android:visibility="visible"
+                    tools:ignore="UnusedAttribute" />
 
             </RelativeLayout>
 
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+
     <LinearLayout
         android:id="@+id/footerView"
         android:layout_width="match_parent"
