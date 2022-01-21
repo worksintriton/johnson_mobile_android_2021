@@ -1,11 +1,5 @@
 package com.triton.johnsonapp.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
@@ -20,19 +14,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
-import com.triton.johnsonapp.adapter.ServiceListAdapter;
+import com.triton.johnsonapp.adapter.JobDetailListAdapter;
 import com.triton.johnsonapp.api.APIInterface;
 import com.triton.johnsonapp.api.RetrofitClient;
-import com.triton.johnsonapp.requestpojo.SubGroupDetailManagementRequest;
-import com.triton.johnsonapp.responsepojo.GetServiceListResponse;
-import com.triton.johnsonapp.responsepojo.SubGroupDetailManagementResponse;
+import com.triton.johnsonapp.requestpojo.ActivityListManagementRequest;
+import com.triton.johnsonapp.requestpojo.JobNoManagementRequest;
+import com.triton.johnsonapp.responsepojo.JobNoManagementResponse;
 import com.triton.johnsonapp.session.SessionManager;
 import com.triton.johnsonapp.utils.ConnectionDetector;
 import com.triton.johnsonapp.utils.RestUtils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,11 +42,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SubGroupListActivity extends AppCompatActivity {
+public class AllJobListActivity extends AppCompatActivity {
 
-
-
-    private String TAG ="SubGroupListActivity";
+    private String TAG ="AllJobListActivity";
 
     String userid,username;
 
@@ -58,16 +55,16 @@ public class SubGroupListActivity extends AppCompatActivity {
 
 
     @SuppressLint("NonConstantResourceId")
-    @BindView(R.id.rv_subgrouplist)
-    RecyclerView rv_subgrouplist;
+    @BindView(R.id.rv_jobdetaillist)
+    RecyclerView rv_jobdetaillist;
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.txt_no_records)
     TextView txt_no_records;
 
-    Dialog  dialog;
+    Dialog dialog;
 
-    String networkStatus = "",message,activity_id,job_id,group_id;
+    String networkStatus = "",message,activity_id;
 
     int number=0;
 
@@ -80,15 +77,17 @@ public class SubGroupListActivity extends AppCompatActivity {
     EditText edt_search;
 
     private String search_string ="";
+    SessionManager session;
+    private String status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sub_group_list);
+        setContentView(R.layout.activity_all_job_list);
         ButterKnife.bind(this);
         Log.w(TAG,"Oncreate -->");
 
-        SessionManager session = new SessionManager(getApplicationContext());
+        session = new SessionManager(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
         userid = user.get(SessionManager.KEY_ID);
 
@@ -96,32 +95,26 @@ public class SubGroupListActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-
-            group_id = extras.getString("group_id");
-
             activity_id = extras.getString("activity_id");
-
-            job_id = extras.getString("job_id");
-
+            status = extras.getString("status");
             Log.w(TAG,"activity_id -->"+activity_id);
 
-            Log.w(TAG,"group_id -->"+group_id);
 
         }
-/*
-        if(username!=null){
 
-            txt_logout.setText(username+" Logout");
-        }
-
-        txt_logout.setOnClickListener(new View.OnClickListener() {
+        edt_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onClick(View v) {
-
-                session.logoutUser();
-                startActivity(new Intent(SubGroupListActivity.this,LoginActivity.class));
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    search_string = textView.getText().toString();
+                    jobnomanagmentgetlistallResponseCall();
+                    return true;
+                }
+                return false;
             }
-        });*/
+        });
+
+
 
         img_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,7 +132,7 @@ public class SubGroupListActivity extends AppCompatActivity {
         }
         else {
 
-            subgroupdetailmanagmentResponseCall();
+            jobnomanagmentgetlistallResponseCall();
 
            /* List<GetServiceListResponse.DataBean> dataBeanList = new ArrayList<>();
 
@@ -151,7 +144,7 @@ public class SubGroupListActivity extends AppCompatActivity {
 
                 Log.w(TAG,"number "+ number);
 
-                dataBean.setService_name("Sub Group "+number);
+                dataBean.setService_name("Job Detail "+number);
 
                 dataBeanList.add(dataBean);
             }
@@ -162,72 +155,60 @@ public class SubGroupListActivity extends AppCompatActivity {
             }*/
         }
 
-        edt_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    search_string = textView.getText().toString();
-                    subgroupdetailmanagmentResponseCall();
-                    return true;
-                }
-                return false;
-            }
-        });
 
 
-
-        }
+    }
 
 
     // default back button action
     public void onBackPressed() {
-
-
         super.onBackPressed();
-        Intent intent = new Intent(SubGroupListActivity.this, GroupListActivity.class);
-        intent.putExtra("activity_id",activity_id);
-        intent.putExtra("job_id",job_id);
+        Intent intent = new Intent(AllJobListActivity.this, StatusActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.new_right, R.anim.new_left);
 
 
     }
 
+
     @SuppressLint("LogNotTimber")
-    private void subgroupdetailmanagmentResponseCall() {
-        dialog = new Dialog(SubGroupListActivity.this, R.style.NewProgressDialog);
+    private void jobnomanagmentgetlistallResponseCall() {
+        dialog = new Dialog(AllJobListActivity.this, R.style.NewProgressDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progroess_popup);
         dialog.show();
 
         APIInterface apiInterface = RetrofitClient.getClient().create(APIInterface.class);
-        Call<SubGroupDetailManagementResponse> call = apiInterface.subgroupdetailmanagmentResponseCall(RestUtils.getContentType(), SubGroupDetailManagementRequest());
-        Log.w(TAG,"SubGroupDetailManagementResponse url  :%s"+" "+ call.request().url().toString());
+        Call<JobNoManagementResponse> call = apiInterface.jobnomanagmentgetlistallResponseCall(RestUtils.getContentType(), ActivityListManagementRequest());
+        Log.w(TAG,"JobNoManagementResponse url  :%s"+" "+ call.request().url().toString());
 
-        call.enqueue(new Callback<SubGroupDetailManagementResponse>() {
+        call.enqueue(new Callback<JobNoManagementResponse>() {
             @SuppressLint("LogNotTimber")
             @Override
-            public void onResponse(@NonNull Call<SubGroupDetailManagementResponse> call, @NonNull Response<SubGroupDetailManagementResponse> response) {
+            public void onResponse(@NonNull Call<JobNoManagementResponse> call, @NonNull Response<JobNoManagementResponse> response) {
 
-                Log.w(TAG,"SubGroupDetailManagementResponse" + new Gson().toJson(response.body()));
+                Log.w(TAG,"JobNoManagementResponse" + new Gson().toJson(response.body()));
                 if (response.body() != null) {
                     message = response.body().getMessage();
                     if (200 == response.body().getCode()) {
                         if(response.body().getData() != null){
 
                             dialog.dismiss();
-                            List<SubGroupDetailManagementResponse.DataBean> dataBeanList = response.body().getData();
+                            List<JobNoManagementResponse.DataBean> dataBeanList = response.body().getData();
 
 
                             if(dataBeanList != null && dataBeanList.size()>0){
-                                rv_subgrouplist.setVisibility(View.VISIBLE);
+                                rv_jobdetaillist.setVisibility(View.VISIBLE);
                                 setView(dataBeanList);
+
                                 txt_no_records.setVisibility(View.GONE);
                             }
-                           else  {
-                                rv_subgrouplist.setVisibility(View.GONE);
+
+                            else {
+                                rv_jobdetaillist.setVisibility(View.GONE);
                                 txt_no_records.setVisibility(View.VISIBLE);
-                                txt_no_records.setText("No Sub-Groups Available");
+
+                                txt_no_records.setText("No Job Detail Available");
                             }
 
                         }
@@ -246,39 +227,42 @@ public class SubGroupListActivity extends AppCompatActivity {
 
             @SuppressLint("LongLogTag")
             @Override
-            public void onFailure(@NonNull Call<SubGroupDetailManagementResponse> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<JobNoManagementResponse> call, @NonNull Throwable t) {
                 dialog.dismiss();
-                Log.e("SubGroupDetailManagementResponse", "--->" + t.getMessage());
+                Log.e("JobNoManagementResponse", "--->" + t.getMessage());
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
     }
-    private SubGroupDetailManagementRequest SubGroupDetailManagementRequest() {
-
-
-
-        /**
-         * group_id : 61c1e5e09934282617679543
-         * search_string
+    private ActivityListManagementRequest ActivityListManagementRequest() {
+        /*
+         * user_id : 1234456789
+         * search_string:""
+         * request_type
          */
-        SubGroupDetailManagementRequest SubGroupDetailManagementRequest = new SubGroupDetailManagementRequest();
-        SubGroupDetailManagementRequest.setGroup_id(group_id);
-        SubGroupDetailManagementRequest.setSearch_string(search_string);
 
 
+        ActivityListManagementRequest ActivityListManagementRequest = new ActivityListManagementRequest();
+        ActivityListManagementRequest.setUser_id(userid);
+        ActivityListManagementRequest.setSearch_string(search_string);
+        ActivityListManagementRequest.setRequest_type(status);
 
-        Log.w(TAG,"SubGroupDetailManagementRequest "+ new Gson().toJson(SubGroupDetailManagementRequest));
-        return SubGroupDetailManagementRequest;
+        Log.w(TAG,"ActivityListManagementRequest "+ new Gson().toJson(ActivityListManagementRequest));
+        return ActivityListManagementRequest;
     }
+
     @SuppressLint("LogNotTimber")
-    private void setView(List<SubGroupDetailManagementResponse.DataBean> dataBeanList) {
+    private void setView(List<JobNoManagementResponse.DataBean> dataBeanList) {
 
 
-        rv_subgrouplist.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
-        rv_subgrouplist.setItemAnimator(new DefaultItemAnimator());
-        ServiceListAdapter serviceListAdapter = new ServiceListAdapter(this, dataBeanList,activity_id,job_id, group_id);
-        rv_subgrouplist.setAdapter(serviceListAdapter);
+        rv_jobdetaillist.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
+        rv_jobdetaillist.setItemAnimator(new DefaultItemAnimator());
+        JobDetailListAdapter jobDetailListAdapter = new JobDetailListAdapter(this, dataBeanList,activity_id);
+        rv_jobdetaillist.setAdapter(jobDetailListAdapter);
     }
 
+    public void logOutUser(View view) {
+        session.logoutUser();
+    }
 }

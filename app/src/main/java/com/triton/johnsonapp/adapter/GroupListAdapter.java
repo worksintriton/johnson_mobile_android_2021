@@ -87,12 +87,11 @@ public class GroupListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
         holder.cv_root.setOnClickListener(v -> {
 
             if(dataBeanList.get(position).getSub_group_status()!=null&&dataBeanList.get(position).getSub_group_status().equals("true")){
-
                 Intent intent = new Intent(context, SubGroupListActivity.class);
                 intent.putExtra("activity_id",activity_id);
                 intent.putExtra("job_id",job_id);
                 intent.putExtra("group_id",dataBeanList.get(position).get_id());
-
+                intent.putExtra("group_detail_name",dataBeanList.get(position).getGroup_detail_name());
                 context.startActivity(intent);
 
             }
@@ -107,6 +106,7 @@ public class GroupListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                         intent.putExtra("activity_id",activity_id);
                         intent.putExtra("job_id",job_id);
                         intent.putExtra("group_id",dataBeanList.get(position).get_id());
+                        intent.putExtra("group_detail_name",dataBeanList.get(position).getGroup_detail_name());
                         intent.putExtra("subgroup_id","");
 
                         context.startActivity(intent);
@@ -118,6 +118,7 @@ public class GroupListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                         intent.putExtra("activity_id",activity_id);
                         intent.putExtra("job_id",job_id);
                         intent.putExtra("group_id",dataBeanList.get(position).get_id());
+                        intent.putExtra("group_detail_name",dataBeanList.get(position).getGroup_detail_name());
                         intent.putExtra("subgroup_id","");
 
                         context.startActivity(intent);
@@ -128,6 +129,7 @@ public class GroupListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                         intent.putExtra("activity_id",activity_id);
                         intent.putExtra("job_id",job_id);
                         intent.putExtra("group_id",dataBeanList.get(position).get_id());
+                        intent.putExtra("group_detail_name",dataBeanList.get(position).getGroup_detail_name());
                         intent.putExtra("subgroup_id","");
 
                         context.startActivity(intent);
@@ -139,6 +141,7 @@ public class GroupListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                         intent.putExtra("activity_id",activity_id);
                         intent.putExtra("job_id",job_id);
                         intent.putExtra("group_id",dataBeanList.get(position).get_id());
+                        intent.putExtra("group_detail_name",dataBeanList.get(position).getGroup_detail_name());
                         intent.putExtra("subgroup_id","");
 
                         context.startActivity(intent);

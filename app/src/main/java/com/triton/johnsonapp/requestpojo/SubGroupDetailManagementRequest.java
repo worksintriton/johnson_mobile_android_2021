@@ -5,10 +5,21 @@ public class SubGroupDetailManagementRequest {
 
     /**
      * group_id : 61c1e5e09934282617679543
+     * sub_group_id
+     * search_string : ""
      */
 
     private String group_id;
     private String sub_group_id;
+    private String search_string;
+
+    public String getSearch_string() {
+        return search_string;
+    }
+
+    public void setSearch_string(String search_string) {
+        this.search_string = search_string;
+    }
 
     public String getGroup_id() {
         return group_id;

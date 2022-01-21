@@ -8,10 +8,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
+
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,18 +24,14 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.adapter.ActivityBasedListAdapter;
-import com.triton.johnsonapp.adapter.ServiceListAdapter;
 import com.triton.johnsonapp.api.APIInterface;
 import com.triton.johnsonapp.api.RetrofitClient;
 import com.triton.johnsonapp.requestpojo.ActivityListManagementRequest;
 import com.triton.johnsonapp.responsepojo.ActivityListManagementResponse;
-import com.triton.johnsonapp.responsepojo.GetServiceListResponse;
-import com.triton.johnsonapp.responsepojo.LoginResponse;
 import com.triton.johnsonapp.session.SessionManager;
 import com.triton.johnsonapp.utils.ConnectionDetector;
 import com.triton.johnsonapp.utils.RestUtils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -63,12 +64,22 @@ public class ActivityBasedActivity extends AppCompatActivity {
     @BindView(R.id.txt_no_records)
     TextView txt_no_records;
 
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.edt_search)
+    EditText edt_search;
+
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.img_back)
+    ImageView img_back;
+
     Dialog dialog;
 
     String networkStatus = "",message;
 
     int number=0;
+    SessionManager session;
 
+    private String search_string = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,56 +88,50 @@ public class ActivityBasedActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Log.w(TAG,"Oncreate -->");
 
-        SessionManager session = new SessionManager(getApplicationContext());
+
+        session = new SessionManager(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
         userid = user.get(SessionManager.KEY_ID);
 
+
         username = user.get(SessionManager.KEY_USERNAME);
-/*
-        if(username!=null){
 
-            txt_logout.setText(username+" Logout");
-        }
-
-        txt_logout.setOnClickListener(new View.OnClickListener() {
+        img_back.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-
-                session.logoutUser();
-                startActivity(new Intent(SubGroupListActivity.this,LoginActivity.class));
+            public void onClick(View view) {
+                onBackPressed();
             }
-        });*/
+        });
+
+
+
+
 
         networkStatus = ConnectionDetector.getConnectivityStatusString(getApplicationContext());
         if (networkStatus.equalsIgnoreCase("Not connected to Internet")) {
-
             Toasty.warning(getApplicationContext(),"No Internet",Toasty.LENGTH_LONG).show();
 
         }
         else {
-
-                activityListResponseCall();
-
-        /*    List<GetServiceListResponse.DataBean> dataBeanList = new ArrayList<>();
+            activityListResponseCall();
 
 
-            for(int i=0;i<=3;i++){
-
-                number++;
-                GetServiceListResponse.DataBean dataBean = new  GetServiceListResponse.DataBean();
-
-                Log.w(TAG,"number "+ number);
-
-                dataBean.setService_name("Activity Based "+number);
-
-                dataBeanList.add(dataBean);
-            }
-
-
-            if(dataBeanList != null && dataBeanList.size()>0){
-                setView(dataBeanList);
-            }*/
         }
+
+
+        edt_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                   search_string = textView.getText().toString();
+                    activityListResponseCall();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
 
 
 
@@ -135,12 +140,12 @@ public class ActivityBasedActivity extends AppCompatActivity {
 
     // default back button action
     public void onBackPressed() {
-
-      /*  Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        super.onBackPressed();
+        Intent intent = new Intent(ActivityBasedActivity.this, MainActivity.class);
         startActivity(intent);
-        overridePendingTransition(R.anim.new_right, R.anim.new_left);*/
+        overridePendingTransition(R.anim.new_right, R.anim.new_left);
 
-        //super.onBackPressed();
+
     }
 
 
@@ -153,7 +158,7 @@ public class ActivityBasedActivity extends AppCompatActivity {
         dialog.show();
 
         APIInterface apiInterface = RetrofitClient.getClient().create(APIInterface.class);
-        Call<ActivityListManagementResponse> call = apiInterface.activityListResponseCall(RestUtils.getContentType(), ActivityListManagementRequest());
+        Call<ActivityListManagementResponse> call = apiInterface.activedetailmanagementResponseCall(RestUtils.getContentType(), ActivityListManagementRequest());
         Log.w(TAG,"ActivityListManagementResponse url  :%s"+" "+ call.request().url().toString());
 
         call.enqueue(new Callback<ActivityListManagementResponse>() {
@@ -172,15 +177,14 @@ public class ActivityBasedActivity extends AppCompatActivity {
                             List<ActivityListManagementResponse.DataBean> dataBeanList = response.body().getData();
 
                             if(dataBeanList != null && dataBeanList.size()>0){
-
-                                setView(dataBeanList);
-
+                                rv_activitybasedlist.setVisibility(View.VISIBLE);
                                 txt_no_records.setVisibility(View.GONE);
+                                setView(dataBeanList);
                             }
 
                             else {
+                                rv_activitybasedlist.setVisibility(View.GONE);
                                 txt_no_records.setVisibility(View.VISIBLE);
-
                                 txt_no_records.setText("No Activity Available");
                             }
 
@@ -209,15 +213,15 @@ public class ActivityBasedActivity extends AppCompatActivity {
 
     }
     private ActivityListManagementRequest ActivityListManagementRequest() {
-
-
-        /**
+        /*
          * User_id : 1234456789
+         * search_string:""
          */
 
 
         ActivityListManagementRequest ActivityListManagementRequest = new ActivityListManagementRequest();
         ActivityListManagementRequest.setUser_id(userid);
+        ActivityListManagementRequest.setSearch_string(search_string);
 
         Log.w(TAG,"ActivityListManagementRequest "+ new Gson().toJson(ActivityListManagementRequest));
         return ActivityListManagementRequest;
@@ -232,4 +236,7 @@ public class ActivityBasedActivity extends AppCompatActivity {
         rv_activitybasedlist.setAdapter(activityBasedListAdapter);
     }
 
+    public void logOutUser(View view) {
+        session.logoutUser();
+    }
 }

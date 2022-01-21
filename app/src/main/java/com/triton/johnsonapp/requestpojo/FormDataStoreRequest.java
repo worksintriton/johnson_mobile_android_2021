@@ -1,5 +1,7 @@
 package com.triton.johnsonapp.requestpojo;
 
+import com.triton.johnsonapp.responsepojo.GetFieldListResponse;
+
 import java.util.List;
 
 public class FormDataStoreRequest {
@@ -7,9 +9,10 @@ public class FormDataStoreRequest {
 
     /**
      * user_id : 123456
-     * cat_id : 123456
-     * service_id : 123456
-     * job_no : 123456
+     * activity_id : 123456
+     * job_id : 123456
+     * group_id : 123456
+     * sub_group_id : 123456
      * data_store : [{"__v":0,"_id":"61aa033385104f58378b3b1d","cat_id":"61a8b8752d9a15335c1e511f","created_by":"Admin","date_of_create":"12/3/2021, 5:14:51 PM","date_of_update":"12/3/2021, 5:14:51 PM","field_comments":"filed Length should be 10 digit","field_length":"10","field_name":"Field 1","field_type":"String","field_update_reason":"","field_value":"","updated_by":"Admin"}]
      * start_time : 23-10-2021 11:00 AM
      * pause_time : 23-10-2021 11:00 AM
@@ -23,9 +26,10 @@ public class FormDataStoreRequest {
      */
 
     private String user_id;
-    private String cat_id;
-    private String service_id;
-    private String job_no;
+    private String activity_id ;
+    private String job_id ;
+    private String group_id ;
+    private String sub_group_id;
     private String start_time;
     private String pause_time;
     private String stop_time;
@@ -35,6 +39,40 @@ public class FormDataStoreRequest {
     private String created_by;
     private String updated_by;
     private String update_reason;
+
+    public String getActivity_id() {
+        return activity_id;
+    }
+
+    public void setActivity_id(String activity_id) {
+        this.activity_id = activity_id;
+    }
+
+    public String getJob_id() {
+        return job_id;
+    }
+
+    public void setJob_id(String job_id) {
+        this.job_id = job_id;
+    }
+
+    public String getGroup_id() {
+        return group_id;
+    }
+
+    public void setGroup_id(String group_id) {
+        this.group_id = group_id;
+    }
+
+    public String getSub_group_id() {
+        return sub_group_id;
+    }
+
+    public void setSub_group_id(String sub_group_id) {
+        this.sub_group_id = sub_group_id;
+    }
+
+
     /**
      * __v : 0
      * _id : 61aa033385104f58378b3b1d
@@ -61,29 +99,7 @@ public class FormDataStoreRequest {
         this.user_id = user_id;
     }
 
-    public String getCat_id() {
-        return cat_id;
-    }
 
-    public void setCat_id(String cat_id) {
-        this.cat_id = cat_id;
-    }
-
-    public String getService_id() {
-        return service_id;
-    }
-
-    public void setService_id(String service_id) {
-        this.service_id = service_id;
-    }
-
-    public String getJob_no() {
-        return job_no;
-    }
-
-    public void setJob_no(String job_no) {
-        this.job_no = job_no;
-    }
 
     public String getStart_time() {
         return start_time;
@@ -179,6 +195,15 @@ public class FormDataStoreRequest {
         private String field_update_reason;
         private String field_value;
         private String updated_by;
+        private List<LiftListBean> lift_list;
+
+        public List<LiftListBean> getLift_list() {
+            return lift_list;
+        }
+
+        public void setLift_list(List<LiftListBean> lift_list) {
+            this.lift_list = lift_list;
+        }
 
         public int get__v() {
             return __v;
@@ -283,5 +308,18 @@ public class FormDataStoreRequest {
         public void setUpdated_by(String updated_by) {
             this.updated_by = updated_by;
         }
+
+        public static class LiftListBean {
+            private String left;
+
+            public String getLeft() {
+                return left;
+            }
+
+            public void setLeft(String left) {
+                this.left = left;
+            }
+        }
+
     }
 }

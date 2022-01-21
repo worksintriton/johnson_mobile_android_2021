@@ -244,7 +244,7 @@ public class LoginActivity extends AppCompatActivity {
                                     String.valueOf(response.body().getData().getUser_type())
                             );
 
-                            startActivity(new Intent(LoginActivity.this, ActivityBasedActivity.class));
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
                         }
 
@@ -253,7 +253,6 @@ public class LoginActivity extends AppCompatActivity {
                         dialog.dismiss();
                         Toasty.warning(getApplicationContext(),""+message,Toasty.LENGTH_LONG).show();
 
-                        //showErrorLoading(response.body().getMessage());
                     }
                 }
 

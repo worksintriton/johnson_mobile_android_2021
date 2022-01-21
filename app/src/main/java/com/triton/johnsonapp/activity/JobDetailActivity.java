@@ -11,8 +11,11 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,6 +74,13 @@ public class JobDetailActivity extends AppCompatActivity {
     @BindView(R.id.img_back)
     ImageView img_back;
 
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.edt_search)
+    EditText edt_search;
+
+    private String search_string ="";
+    private String status;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,23 +97,25 @@ public class JobDetailActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             activity_id = extras.getString("activity_id");
-            Log.w(TAG,"activity_id -->"+activity_id);
+            status = extras.getString("status");
+            Log.w(TAG,"activity_id -->"+activity_id+" status : "+status);
+
 
         }
-/*
-        if(username!=null){
 
-            txt_logout.setText(username+" Logout");
-        }
-
-        txt_logout.setOnClickListener(new View.OnClickListener() {
+        edt_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onClick(View v) {
-
-                session.logoutUser();
-                startActivity(new Intent(SubGroupListActivity.this,LoginActivity.class));
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    search_string = textView.getText().toString();
+                    jobnomanagmentResponseCall();
+                    return true;
+                }
+                return false;
             }
-        });*/
+        });
+
+
 
         img_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,9 +164,10 @@ public class JobDetailActivity extends AppCompatActivity {
     // default back button action
     public void onBackPressed() {
 
-
         super.onBackPressed();
-        Intent intent = new Intent(JobDetailActivity.this, ActivityBasedActivity.class);
+        Intent intent = new Intent(JobDetailActivity.this, ActivityStatusActivity.class);
+        intent.putExtra("status",status);
+        intent.putExtra("activity_id",activity_id);
         startActivity(intent);
         overridePendingTransition(R.anim.new_right, R.anim.new_left);
 
@@ -189,12 +202,14 @@ public class JobDetailActivity extends AppCompatActivity {
 
 
                             if(dataBeanList != null && dataBeanList.size()>0){
+                                rv_jobdetaillist.setVisibility(View.VISIBLE);
                                 setView(dataBeanList);
 
                                 txt_no_records.setVisibility(View.GONE);
                             }
 
                             else {
+                                rv_jobdetaillist.setVisibility(View.GONE);
                                 txt_no_records.setVisibility(View.VISIBLE);
 
                                 txt_no_records.setText("No Job Detail Available");
@@ -228,13 +243,14 @@ public class JobDetailActivity extends AppCompatActivity {
 
 
 
-        /**
+        /*
          * activedetail__id : 61c1e43497057923644090bd
          */
 
 
         JobNoManagementRequest JobNoManagementRequest = new JobNoManagementRequest();
         JobNoManagementRequest.setActivedetail__id(activity_id);
+        JobNoManagementRequest.setSearch_string(search_string);
 
         Log.w(TAG,"JobNoManagementRequest "+ new Gson().toJson(JobNoManagementRequest));
         return JobNoManagementRequest;

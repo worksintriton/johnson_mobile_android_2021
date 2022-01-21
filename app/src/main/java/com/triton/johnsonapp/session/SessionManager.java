@@ -111,6 +111,7 @@ public class SessionManager {
 
         // Staring Login Activity
         context.startActivity(i);
+        Log.w(TAG,"logoutUser : ");
 
     }
 

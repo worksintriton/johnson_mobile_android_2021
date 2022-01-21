@@ -15,9 +15,11 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="center_vertical"
+            android:layout_marginEnd="10dp">
             <ImageView
                 android:id="@+id/img_back"
                 android:layout_width="24dp"
@@ -26,21 +28,41 @@
                 android:layout_marginStart="20dp"
                 android:contentDescription="@string/image"
                 app:srcCompat="@drawable/backbutton" />
-
             <TextView
                 android:id="@+id/txt_toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@color/colorPrimary"
                 android:fontFamily="@font/sourcesanspro_regular"
                 android:padding="15dp"
-                android:text="@string/group"
+                android:text="@string/jobdetail"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:visibility="visible" />
+                android:visibility="visible"/>
+            <LinearLayout
+                android:id="@+id/ll_logout"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="right|center_vertical"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                tools:ignore="RtlHardcoded"
+                android:onClick="logOutUser">
+                <ImageView
+                    android:gravity="right|center_vertical"
+                    android:id="@+id/img_logout"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="20dp"
+                    app:srcCompat="@drawable/log_out"
+                    android:contentDescription="@string/image" />
+
+            </LinearLayout>
         </LinearLayout>
 
         <RelativeLayout
@@ -136,7 +158,7 @@
                     android:visibility="gone" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_grouplist"
+                    android:id="@+id/rv_jobdetaillist"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:visibility="visible" />

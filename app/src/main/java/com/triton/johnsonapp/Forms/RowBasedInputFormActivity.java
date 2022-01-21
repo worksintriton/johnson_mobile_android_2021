@@ -1,6 +1,7 @@
 package com.triton.johnsonapp.Forms;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,14 +19,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.tntkhang.fullscreenimageview.library.FullScreenImageViewActivity;
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
+import com.triton.johnsonapp.activity.GroupListActivity;
 import com.triton.johnsonapp.adapter.RowBasedArrayListAdapter;
 import com.triton.johnsonapp.model.RowDataFormModel;
+
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import es.dmoral.toasty.Toasty;
 
 public class RowBasedInputFormActivity extends AppCompatActivity {
 
@@ -42,6 +45,10 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.edt_sno)
     EditText edt_sno;
+
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.txt_toolbar_title)
+    TextView txt_toolbar_title;
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.edt_dimx1)
@@ -76,12 +83,20 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
     ImageView img_add;
 
     @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.img_load)
+    ImageView img_load;
+
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.rv_rowdatalist)
     RecyclerView rv_rowdatalist;
 
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.txt_exit)
+    TextView txt_exit;
+
     ArrayList<RowDataFormModel> rowdatalist = new ArrayList<>();
 
-    String string_value,message,service_id,activity_id,job_id,group_id,subgroup_id;
+    String string_value,message,service_id,activity_id,job_id,group_id,subgroup_id,group_detail_name;
 
     int i=0;
 
@@ -98,6 +113,7 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
             service_id = extras.getString("service_id");
 
             group_id = extras.getString("group_id");
+            group_detail_name = extras.getString("group_detail_name");
 
             activity_id = extras.getString("activity_id");
 
@@ -111,7 +127,18 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
 
             Log.w(TAG,"service_id" + service_id);
 
+            if(group_detail_name != null){
+                txt_toolbar_title.setText(group_detail_name);
+            }
+
         }
+        txt_exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showWarningExit();
+
+            }
+        });
 
         img_add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,32 +194,21 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
             }
         });
 
-        /*img_info.setOnClickListener(new View.OnClickListener() {
+        img_load.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                img_load.setVisibility(View.VISIBLE);
+                ArrayList<String> uriString = new ArrayList<>();
 
-                img_load.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        ArrayList<String> uriString = new ArrayList<>();
-
-                        uriString.add("https://kubalubra.is/wp-content/uploads/2017/11/default-thumbnail.jpg");
-                        Intent fullImageIntent = new Intent(RowBasedInputFormActivity.this, FullScreenImageViewActivity.class);
+                uriString.add("https://kubalubra.is/wp-content/uploads/2017/11/default-thumbnail.jpg");
+                Intent fullImageIntent = new Intent(RowBasedInputFormActivity.this, FullScreenImageViewActivity.class);
 // uriString is an ArrayList<String> of URI of all images
-                        fullImageIntent.putExtra(FullScreenImageViewActivity.URI_LIST_DATA, uriString);
+                fullImageIntent.putExtra(FullScreenImageViewActivity.URI_LIST_DATA, uriString);
 // pos is the position of image will be showned when open
-                        fullImageIntent.putExtra(FullScreenImageViewActivity.IMAGE_FULL_SCREEN_CURRENT_POS, 0);
-                        startActivity(fullImageIntent);
-                    }
-                });
-
-
+                fullImageIntent.putExtra(FullScreenImageViewActivity.IMAGE_FULL_SCREEN_CURRENT_POS, 0);
+                startActivity(fullImageIntent);
             }
-        });*/
-
+        });
     }
 
     @SuppressLint("LogNotTimber")
@@ -204,4 +220,31 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
         RowBasedArrayListAdapter jobDetailListAdapter = new RowBasedArrayListAdapter(this, rowdatalist);
         rv_rowdatalist.setAdapter(jobDetailListAdapter);
     }
+
+    @Override
+    public void onBackPressed() {
+      //  super.onBackPressed();
+        showWarningExit();
+    }
+
+    private void showWarningExit() {
+        new AlertDialog.Builder(this)
+                .setMessage("Are you sure you want to exit?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(RowBasedInputFormActivity.this, GroupListActivity.class);
+                        intent.putExtra("activity_id", activity_id);
+                        intent.putExtra("job_id", job_id);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.new_right, R.anim.new_left);
+                        finish();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
+
+
+    }
+
 }

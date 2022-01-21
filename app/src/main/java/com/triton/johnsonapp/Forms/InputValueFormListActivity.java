@@ -2,6 +2,7 @@ package com.triton.johnsonapp.Forms;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
@@ -14,6 +15,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -42,6 +44,7 @@ import com.google.android.gms.common.util.IOUtils;
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.activity.ActivityBasedActivity;
+import com.triton.johnsonapp.activity.GroupListActivity;
 import com.triton.johnsonapp.adapter.FieldListAdapter;
 import com.triton.johnsonapp.adapter.LiftInputTypeListAdapter;
 import com.triton.johnsonapp.api.APIInterface;
@@ -57,7 +60,6 @@ import com.triton.johnsonapp.interfaces.GetNumberListener;
 import com.triton.johnsonapp.interfaces.GetSpinnerListener;
 import com.triton.johnsonapp.interfaces.GetStringListener;
 import com.triton.johnsonapp.interfaces.GetTextAreaListener;
-import com.triton.johnsonapp.model.EditModel;
 import com.triton.johnsonapp.requestpojo.FormDataStoreRequest;
 import com.triton.johnsonapp.requestpojo.GetFieldListRequest;
 import com.triton.johnsonapp.responsepojo.FileUploadResponse;
@@ -94,10 +96,9 @@ import retrofit2.Response;
 public class InputValueFormListActivity extends AppCompatActivity implements GetStringListener, GetTextAreaListener, GetSpinnerListener, GetNumberListener, GetDateTimeListener, GetFileUploadListener, GetDigitalSignUploadListener, GetDigitalSignUploadAddListener, GetDigitalSignUploadClearListener, GetInputFieldListener, EditTextValueChangedListener {
 
 
+    private String TAG = "InputValueFormListActivity";
 
-    private String TAG ="InputValueFormListActivity";
-
-    String userid,username;
+    String userid, username;
 
 
     @SuppressLint("NonConstantResourceId")
@@ -129,20 +130,29 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
     @BindView(R.id.btn_success)
     Button btn_success;
 
-    int datetimepos,imagepos;
-    private int totalPages;
-    private int currentPage =0;
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.txt_exit)
+    TextView txt_exit;
 
-    public  int TOTAL_NUM_ITEMS;
-    public  int ITEMS_PER_PAGE=6;
-    public  int ITEMS_REMAINING;
-    public  int LAST_PAGE=TOTAL_NUM_ITEMS/ITEMS_PER_PAGE;
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.txt_toolbar_title)
+    TextView txt_toolbar_title;
+
+    int datetimepos, imagepos;
+    private int totalPages;
+    private int currentPage = 0;
+
+    public int TOTAL_NUM_ITEMS;
+    public int ITEMS_PER_PAGE = 6;
+    public int ITEMS_REMAINING;
+    public int LAST_PAGE = TOTAL_NUM_ITEMS / ITEMS_PER_PAGE;
     List<GetFieldListResponse.DataBean> dataBeanList;
+    List<FormDataStoreRequest.DataStoreBean.LiftListBean> lift_list;
     private int year, month, day;
     String Selecteddate = "";
     private String uploadimagepath = "";
     EditText edt_datetime;
-    private static final int DATE_PICKER_ID = 0 ;
+    private static final int DATE_PICKER_ID = 0;
 
     int PERMISSION_CLINIC = 1;
 
@@ -154,56 +164,27 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
             Manifest.permission.CAMERA
     };
 
-    MultipartBody.Part filePart,siganaturePart;
+    MultipartBody.Part filePart, siganaturePart;
 
     String currentDateandTime;
 
-    ImageView img_file_upload; ImageView img_close;
+    ImageView img_file_upload;
+    ImageView img_close;
 
     CardView cv_img;
 
     public String digitalSignatureServerUrlImagePath;
 
-    String string_value,message,service_id,activity_id,job_id,group_id,subgroup_id;
+    String string_value, message, service_id, activity_id, job_id, group_id, subgroup_id;
 
     int string_value_pos;
 
     List<GetFieldListResponse.DataBean.LiftListBean> list = new ArrayList<>();
 
-    public  List<GetFieldListResponse.DataBean> generatePage(int currentPage)
-    {
-        Log.w(TAG,"generatePage: currentPage " + currentPage);
+    GetFieldListResponse getFieldListResponse = new GetFieldListResponse();
+    private AlertDialog.Builder alertDialogBuilder;
 
-        int startItem=currentPage*ITEMS_PER_PAGE+0;
 
-        Log.w(TAG,"generatePage: startItem " + startItem);
-
-        int numOfData=ITEMS_PER_PAGE;
-
-        Log.w(TAG,"generatePage: numOfData " + numOfData);
-
-        List<GetFieldListResponse.DataBean> pageData=new ArrayList<>();
-
-        if (currentPage==LAST_PAGE && ITEMS_REMAINING>0)
-        {
-            for (int i=startItem;i<startItem+ITEMS_REMAINING;i++)
-            {
-                Log.w(TAG,"generatePage: dataBeanList" + new Gson().toJson(dataBeanList.get(i)));
-
-                pageData.add(dataBeanList.get(i));
-            }
-        }else
-        {
-            for (int i=startItem;i<startItem+numOfData;i++)
-            {
-                Log.w(TAG,"generatePage: dataBeanList" + new Gson().toJson(dataBeanList.get(i)));
-
-                pageData.add(dataBeanList.get(i));
-
-            }
-        }
-        return pageData;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -222,13 +203,18 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
             job_id = extras.getString("job_id");
 
-            subgroup_id= extras.getString("subgroup_id");
+            subgroup_id = extras.getString("subgroup_id");
+            String group_detail_name = extras.getString("group_detail_name");
 
-            Log.w(TAG,"activity_id -->"+activity_id);
+            Log.w(TAG, "activity_id -->" + activity_id);
 
-            Log.w(TAG,"group_id -->"+group_id);
+            Log.w(TAG, "group_id -->" + group_id);
 
-            Log.w(TAG,"service_id" + service_id);
+            Log.w(TAG, "service_id" + service_id);
+
+            if(group_detail_name != null){
+                txt_toolbar_title.setText(""+group_detail_name);
+            }
 
         }
 
@@ -244,13 +230,20 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
         if (networkStatus.equalsIgnoreCase("Not connected to Internet")) {
 
-            Toasty.warning(getApplicationContext(),"No Internet",Toasty.LENGTH_LONG).show();
+            Toasty.warning(getApplicationContext(), "No Internet", Toasty.LENGTH_LONG).show();
 
-        }
-        else {
+        } else {
 
             getfieldListResponseCall();
         }
+
+        txt_exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showWarningExit();
+            }
+        });
+
 
         //NAVIGATE
         btn_next.setOnClickListener(new View.OnClickListener() {
@@ -263,51 +256,56 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
                 currentPage += 1;
 
-                Log.w(TAG,"btnnext currentPage" + currentPage);
+                Log.w(TAG, "btnnext currentPage : " + currentPage);
 
                 List<GetFieldListResponse.DataBean> dataBeanListS = new ArrayList<>();
 
-                int startItem=currentPage*ITEMS_PER_PAGE;
+                int startItem = currentPage * ITEMS_PER_PAGE;
 
-                Log.w(TAG,"btnnext startItem" + startItem);
+                Log.w(TAG, "btnnext ITEMS_PER_PAGE : " + ITEMS_PER_PAGE);
+                Log.w(TAG, "btnnext ITEMS_REMAINING : " + ITEMS_REMAINING);
+                Log.w(TAG, "btnnext startItem : "  + startItem);
 
                 int condition;
 
-                ITEMS_REMAINING=ITEMS_REMAINING - ITEMS_PER_PAGE;
+                ITEMS_REMAINING = ITEMS_REMAINING - ITEMS_PER_PAGE;
 
-                Log.w(TAG,"btnnext ITEMS_REMAINING" + ITEMS_REMAINING);
+                Log.w(TAG, "btnnext ITEMS_REMAINING : " + ITEMS_REMAINING);
+                Log.w(TAG, "btnnext TOTAL_NUM_ITEMS : " + TOTAL_NUM_ITEMS);
 
-                int LAST_PAGE=(TOTAL_NUM_ITEMS/ITEMS_PER_PAGE);
+                double LAST_PAGE = (( double) TOTAL_NUM_ITEMS / ITEMS_PER_PAGE);
 
-                Log.w(TAG,"btnnext LAST_PAGE" + LAST_PAGE);
+                Log.w(TAG, "btnnext LAST_PAGE : " + LAST_PAGE);
+                Log.w(TAG, "btnnext if condition : " + (currentPage == LAST_PAGE - 1));
 
-                if(currentPage==LAST_PAGE-1){
+                if (currentPage == LAST_PAGE - 1) {
+                    Log.w(TAG, "btnnext if condition----->");
+                    Log.w(TAG, "btnnext if ITEMS_REMAINING----->"+ITEMS_REMAINING);
 
-                   if(ITEMS_REMAINING==0){
+                    if (ITEMS_REMAINING == 0) {
+                        condition = startItem + ITEMS_PER_PAGE;
+                        Log.w(TAG, "btnnext if condition----->"+condition);
+                    } else {
+                        condition = startItem + ITEMS_REMAINING;
+                        Log.w(TAG, "btnnext if else condition----->"+condition);
 
-                       condition = startItem+ITEMS_PER_PAGE;
+                    }
+                    Log.w(TAG, "btnnext startItem----->"+startItem+" condition -->"+condition);
 
-                   }
-                   else
-                   {
 
-                       condition = startItem+ITEMS_REMAINING;
 
-                   }
-
-                    for (int i=startItem;i<condition;i++)
-                    {
-                        Log.w(TAG,"generatePage: dataBeanList" + new Gson().toJson(dataBeanList.get(i)));
-
+                    for (int i = startItem; i < condition; i++) {
                         dataBeanListS.add(dataBeanList.get(i));
+
 
 
                     }
 
-                    Log.w(TAG,"btnnext dataBeanList" + new Gson().toJson(dataBeanList));
 
 
-                    setView(dataBeanListS,ITEMS_PER_PAGE,TOTAL_NUM_ITEMS);
+                    setView(dataBeanListS, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS);
+                    Log.w(TAG, "btnnext  setView dataBeanList" + new Gson().toJson(dataBeanListS)+" ITEMS_PER_PAGE : "+ITEMS_PER_PAGE+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS);
+
                     // enableDisableButtons();
                     // rv.setAdapter(new MyAdapter(MainActivity.this, p.generatePage(currentPage)));
                     btn_next.setEnabled(false);
@@ -318,29 +316,30 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                     btn_next.setVisibility(View.GONE);
                     btn_success.setVisibility(View.VISIBLE);
                 }
-
                 else {
+                    Log.w(TAG, "btnnext else condition----->");
+                    try {
+                        condition = startItem + ITEMS_PER_PAGE;
+                        Log.w(TAG, "btnnext: else condition : " + condition + " startItem : " + startItem);
+                        for (int i = startItem; i < condition; i++) {
+                            //Log.w(TAG, "btnnext: dataBeanList" + new Gson().toJson(dataBeanList.get(i)));
+                            dataBeanListS.add(dataBeanList.get(i));
+                        }
 
-                    condition = startItem+ITEMS_PER_PAGE;
+                        Log.w(TAG, "btnnext dataBeanList" + new Gson().toJson(dataBeanListS));
 
-                    for (int i=startItem;i<condition;i++)
-                    {
-                        Log.w(TAG,"generatePage: dataBeanList" + new Gson().toJson(dataBeanList.get(i)));
 
-                        dataBeanListS.add(dataBeanList.get(i));
+                        setView(dataBeanListS, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS);
+                        // enableDisableButtons();
+                        // rv.setAdapter(new MyAdapter(MainActivity.this, p.generatePage(currentPage)));
 
+                        toggleButtons();
+                    } catch (IndexOutOfBoundsException e) {
+                        Log.e("error : ", "" + e.getLocalizedMessage() + " " + e.getMessage());
 
                     }
 
-                    Log.w(TAG,"btnnext dataBeanList" + new Gson().toJson(dataBeanList));
 
-
-
-                    setView(dataBeanListS,ITEMS_PER_PAGE,TOTAL_NUM_ITEMS);
-                    // enableDisableButtons();
-                    // rv.setAdapter(new MyAdapter(MainActivity.this, p.generatePage(currentPage)));
-
-                    toggleButtons();
                 }
 
 
@@ -353,30 +352,28 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                 linearlayout.scrollToPositionWithOffset(2, 20);
                 currentPage -= 1;
                 List<GetFieldListResponse.DataBean> dataBeanListS = new ArrayList<>();
-                int startItem=currentPage*ITEMS_PER_PAGE;
+                int startItem = currentPage * ITEMS_PER_PAGE;
                 int condition;
-                int ITEMS_REMAINING=TOTAL_NUM_ITEMS % ITEMS_PER_PAGE;
-                int LAST_PAGE=TOTAL_NUM_ITEMS/ITEMS_PER_PAGE;
-                if(currentPage==0||(currentPage >= 1 && currentPage <= totalPages)){
-                    condition = startItem+ITEMS_PER_PAGE;
+                int ITEMS_REMAINING = TOTAL_NUM_ITEMS % ITEMS_PER_PAGE;
+                int LAST_PAGE = TOTAL_NUM_ITEMS / ITEMS_PER_PAGE;
+                if (currentPage == 0 || (currentPage >= 1 && currentPage <= totalPages)) {
+                    condition = startItem + ITEMS_PER_PAGE;
+                } else {
+                    condition = startItem + ITEMS_REMAINING;
                 }
-                else {
-                    condition = startItem+ITEMS_REMAINING;
-                }
-                for (int i=startItem;i<condition;i++)
-                {
-                    Log.w(TAG,"generatePage: dataBeanList" + new Gson().toJson(dataBeanList.get(i)));
+                for (int i = startItem; i < condition; i++) {
+                    Log.w(TAG, "generatePage: dataBeanList" + new Gson().toJson(dataBeanList.get(i)));
 
                     dataBeanListS.add(dataBeanList.get(i));
 
                 }
 
 
-                Log.w(TAG,"btnprev dataBeanList" + new Gson().toJson(dataBeanList));
+                Log.w(TAG, "btnprev dataBeanList" + new Gson().toJson(dataBeanList));
 
 
-                setView(dataBeanListS,ITEMS_PER_PAGE,TOTAL_NUM_ITEMS);
-               // rv.setAdapter(new MyAdapter(MainActivity.this, p.generatePage(currentPage)));
+                setView(dataBeanListS, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS);
+                // rv.setAdapter(new MyAdapter(MainActivity.this, p.generatePage(currentPage)));
 
                 toggleButtons();
             }
@@ -387,20 +384,14 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
             public void onClick(View v) {
                 if (networkStatus.equalsIgnoreCase("Not connected to Internet")) {
 
-                    Toasty.warning(getApplicationContext(),"No Internet",Toasty.LENGTH_LONG).show();
+                    Toasty.warning(getApplicationContext(), "No Internet", Toasty.LENGTH_LONG).show();
 
-                }
-                else {
+                } else {
+                    getformdataListResponseCall();
+                    // getFieldListResponse();
 
-                    /*for (int i = 0; i < LiftInputTypeListAdapter.list.size(); i++){
+                    Log.w(TAG, "getFieldListResponse " + new Gson().toJson(getFieldListResponse));
 
-                        dataBeanList.get(LiftInputTypeListAdapter.list.get(i).getStartItem()).setField_value(LiftInputTypeListAdapter.list.get(i).getEditTextValue());
-                    }*/
-
-                   // Log.w(TAG,"dataBeanListN" + new Gson().toJson(dataBeanList));
-                 //   Log.w(TAG,"dataBeanListN" + new Gson().toJson(dataBeanList.get(14).getField_value()));
-                   getformdataListResponseCall();
-               //     Log.w(TAG,"dataBeanListN" + new Gson().toJson(dataBeanList.get(15).getField_value()));
                 }
 
             }
@@ -439,10 +430,8 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
     }
 
 
-
-
     @SuppressLint("LogNotTimber")
-    public void getfieldListResponseCall(){
+    public void getfieldListResponseCall() {
         dialog = new Dialog(InputValueFormListActivity.this, R.style.NewProgressDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progroess_popup);
@@ -450,8 +439,8 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
         //Creating an object of our api interface
         APIInterface apiInterface = RetrofitClient.getClient().create(APIInterface.class);
-        Call<GetFieldListResponse> call = apiInterface.getfieldListResponseCall(RestUtils.getContentType(),getFieldListRequest());
-        Log.w(TAG,"url  :%s"+ call.request().url().toString());
+        Call<GetFieldListResponse> call = apiInterface.getfieldListResponseCall(RestUtils.getContentType(), getFieldListRequest());
+        Log.w(TAG, "url  :%s" + call.request().url().toString());
 
         call.enqueue(new Callback<GetFieldListResponse>() {
             @SuppressLint("LogNotTimber")
@@ -460,34 +449,45 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
 
                 if (response.body() != null) {
-                    if(200 == response.body().getCode()){
-                        Log.w(TAG,"GetFieldListResponse" + new Gson().toJson(response.body()));
+                    if (200 == response.body().getCode()) {
+                        Log.w(TAG, "GetFieldListResponse" + new Gson().toJson(response.body()));
 
-                        if(response.body().getData()!= null){
+                        if (response.body().getData() != null) {
 
-                             dataBeanList = response.body().getData();
+                            dataBeanList = response.body().getData();
 
-                            Log.w(TAG,"dataBeanList Size" + dataBeanList.size());
+                            Log.w(TAG, "dataBeanList Size : " + dataBeanList.size());
 
-                            if(dataBeanList != null && dataBeanList.size()>0){
+                            if (dataBeanList != null && dataBeanList.size() > 0) {
 
-                               totalPages = dataBeanList.size() / 6;
+                                for(int i=0;i<dataBeanList.size();i++){
+                                    Log.w(TAG, "dataBeanList Field_name : "+ i+" "+ dataBeanList.get(i).getField_name());
+                                }
 
-                                Log.w(TAG,"totalPages" + totalPages);
+
+                                if(dataBeanList.size()<5){
+                                    btn_prev.setVisibility(View.INVISIBLE);
+                                    btn_next.setVisibility(View.GONE);
+                                    btn_success.setVisibility(View.VISIBLE);
+                                }
+
+
+                                totalPages = dataBeanList.size() / 6;
+
+                                Log.w(TAG, "totalPages  : " + totalPages);
 
                                 TOTAL_NUM_ITEMS = dataBeanList.size();
 
-                                ITEMS_REMAINING = TOTAL_NUM_ITEMS-ITEMS_PER_PAGE;
+                                ITEMS_REMAINING = TOTAL_NUM_ITEMS - ITEMS_PER_PAGE;
 
-                                Log.w(TAG,"TOTAL_NUM_ITEMS" + TOTAL_NUM_ITEMS);
+                                Log.w(TAG, "TOTAL_NUM_ITEMS : " + TOTAL_NUM_ITEMS);
 
                                 dialog.dismiss();
 
-                                setView(dataBeanList,ITEMS_PER_PAGE,TOTAL_NUM_ITEMS);
+                                setView(dataBeanList, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS);
 
                                 txt_no_records.setVisibility(View.GONE);
-                            }
-                            else  {
+                            } else {
                                 txt_no_records.setVisibility(View.VISIBLE);
 
                                 txt_no_records.setText("No Input Fields Available");
@@ -498,14 +498,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                     }
 
 
-
                 }
-
-
-
-
-
-
 
 
             }
@@ -514,7 +507,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
             @Override
             public void onFailure(@NonNull Call<GetFieldListResponse> call, @NonNull Throwable t) {
                 dialog.dismiss();
-                Log.w(TAG,"GetFieldListResponse flr"+t.getMessage());
+                Log.w(TAG, "GetFieldListResponse flr" + t.getMessage());
             }
         });
 
@@ -522,34 +515,30 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
     private GetFieldListRequest getFieldListRequest() {
 
-
-
-        /**
+        /*
          * group_id : 61c1e5e09934282617679543
          */
         GetFieldListRequest getFieldListRequest = new GetFieldListRequest();
         getFieldListRequest.setGroup_id(group_id);
         getFieldListRequest.setSub_group_id(subgroup_id);
 
-        Log.w(TAG,"GetFieldListRequest "+ new Gson().toJson(getFieldListRequest));
+        Log.w(TAG, "GetFieldListRequest " + new Gson().toJson(getFieldListRequest));
         return getFieldListRequest;
     }
 
     @SuppressLint("LogNotTimber")
-    private void setView(List<GetFieldListResponse.DataBean> dataBeanList,int ITEMS_PER_PAGE,int TOTAL_NUM_ITEMS) {
+    private void setView(List<GetFieldListResponse.DataBean> dataBeanList, int ITEMS_PER_PAGE, int TOTAL_NUM_ITEMS) {
 
         rv_fieldlist.setNestedScrollingEnabled(true);
-        linearlayout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
+        linearlayout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rv_fieldlist.setLayoutManager(linearlayout);
         rv_fieldlist.setItemAnimator(new DefaultItemAnimator());
-        FieldListAdapter FieldListAdapter = new FieldListAdapter(getApplicationContext(), dataBeanList,ITEMS_PER_PAGE,TOTAL_NUM_ITEMS,this,this,this,this,this,this,this,this,this,this,currentPage);
+        FieldListAdapter FieldListAdapter = new FieldListAdapter(getApplicationContext(), dataBeanList, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS, this, this, this, this, this, this, this, this, this, this, currentPage);
         rv_fieldlist.setAdapter(FieldListAdapter);
     }
 
     @Override
     public void getStringListener(EditText edt_string, String s, int position, String field_length) {
-
-
         dataBeanList.get(position).setField_value(s);
 
     }
@@ -557,7 +546,6 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
     @Override
     public void getTextAreaListener(EditText edt_textarea, String s, int position, String field_length) {
-
         dataBeanList.get(position).setField_value(s);
 
     }
@@ -604,7 +592,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
                 imagepos = position;
 
-                cv_img=cv_image;
+                cv_img = cv_image;
 
                 chooseImage();
 
@@ -612,10 +600,11 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         });
 
     }
+
     @Override
     public void getDigitalSignUploadListener(LinearLayout llheaderdigitalsignature, ImageView ivdigitalsignature, SignaturePad mSignaturePad, Button mSaveButton, Button mClearButton, int position, String field_length) {
 
-        Log.w(TAG,"currentItem POS DS"+position);
+        Log.w(TAG, "currentItem POS DS" + position);
 
         llheaderdigitalsignature.setVisibility(View.VISIBLE);
 
@@ -646,10 +635,9 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
     public void getDigitalSignUploadAddListener(LinearLayout llheaderdigitalsignature, ImageView ivdigitalsignature, SignaturePad mSignaturePad, Button mSaveButton, Button mClearButton, int position, String field_length) {
 
         Bitmap signatureBitmap = mSignaturePad.getSignatureBitmap();
-        Log.w(TAG,"signatureBitmap"+signatureBitmap);
+        Log.w(TAG, "signatureBitmap" + signatureBitmap);
         // Bitmap getTransparentSignatureBitmap = mSignaturePad.getTransparentSignatureBitmap();
         // Log.w(TAG,"getTransparentSignatureBitmap"+getTransparentSignatureBitmap);
-
 
 
         // Bitmap photo = (Bitmap) Objects.requireNonNull(data.getExtras()).get("data");
@@ -676,12 +664,11 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         currentDateandTime = sdf.format(new Date());
 
 
+        siganaturePart = MultipartBody.Part.createFormData("sampleFile", userid + file.getName(), requestFile);
 
-        siganaturePart = MultipartBody.Part.createFormData("sampleFile",  userid+file.getName(), requestFile);
+        Log.w(TAG, "currentItem POS DS" + position);
 
-        Log.w(TAG,"currentItem POS DS"+position);
-
-        uploadDigitalSignatureImageRequest(llheaderdigitalsignature,mSignaturePad,ivdigitalsignature,position);
+        uploadDigitalSignatureImageRequest(llheaderdigitalsignature, mSignaturePad, ivdigitalsignature, position);
 
     }
 
@@ -690,7 +677,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
         mSignaturePad.clear();
 
-        Log.w(TAG,"currentItem POS DS"+position);
+        Log.w(TAG, "currentItem POS DS" + position);
 
         dataBeanList.get(position).setField_value("");
 
@@ -699,32 +686,33 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
     @Override
     public void getInputFieldListener(RecyclerView rv_liftinputlist, int startItem, int size, List<GetFieldListResponse.DataBean.LiftListBean> lift_list) {
 
+        Log.w(TAG, "getInputFieldListener size " + size + " startItem : " + startItem + " lift_list : " + new Gson().toJson(lift_list));
         rv_liftinputlist.setNestedScrollingEnabled(true);
-        LinearLayoutManager linearlayout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
+        LinearLayoutManager linearlayout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rv_liftinputlist.setLayoutManager(linearlayout);
         rv_liftinputlist.setItemAnimator(new DefaultItemAnimator());
 
 
-        for(int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++) {
             GetFieldListResponse.DataBean.LiftListBean liftListBean = new GetFieldListResponse.DataBean.LiftListBean();
             liftListBean.setLeft("");
             list.add(liftListBean);
         }
-        LiftInputTypeListAdapter liftInputTypeListAdapter = new LiftInputTypeListAdapter(getApplicationContext(), size,startItem,this,list);
+        LiftInputTypeListAdapter liftInputTypeListAdapter = new LiftInputTypeListAdapter(getApplicationContext(), size, startItem, this, list);
         rv_liftinputlist.setAdapter(liftInputTypeListAdapter);
+
+        Log.w(TAG, "getInputFieldListener size " + size + " startItem : " + startItem + " list : " + new Gson().toJson(list));
+
 
     }
 
     @Override
     public void editTextValueListener(int startItem, String s, int size, int position) {
-
-
-        Log.w(TAG,"currentItem POS EDTX"+position);
-
-
+        Log.w(TAG, "editTextValueListener POS startItem : "+startItem+" s : "+s+" size : "+size+" position : "+position);
         list.get(position).setLeft(s);
-
         dataBeanList.get(startItem).setLift_list(list);
+        Log.w(TAG, "editTextValueListener "+" list : "+new Gson().toJson(list));
+        Log.w(TAG, "editTextValueListener "+" dataBeanList : "+new Gson().toJson(dataBeanList));
 
     }
 
@@ -734,6 +722,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
             sb.append(str).append(delimiter);
         return sb.substring(0, sb.length() - 1);
     }
+
     private void SelectDate() {
 
         final Calendar c = Calendar.getInstance();
@@ -749,7 +738,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
     @SuppressLint("LogNotTimber")
     @Override
     protected Dialog onCreateDialog(int id) {
-        Log.w(TAG,"onCreateDialog id : "+id);
+        Log.w(TAG, "onCreateDialog id : " + id);
         if (id == DATE_PICKER_ID) {
             // open datepicker dialog.
             // set date picker for current date
@@ -761,6 +750,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         }
         return null;
     }
+
     private final DatePickerDialog.OnDateSetListener pickerListener = new DatePickerDialog.OnDateSetListener() {
 
         // when dialog box is closed, below method will be called.
@@ -769,26 +759,25 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         public void onDateSet(DatePicker view, int selectedYear,
                               int selectedMonth, int selectedDay) {
 
-            year  = selectedYear;
+            year = selectedYear;
             month = selectedMonth;
-            day   = selectedDay;
-
+            day = selectedDay;
 
 
             String strdayOfMonth;
             String strMonth;
-            int month1 =(month + 1);
-            if(day == 9 || day <9){
-                strdayOfMonth = "0"+day;
-                Log.w(TAG,"Selected dayOfMonth-->"+strdayOfMonth);
-            }else{
+            int month1 = (month + 1);
+            if (day == 9 || day < 9) {
+                strdayOfMonth = "0" + day;
+                Log.w(TAG, "Selected dayOfMonth-->" + strdayOfMonth);
+            } else {
                 strdayOfMonth = String.valueOf(day);
             }
 
-            if(month1 == 9 || month1 <9){
-                strMonth = "0"+month1;
-                Log.w(TAG,"Selected month1-->"+strMonth);
-            }else{
+            if (month1 == 9 || month1 < 9) {
+                strMonth = "0" + month1;
+                Log.w(TAG, "Selected month1-->" + strMonth);
+            } else {
                 strMonth = String.valueOf(month1);
             }
 
@@ -803,23 +792,18 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
     };
 
 
-
     private void chooseImage() {
 
 
-            if (!hasPermissions(this, PERMISSIONS)) {
-                ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_CLINIC);
-            }
+        if (!hasPermissions(this, PERMISSIONS)) {
+            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_CLINIC);
+        } else {
 
 
-            else
-            {
+            CropImage.activity().start(InputValueFormListActivity.this);
 
-
-                CropImage.activity().start(InputValueFormListActivity.this);
-
-                /*CropImage.activity().start(AddYourPetImageOlduserActivity.this);*/
-            }
+            /*CropImage.activity().start(AddYourPetImageOlduserActivity.this);*/
+        }
 
 
     }
@@ -896,15 +880,9 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
             }
 
 
+        } catch (Exception e) {
+            Log.w(TAG, "onActivityResult exception" + e.toString());
         }
-
-
-        catch (Exception e){
-            Log.w(TAG,"onActivityResult exception"+e.toString());
-        }
-
-
-
 
 
     }
@@ -924,8 +902,8 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
             @Override
             public void onResponse(@NonNull Call<FileUploadResponse> call, @NonNull Response<FileUploadResponse> response) {
 
-                    if (response.body() != null) {
-                        if (200 == response.body().getCode()) {
+                if (response.body() != null) {
+                    if (200 == response.body().getCode()) {
                         Log.w(TAG, "Profpic" + "--->" + new Gson().toJson(response.body()));
 
                    /*     DocBusInfoUploadRequest.ClinicPicBean clinicPicBean = new DocBusInfoUploadRequest.ClinicPicBean(response.body().getData().trim());
@@ -937,14 +915,14 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                         img_file_upload.setVisibility(View.VISIBLE);
 
 
-                            if (uploadimagepath!=null) {
-                                Glide.with(InputValueFormListActivity.this)
-                                        .load(uploadimagepath)
-                                        .into(img_file_upload);
+                        if (uploadimagepath != null) {
+                            Glide.with(InputValueFormListActivity.this)
+                                    .load(uploadimagepath)
+                                    .into(img_file_upload);
 
-                            }
+                        }
 
-                            dataBeanList.get(imagepos).setField_value(uploadimagepath);
+                        dataBeanList.get(imagepos).setField_value(uploadimagepath);
 
                         img_close.setVisibility(View.VISIBLE);
 
@@ -990,7 +968,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
             }
 
             String fullName = path + "mylog";
-            File copyFile = new File (fullName);
+            File copyFile = new File(fullName);
 
             /* File copyFile = new File(Environment.DIRECTORY_DOWNLOADS + File.separator + fileName);*/
             copy(context, contentUri, copyFile);
@@ -1088,17 +1066,17 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         APIInterface apiInterface = RetrofitClient.getImageClient().create(APIInterface.class);
 
         Call<FileUploadResponse> call = apiInterface.getImageStroeResponse(siganaturePart);
-        Log.w(TAG,"url  :%s"+ call.request().url().toString());
+        Log.w(TAG, "url  :%s" + call.request().url().toString());
         call.enqueue(new Callback<FileUploadResponse>() {
             @SuppressLint("LogNotTimber")
             @Override
             public void onResponse(@NonNull Call<FileUploadResponse> call, @NonNull Response<FileUploadResponse> response) {
 
-                Log.w(TAG,"Profpic"+ "--->" + new Gson().toJson(response.body()));
+                Log.w(TAG, "Profpic" + "--->" + new Gson().toJson(response.body()));
 
                 llheaderdigitalsignature.setVisibility(View.GONE);
                 mSignaturePad.clear();
-                Log.w(TAG,"DigitalSignaturepic"+ "--->" + new Gson().toJson(response.body()));
+                Log.w(TAG, "DigitalSignaturepic" + "--->" + new Gson().toJson(response.body()));
 
                 // Log.w(TAG,"Profile"+ "status " + status);
                 if (response.body() != null && response.body().getCode() == 200) {
@@ -1108,9 +1086,9 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                         ivdigitalsignature.setVisibility(View.VISIBLE);
                         if (digitalSignatureServerUrlImagePath != null && !digitalSignatureServerUrlImagePath.isEmpty()) {
                             dataBeanList.get(position).setField_value(digitalSignatureServerUrlImagePath);
-                            Log.w(TAG,"digitalSignatureServerUrlImagePath pos--->"+position);
+                            Log.w(TAG, "digitalSignatureServerUrlImagePath pos--->" + position);
 
-                            Log.w(TAG,"digitalSignatureServerUrlImagePath--->"+digitalSignatureServerUrlImagePath);
+                            Log.w(TAG, "digitalSignatureServerUrlImagePath--->" + digitalSignatureServerUrlImagePath);
 
                             Glide
                                     .with(getApplicationContext())
@@ -1120,15 +1098,12 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                                     .into(ivdigitalsignature);
 
 
-
-                        }
-                        else{
+                        } else {
                             Glide.with(getApplicationContext())
                                     .load(R.drawable.digital_signature)
                                     .into(ivdigitalsignature);
 
                         }
-
 
 
                     } else {
@@ -1138,13 +1113,12 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                 }
 
 
-
             }
 
             @Override
             public void onFailure(@NonNull Call<FileUploadResponse> call, @NonNull Throwable t) {
                 // avi_indicator.smoothToHide();
-                Log.w(TAG,"DigitalSignaturepic"+ "On failure working"+ t.getMessage());
+                Log.w(TAG, "DigitalSignaturepic" + "On failure working" + t.getMessage());
                 //Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -1161,22 +1135,20 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         dialog.show();
 
         APIInterface apiInterface = RetrofitClient.getClient().create(APIInterface.class);
-        Call<FormDataStoreResponse> call = apiInterface.getformdataListResponseCall(RestUtils.getContentType(), FormDataStoreRequest());
-        Log.w(TAG,"SignupResponse url  :%s"+" "+ call.request().url().toString());
+        Call<FormDataStoreResponse> call = apiInterface.getformdataListResponseCall1(RestUtils.getContentType(), getFieldListResponse());
+        Log.w(TAG, "getformdataListResponseCall url  :%s" + " " + call.request().url().toString());
 
         call.enqueue(new Callback<FormDataStoreResponse>() {
             @SuppressLint("LogNotTimber")
             @Override
             public void onResponse(@NonNull Call<FormDataStoreResponse> call, @NonNull Response<FormDataStoreResponse> response) {
 
-                Log.w(TAG,"SignupResponse" + new Gson().toJson(response.body()));
+                Log.w(TAG, "getformdataListResponseCall" + new Gson().toJson(response.body()));
                 if (response.body() != null) {
                     message = response.body().getMessage();
                     if (200 == response.body().getCode()) {
-                        if(response.body().getData() != null){
-
-                            Toasty.success(getApplicationContext(),""+message,Toasty.LENGTH_LONG).show();
-
+                        if (response.body().getData() != null) {
+                            Toasty.success(getApplicationContext(), "" + message, Toasty.LENGTH_LONG).show();
                             startActivity(new Intent(InputValueFormListActivity.this, ActivityBasedActivity.class));
 
                         }
@@ -1184,7 +1156,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
                     } else {
                         dialog.dismiss();
-                        Toasty.warning(getApplicationContext(),""+message,Toasty.LENGTH_LONG).show();
+                        Toasty.warning(getApplicationContext(), "" + message, Toasty.LENGTH_LONG).show();
 
 
                         //showErrorLoading(response.body().getMessage());
@@ -1203,9 +1175,10 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         });
 
     }
-    private FormDataStoreRequest FormDataStoreRequest() {
 
-        /**
+    private GetFieldListResponse getFieldListResponse() {
+
+        /*
          * user_id : 123456
          * cat_id : 123456
          * service_id : 123456
@@ -1222,10 +1195,10 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
          * update_reason :
          */
 
-        List<FormDataStoreRequest.DataStoreBean> dataStoreBeanList = new ArrayList<>();
-        if(dataBeanList!=null&&dataBeanList.size()>0){
 
-            for (int i=0;i<dataBeanList.size();i++){
+        if (dataBeanList != null && dataBeanList.size() > 0) {
+
+          /*  for (int i=0;i<dataBeanList.size();i++){
 
                 FormDataStoreRequest.DataStoreBean dataStoreBean = new FormDataStoreRequest.DataStoreBean();
 
@@ -1241,42 +1214,86 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                 dataStoreBean.setField_type(dataBeanList.get(i).getField_type());
                 dataStoreBean.setField_update_reason(dataBeanList.get(i).getField_update_reason());
                 dataStoreBean.setField_value(dataBeanList.get(i).getField_value());
-
+                dataStoreBean.setLift_list(dataBeanList.get(i).getLift_list());
                 dataStoreBeanList.add(dataStoreBean);
-            }
+            }*/
 
         }
-        FormDataStoreRequest FormDataStoreRequest = new FormDataStoreRequest();
-        FormDataStoreRequest.setUser_id(userid);
-        FormDataStoreRequest.setCat_id("");
-        FormDataStoreRequest.setJob_no("");
-        FormDataStoreRequest.setService_id(service_id);
-        FormDataStoreRequest.setData_store(dataStoreBeanList);
-        FormDataStoreRequest.setStart_time("");
-        FormDataStoreRequest.setPause_time("");
-        FormDataStoreRequest.setStop_time("");
-        FormDataStoreRequest.setStorage_status("");
-        FormDataStoreRequest.setDate_of_create("");
-        FormDataStoreRequest.setDate_of_update("");
-        FormDataStoreRequest.setCreated_by("");
-        FormDataStoreRequest.setUpdated_by("");
-        FormDataStoreRequest.setUpdate_reason("");
+        // GetFieldListResponse getFieldListResponse = new GetFieldListResponse();
+        getFieldListResponse.setUser_id(userid);
+        getFieldListResponse.setActivity_id(activity_id);
+        getFieldListResponse.setJob_id(job_id);
+        getFieldListResponse.setGroup_id(group_id);
+        getFieldListResponse.setData(dataBeanList);
+        getFieldListResponse.setStart_time("");
+        getFieldListResponse.setPause_time("");
+        getFieldListResponse.setStop_time("");
+        getFieldListResponse.setStorage_status("");
+        getFieldListResponse.setDate_of_create("");
+        getFieldListResponse.setDate_of_update("");
+        getFieldListResponse.setCreated_by("");
+        getFieldListResponse.setUpdated_by("");
+        getFieldListResponse.setUpdate_reason("");
 
-        Log.w(TAG,"FormDataStoreRequest "+ new Gson().toJson(FormDataStoreRequest));
-        return FormDataStoreRequest;
+        Log.w(TAG, "data_store_management/create_Request " + new Gson().toJson(getFieldListResponse));
+        return getFieldListResponse;
     }
 
     // default back button action
     public void onBackPressed() {
+        //  showWarningBackPress();
 
-      /*  Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.new_right, R.anim.new_left);*/
-
-        //super.onBackPressed();
-
-        Toasty.warning(getApplicationContext(),"This option is disabled ",Toasty.LENGTH_LONG).show();
+        showWarningExit();
     }
 
 
+    private void showWarningBackPress() {
+        alertDialogBuilder = new AlertDialog.Builder(InputValueFormListActivity.this);
+        alertDialogBuilder.setMessage("You can't go back. Only go dashboard page");
+        alertDialogBuilder.setPositiveButton("yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        Intent intent = new Intent(InputValueFormListActivity.this, GroupListActivity.class);
+                        intent.putExtra("activity_id", activity_id);
+                        intent.putExtra("job_id", job_id);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.new_right, R.anim.new_left);
+                        finish();
+
+                    }
+                });
+
+        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
+
+    }
+
+    private void showWarningExit() {
+        new AlertDialog.Builder(this)
+                .setMessage("Are you sure you want to exit?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(InputValueFormListActivity.this, GroupListActivity.class);
+                        intent.putExtra("activity_id", activity_id);
+                        intent.putExtra("job_id", job_id);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.new_right, R.anim.new_left);
+                        finish();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
+
+
+    }
 }

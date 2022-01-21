@@ -19,6 +19,7 @@ import com.triton.johnsonapp.Forms.InputValueFormListActivity;
 import com.triton.johnsonapp.Forms.JointInspectorInputFormActivity;
 import com.triton.johnsonapp.Forms.RowBasedInputFormActivity;
 import com.triton.johnsonapp.R;
+import com.triton.johnsonapp.activity.ActivityStatusActivity;
 import com.triton.johnsonapp.activity.JobDetailActivity;
 import com.triton.johnsonapp.responsepojo.ActivityListManagementResponse;
 
@@ -86,7 +87,7 @@ public class ActivityBasedListAdapter extends  RecyclerView.Adapter<RecyclerView
 
         holder.cv_root.setOnClickListener(v -> {
 
-            Intent intent = new Intent(context, JobDetailActivity.class);
+            Intent intent = new Intent(context, ActivityStatusActivity.class);
 
             intent.putExtra("activity_id",dataBeanList.get(position).get_id());
 

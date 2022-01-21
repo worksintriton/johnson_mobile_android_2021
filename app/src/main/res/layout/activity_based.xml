@@ -14,30 +14,60 @@
         android:orientation="vertical">
 
 
-        <!-- <ImageView
-            android:id="@+id/img_back"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="20dp"
-            app:srcCompat="@drawable/backbutton"
-            android:contentDescription="@string/image" />-->
-
-
-        <TextView
-            android:id="@+id/txt_toolbar_title"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@color/colorPrimary"
-            android:fontFamily="@font/sourcesanspro_regular"
-            android:padding="15dp"
-            android:text="@string/activitybased"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:visibility="visible" />
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="center_vertical"
+            android:layout_marginEnd="10dp">
+            <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="20dp"
+                android:contentDescription="@string/image"
+                app:srcCompat="@drawable/backbutton" />
+            <TextView
+                android:id="@+id/txt_toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@color/colorPrimary"
+                android:fontFamily="@font/sourcesanspro_regular"
+                android:padding="15dp"
+                android:text="@string/activitybased"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:visibility="visible"/>
+            <LinearLayout
+                android:id="@+id/ll_logout"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="right|center_vertical"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                tools:ignore="RtlHardcoded"
+                android:onClick="logOutUser">
+                <ImageView
+                    android:gravity="right|center_vertical"
+                    android:id="@+id/img_logout"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="20dp"
+                    app:srcCompat="@drawable/log_out"
+                    android:contentDescription="@string/image" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -71,8 +101,8 @@
                 android:background="@null"
                 android:fontFamily="@font/sourcesanspro_regular"
                 android:hint="@string/search"
-                android:imeOptions="actionDone"
-                android:inputType="textWebEmailAddress"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
                 android:maxLines="1"
                 android:textColor="@color/colorPrimary"
                 android:textColorHint="@color/gray_btn_bg_pressed_color"

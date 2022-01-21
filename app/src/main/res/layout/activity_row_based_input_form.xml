@@ -8,22 +8,41 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:background="@color/colorPrimary">
 
         <TextView
             android:id="@+id/txt_toolbar_title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@color/colorPrimary"
             android:fontFamily="@font/sourcesanspro_regular"
             android:padding="15dp"
-            android:text="@string/row_based"
+            android:text="@string/info"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"
             android:visibility="visible" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end">
+            <TextView
+                android:id="@+id/txt_exit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/sourcesanspro_regular"
+                android:padding="15dp"
+                android:text="Exit"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:visibility="visible" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 
@@ -50,20 +69,7 @@
                 android:layout_gravity="center"
                 android:contentDescription="@string/image"
                 android:scaleType="fitXY"
-                android:src="@drawable/image_thumbnail"
-                android:visibility="gone" />
-
-            <ImageView
-                android:id="@+id/img_info"
-                android:layout_width="80dp"
-                android:layout_height="@dimen/_60dp"
-                android:layout_gravity="center|end"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="@dimen/_10dp"
-                android:layout_marginBottom="@dimen/_10dp"
-                android:fontFamily="@font/sourcesanspro_regular"
-                android:src="@drawable/info"
-                android:visibility="gone" />
+                android:src="@drawable/image_thumbnail" />
 
   <!--      <LinearLayout
             android:layout_width="match_parent"
@@ -220,7 +226,7 @@
                         android:layout_marginBottom="@dimen/_20dp"
                         android:fontFamily="@font/sourcesanspro_regular"
                         android:padding="15dp"
-                        android:text="@string/add_row_based_input_form"
+                        android:text="@string/row_dimension"
                         android:textAlignment="center"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="12sp"
@@ -452,6 +458,7 @@
                                             android:layout_weight="1"
                                             android:orientation="vertical">
 
+
                                             <TextView
                                                 android:id="@+id/txt_rem"
                                                 style="@style/table_header"
@@ -462,17 +469,19 @@
                                                 android:text="@string/remarks"
                                                 android:textAlignment="center" />
 
+
+
+
                                             <EditText
                                                 android:id="@+id/edt_rem"
                                                 style="@style/table_row_item"
-                                                android:layout_width="@dimen/_150dp"
+                                                android:layout_width="60dp"
                                                 android:layout_height="@dimen/_40dp"
                                                 android:layout_gravity="center_horizontal"
-                                                android:layout_weight="1"
                                                 android:ellipsize="end"
                                                 android:gravity="center"
                                                 android:hint="@string/remarks"
-                                                android:maxLength="25"
+                                                android:maxLength="6"
                                                 android:maxLines="1"
                                                 android:textAlignment="center"
                                                 android:textColor="@color/black" />
@@ -492,7 +501,8 @@
                                                 android:layout_height="@dimen/_35dp"
                                                 android:layout_gravity="center_horizontal"
                                                 android:gravity="center"
-                                                android:textAlignment="center" />
+                                                android:textAlignment="center"
+                                                android:text="Action"/>
 
                                             <ImageView
                                                 android:id="@+id/img_add"
@@ -501,7 +511,7 @@
                                                 android:layout_gravity="center|center_horizontal"
                                                 android:layout_marginTop="10dp"
                                                 android:scaleType="fitCenter"
-                                                android:src="@drawable/icn_add" />
+                                                android:src="@drawable/ic_baseline_add_circle_24" />
                                         </LinearLayout>
 
                                         <LinearLayout

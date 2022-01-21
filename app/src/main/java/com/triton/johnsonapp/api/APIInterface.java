@@ -2,6 +2,7 @@ package com.triton.johnsonapp.api;
 
 import com.google.android.gms.common.internal.GetServiceRequest;
 import com.triton.johnsonapp.requestpojo.ActivityListManagementRequest;
+import com.triton.johnsonapp.requestpojo.FetchRecordByUserIDRequest;
 import com.triton.johnsonapp.requestpojo.FormDataStoreRequest;
 import com.triton.johnsonapp.requestpojo.GetFieldListRequest;
 import com.triton.johnsonapp.requestpojo.GroupDetailManagementRequest;
@@ -9,6 +10,7 @@ import com.triton.johnsonapp.requestpojo.JobNoManagementRequest;
 import com.triton.johnsonapp.requestpojo.LoginRequest;
 import com.triton.johnsonapp.requestpojo.SubGroupDetailManagementRequest;
 import com.triton.johnsonapp.responsepojo.ActivityListManagementResponse;
+import com.triton.johnsonapp.responsepojo.FetchRecordByUserIDResponse;
 import com.triton.johnsonapp.responsepojo.FileUploadResponse;
 import com.triton.johnsonapp.responsepojo.FormDataStoreResponse;
 import com.triton.johnsonapp.responsepojo.GetFieldListResponse;
@@ -40,9 +42,18 @@ public interface APIInterface {
     @POST("activity_list_management/getlist_id")
     Call<ActivityListManagementResponse> activityListResponseCall(@Header("Content-Type") String type, @Body ActivityListManagementRequest activityListManagementRequest);
 
+
+    /*activity list*/
+    @POST("activedetail_management/getlist_id")
+    Call<ActivityListManagementResponse> activedetailmanagementResponseCall(@Header("Content-Type") String type, @Body ActivityListManagementRequest activityListManagementRequest);
+
     /*job_no_managmentt list*/
     @POST("job_no_managment/getlist_id")
     Call<JobNoManagementResponse> jobnomanagmentResponseCall(@Header("Content-Type") String type, @Body JobNoManagementRequest jobNoManagementRequest);
+
+    /*job_no_managmentt get list all*/
+    @POST("job_no_managment/getlist_all")
+    Call<JobNoManagementResponse> jobnomanagmentgetlistallResponseCall(@Header("Content-Type") String type, @Body ActivityListManagementRequest activityListManagementRequest);
 
     /*group_detail_managment list*/
     @POST("group_detail_managment/getlist_id")
@@ -70,6 +81,15 @@ public interface APIInterface {
 
     /*form store*/
     @POST("data_store_management/create")
-    Call<FormDataStoreResponse> getformdataListResponseCall(@Header("Content-Type") String type, @Body FormDataStoreRequest formDataStoreRequest);
+    Call<FormDataStoreResponse> getformdataListResponseCall(@Header("Content-Type") String type, @Body FormDataStoreRequest formDataStoreRequest); /*form store*/
+
+    /*form store*/
+    @POST("data_store_management/create")
+    Call<FormDataStoreResponse> getformdataListResponseCall1(@Header("Content-Type") String type, @Body GetFieldListResponse getFieldListResponse);
+
+
+  /*form store*/
+    @POST("data_store_management/fetch_record_byuserid")
+    Call<FetchRecordByUserIDResponse> fetch_record_byuseridResponseCall(@Header("Content-Type") String type, @Body FetchRecordByUserIDRequest fetchRecordByUserIDRequest);
 
 }

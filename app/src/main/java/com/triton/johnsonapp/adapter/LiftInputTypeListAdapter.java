@@ -66,7 +66,7 @@ public class LiftInputTypeListAdapter extends  RecyclerView.Adapter<RecyclerView
 
         if(list.get(position).getLeft()!=null&&!list.get(position).getLeft().equals("")){
 
-            holder.edt_inputValue.setText(list.get(position).getLeft());
+           // holder.edt_inputValue.setText(list.get(position).getLeft());
 
         }
 
@@ -77,11 +77,16 @@ public class LiftInputTypeListAdapter extends  RecyclerView.Adapter<RecyclerView
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+/*
                 editTextValueChangedListener.editTextValueListener(startItem,charSequence.toString(),size,position);
+*/
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {}
+            public void afterTextChanged(Editable editable) {
+                editTextValueChangedListener.editTextValueListener(startItem,editable.toString(),size,position);
+
+            }
         });
 
 

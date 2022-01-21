@@ -25,6 +25,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.github.gcacace.signaturepad.views.SignaturePad;
+import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.interfaces.GetDateTimeListener;
 import com.triton.johnsonapp.interfaces.GetDigitalSignUploadAddListener;
@@ -81,6 +82,7 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
     int currentPage;
 
     int check = 0;
+    private List<?> arrayListdropdown;
 
     public FieldListAdapter(Context context, List<GetFieldListResponse.DataBean> dataBeanList, int ITEMS_PER_PAGE, int TOTAL_NUM_ITEMS, GetStringListener getStringListener, GetTextAreaListener getTextAreaListener, GetSpinnerListener getSpinnerListener, GetNumberListener getNumberListener, GetDateTimeListener getDateTimeListener,
                             GetFileUploadListener getFileUploadListener, GetDigitalSignUploadListener getDigitalSignUploadListener, GetDigitalSignUploadAddListener getDigitalSignUploadAddListener, GetDigitalSignUploadClearListener getDigitalSignUploadClearListener,  GetInputFieldListener getInputFieldListener,int currentPage) {
@@ -138,6 +140,7 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
         Log.w(TAG,"currentItem startItem "+startItem);
 
         Log.w(TAG,"currentItem POS "+position);
+        Log.w(TAG,"currentItem Field_name "+position+" "+currentItem.getField_name());
 
         if(currentItem.getField_name() != null && !currentItem.getField_name().equals("")){
             holder.txt_field_title.setText(currentItem.getField_name());
@@ -152,7 +155,7 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
         }
 
-        if(currentItem.getField_type()!=null&&!currentItem.getField_type().equals("")){
+        if(currentItem.getField_type()!=null && !currentItem.getField_type().equals("")){
 
             if(currentItem.getField_type().equals("String")){
 
@@ -253,6 +256,8 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
 
             else if(currentItem.getField_type().equals("Dropdown")){
+                arrayListdropdown =  currentItem.getDrop_down();
+                Log.w(TAG,"currentItem.getDrop_down() : "+new Gson().toJson(currentItem.getDrop_down()));
 
                 holder.ll_dropdown.setVisibility(View.VISIBLE);
 
@@ -261,7 +266,6 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                 arrayList.add("Select Value");
 
                 for (int i = 0; i < currentItem.getDrop_down().size(); i++) {
-
                     String string = currentItem.getDrop_down().get(i).toString();
                     Log.w(TAG, "spr string-->" + string);
                     arrayList.add(string);
@@ -269,15 +273,16 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                 }
 
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, arrayList);
-
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-                if(currentItem.getField_value()!=null&&!currentItem.getField_value().equals("")){
+                Log.w(TAG,"currentItem.getDrop_down() Field_comments : "+currentItem.getField_comments()+" Field_value : "+currentItem.getField_value());
 
-                    String compareValue = currentItem.getField_value();
+               if(currentItem.getField_value()!=null && !currentItem.getField_value().equals("")){
+                //if(currentItem.getField_comments()!=null && !currentItem.getField_comments().isEmpty()){
+                    Log.w(TAG,"Dropdown if--->");
 
+                    String compareValue = currentItem.getField_comments();
                     holder.spr_dropdown.setAdapter(adapter);
-
                     if (compareValue != null) {
                         int spinnerPosition = adapter.getPosition(compareValue);
                         holder.spr_dropdown.setSelection(spinnerPosition);
@@ -305,10 +310,8 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
                 }
                 else {
-
-
+                    Log.w(TAG,"Dropdown else--->");
                     holder.spr_dropdown.setAdapter(adapter);
-
                     holder.spr_dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                             if(++check > 1) {
@@ -327,7 +330,6 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                         }
                     });
 
-
                 }
 
 
@@ -339,7 +341,6 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                 holder.edt_datetime.setVisibility(View.VISIBLE);
 
                 if(currentItem.getField_value()!=null&&!currentItem.getField_value().equals("")) {
-
                     holder.edt_datetime.setText(currentItem.getField_value());
 
 
@@ -492,7 +493,7 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                 });
             }
 
-            else if(currentItem.getField_type().equals("LIFT")){
+            else if(currentItem.getField_type().equals("Lift")){
 
                 if(currentItem.getField_length() != null && !currentItem.getField_length().equals("")){
 

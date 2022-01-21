@@ -68,7 +68,6 @@
 
             <EditText
                 android:id="@+id/edt_search"
-                tools:ignore="Autofill,LabelFor,TextFields"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -77,13 +76,14 @@
                 android:background="@null"
                 android:fontFamily="@font/sourcesanspro_regular"
                 android:hint="@string/search"
-                android:imeOptions="actionDone"
-                android:inputType="textWebEmailAddress"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
                 android:maxLines="1"
                 android:textColor="@color/colorPrimary"
                 android:textColorHint="@color/gray_btn_bg_pressed_color"
                 android:textCursorDrawable="@null"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:ignore="Autofill,LabelFor,TextFields" />
 
 
         </RelativeLayout>
