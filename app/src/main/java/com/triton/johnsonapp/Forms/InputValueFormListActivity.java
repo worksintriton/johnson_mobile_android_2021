@@ -223,16 +223,15 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         userid = user.get(SessionManager.KEY_ID);
 
         username = user.get(SessionManager.KEY_USERNAME);
-
         btn_prev.setEnabled(false);
-
         networkStatus = ConnectionDetector.getConnectivityStatusString(getApplicationContext());
 
         if (networkStatus.equalsIgnoreCase("Not connected to Internet")) {
 
             Toasty.warning(getApplicationContext(), "No Internet", Toasty.LENGTH_LONG).show();
 
-        } else {
+        }
+        else {
 
             getfieldListResponseCall();
         }
@@ -266,9 +265,9 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                 Log.w(TAG, "btnnext ITEMS_REMAINING : " + ITEMS_REMAINING);
                 Log.w(TAG, "btnnext startItem : "  + startItem);
 
-                int condition;
+                int condition = 0;
 
-                ITEMS_REMAINING = ITEMS_REMAINING - ITEMS_PER_PAGE;
+               ITEMS_REMAINING = ITEMS_REMAINING - ITEMS_PER_PAGE;
 
                 Log.w(TAG, "btnnext ITEMS_REMAINING : " + ITEMS_REMAINING);
                 Log.w(TAG, "btnnext TOTAL_NUM_ITEMS : " + TOTAL_NUM_ITEMS);
@@ -317,27 +316,16 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                     btn_success.setVisibility(View.VISIBLE);
                 }
                 else {
-                    Log.w(TAG, "btnnext else condition----->");
-                    try {
-                        condition = startItem + ITEMS_PER_PAGE;
-                        Log.w(TAG, "btnnext: else condition : " + condition + " startItem : " + startItem);
-                        for (int i = startItem; i < condition; i++) {
+                       Log.w(TAG, "btnnext else condition----->");
+                       condition = startItem + ITEMS_PER_PAGE;
+                        Log.w(TAG, "btnnext startItem : "  + startItem+" condition : "+condition);
+                        for (int i = startItem; i <dataBeanList.size(); i++) {
                             //Log.w(TAG, "btnnext: dataBeanList" + new Gson().toJson(dataBeanList.get(i)));
                             dataBeanListS.add(dataBeanList.get(i));
                         }
-
                         Log.w(TAG, "btnnext dataBeanList" + new Gson().toJson(dataBeanListS));
-
-
                         setView(dataBeanListS, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS);
-                        // enableDisableButtons();
-                        // rv.setAdapter(new MyAdapter(MainActivity.this, p.generatePage(currentPage)));
-
                         toggleButtons();
-                    } catch (IndexOutOfBoundsException e) {
-                        Log.e("error : ", "" + e.getLocalizedMessage() + " " + e.getMessage());
-
-                    }
 
 
                 }
@@ -378,7 +366,6 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                 toggleButtons();
             }
         });
-
         btn_success.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -790,8 +777,6 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
         }
     };
-
-
     private void chooseImage() {
 
 
@@ -807,8 +792,6 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
 
     }
-
-
     private boolean hasPermissions(Context context, String... permissions) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
             for (String permission : permissions) {
