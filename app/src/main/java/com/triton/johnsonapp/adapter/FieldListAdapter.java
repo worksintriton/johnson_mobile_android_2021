@@ -498,10 +498,12 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                 if(currentItem.getField_length() != null && !currentItem.getField_length().equals("")){
 
                     Log.w(TAG,"currentItem POS Lift"+startItem);
+                    Log.w(TAG,"currentItem POS Lift"+currentItem.getField_name()+" "+currentItem.get_id());
 
                     int size = Integer.parseInt(currentItem.getField_length());
 
                     holder.rv_liftinputlist.setVisibility(View.VISIBLE);
+
 
                     getInputFieldListener.getInputFieldListener(holder.rv_liftinputlist,startItem,size,currentItem.getLift_list());
                 }

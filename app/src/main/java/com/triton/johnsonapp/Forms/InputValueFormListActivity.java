@@ -690,14 +690,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         LinearLayoutManager linearlayout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rv_liftinputlist.setLayoutManager(linearlayout);
         rv_liftinputlist.setItemAnimator(new DefaultItemAnimator());
-
-
-        for (int i = 0; i < size; i++) {
-            GetFieldListResponse.DataBean.LiftListBean liftListBean = new GetFieldListResponse.DataBean.LiftListBean();
-            liftListBean.setLeft("");
-            list.add(liftListBean);
-        }
-        LiftInputTypeListAdapter liftInputTypeListAdapter = new LiftInputTypeListAdapter(getApplicationContext(), size, startItem, this, list);
+        LiftInputTypeListAdapter liftInputTypeListAdapter = new LiftInputTypeListAdapter(getApplicationContext(), size, startItem, this, lift_list);
         rv_liftinputlist.setAdapter(liftInputTypeListAdapter);
 
         Log.w(TAG, "getInputFieldListener size " + size + " startItem : " + startItem + " list : " + new Gson().toJson(list));
@@ -706,11 +699,13 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
     }
 
     @Override
-    public void editTextValueListener(int startItem, String s, int size, int position) {
-        Log.w(TAG, "editTextValueListener POS startItem : "+startItem+" s : "+s+" size : "+size+" position : "+position);
-        list.get(position).setLeft(s);
-        dataBeanList.get(startItem).setLift_list(list);
-        Log.w(TAG, "editTextValueListener "+" list : "+new Gson().toJson(list));
+    public void editTextValueListener(int startItem, String s, int size, int position,List<GetFieldListResponse.DataBean.LiftListBean> listBean) {
+        Log.w(TAG, "editTextValueListener POS startItem : "+startItem+" s : "+s+" size : "+size+" position : "+position+" list ->"+new Gson().toJson(listBean));
+        Log.w(TAG, "editTextValueListener POS startItem : "+"Liftlist : "+new Gson().toJson(list));
+        listBean.get(position).setLeft(s);
+       // list.get(position).setLeft(s);
+        dataBeanList.get(startItem).setLift_list(listBean);
+        Log.w(TAG, "editTextValueListener "+" listBean : "+new Gson().toJson(listBean));
         Log.w(TAG, "editTextValueListener "+" dataBeanList : "+new Gson().toJson(dataBeanList));
 
     }

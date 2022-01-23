@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.interfaces.EditTextValueChangedListener;
 import com.triton.johnsonapp.model.EditModel;
@@ -84,7 +85,9 @@ public class LiftInputTypeListAdapter extends  RecyclerView.Adapter<RecyclerView
 
             @Override
             public void afterTextChanged(Editable editable) {
-                editTextValueChangedListener.editTextValueListener(startItem,editable.toString(),size,position);
+                Log.w(TAG,"afterTextChanged liftlist-->"+new Gson().toJson(list));
+
+                editTextValueChangedListener.editTextValueListener(startItem,editable.toString(),size,position,list);
 
             }
         });
