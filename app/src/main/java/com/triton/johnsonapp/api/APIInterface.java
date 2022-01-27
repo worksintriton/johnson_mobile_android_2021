@@ -1,15 +1,22 @@
 package com.triton.johnsonapp.api;
 
-import com.google.android.gms.common.internal.GetServiceRequest;
 import com.triton.johnsonapp.requestpojo.ActivityListManagementRequest;
+import com.triton.johnsonapp.requestpojo.CheckDataStoreRequest;
 import com.triton.johnsonapp.requestpojo.FetchRecordByUserIDRequest;
 import com.triton.johnsonapp.requestpojo.FormDataStoreRequest;
 import com.triton.johnsonapp.requestpojo.GetFieldListRequest;
 import com.triton.johnsonapp.requestpojo.GroupDetailManagementRequest;
+import com.triton.johnsonapp.requestpojo.ImageBasedStroeDataRequest;
 import com.triton.johnsonapp.requestpojo.JobNoManagementRequest;
 import com.triton.johnsonapp.requestpojo.LoginRequest;
+import com.triton.johnsonapp.requestpojo.PauseJobRequest;
+import com.triton.johnsonapp.requestpojo.ResumeJobRequest;
+import com.triton.johnsonapp.requestpojo.RowBasedStroeDataRequest;
+import com.triton.johnsonapp.requestpojo.StartWorkRequest;
+import com.triton.johnsonapp.requestpojo.StopJobRequest;
 import com.triton.johnsonapp.requestpojo.SubGroupDetailManagementRequest;
 import com.triton.johnsonapp.responsepojo.ActivityListManagementResponse;
+import com.triton.johnsonapp.responsepojo.CheckDataStoreResponse;
 import com.triton.johnsonapp.responsepojo.FetchRecordByUserIDResponse;
 import com.triton.johnsonapp.responsepojo.FileUploadResponse;
 import com.triton.johnsonapp.responsepojo.FormDataStoreResponse;
@@ -19,8 +26,7 @@ import com.triton.johnsonapp.responsepojo.GroupDetailManagementResponse;
 import com.triton.johnsonapp.responsepojo.JobNoManagementResponse;
 import com.triton.johnsonapp.responsepojo.LoginResponse;
 import com.triton.johnsonapp.responsepojo.SubGroupDetailManagementResponse;
-
-import java.io.ObjectInputStream;
+import com.triton.johnsonapp.responsepojo.SuccessResponse;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
@@ -88,8 +94,42 @@ public interface APIInterface {
     Call<FormDataStoreResponse> getformdataListResponseCall1(@Header("Content-Type") String type, @Body GetFieldListResponse getFieldListResponse);
 
 
-  /*form store*/
+    /*ImageBased form store*/
+    @POST("data_store_management/create")
+    Call<FormDataStoreResponse> imageBasedStroeDataRequestCall(@Header("Content-Type") String type, @Body ImageBasedStroeDataRequest imageBasedStroeDataRequest);
+
+
+    /*Row Based form store*/
+    @POST("data_store_management/create")
+    Call<FormDataStoreResponse> rowBasedStroeDataRequestCall(@Header("Content-Type") String type, @Body RowBasedStroeDataRequest rowBasedStroeDataRequest);
+
+
+    /*form store*/
     @POST("data_store_management/fetch_record_byuserid")
     Call<FetchRecordByUserIDResponse> fetch_record_byuseridResponseCall(@Header("Content-Type") String type, @Body FetchRecordByUserIDRequest fetchRecordByUserIDRequest);
+
+
+    /*Check Data Store*/
+    @POST("data_store_management/check_data_store")
+    Call<CheckDataStoreResponse> checkDataStoreResponseCall(@Header("Content-Type") String type, @Body CheckDataStoreRequest checkDataStoreRequest);
+
+   /*Stark work request*/
+    @POST("data_store_management/start_work")
+    Call<SuccessResponse> startWorkRequestCall(@Header("Content-Type") String type, @Body StartWorkRequest starkWorkRequest);
+
+
+   /*Pause job request*/
+    @POST("data_store_management/pause_job")
+    Call<SuccessResponse> pausejobRequestCall(@Header("Content-Type") String type, @Body PauseJobRequest pauseJobRequest);
+
+
+    /*Resume job request*/
+    @POST("data_store_management/resume_job")
+    Call<SuccessResponse> resumejobRequestCall(@Header("Content-Type") String type, @Body ResumeJobRequest resumeJobRequest);
+
+
+    /*Stop job request*/
+    @POST("data_store_management/stop_job")
+    Call<SuccessResponse> stopjobRequestCall(@Header("Content-Type") String type, @Body StopJobRequest stopJobRequest);
 
 }

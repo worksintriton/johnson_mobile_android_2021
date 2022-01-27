@@ -86,6 +86,7 @@ public class LoginActivity extends AppCompatActivity {
 
         userNameMaterialEditText =  findViewById(R.id.user_name);
         passwordMaterialEditText =  findViewById(R.id.password);
+        loginMainLinearLayout =  findViewById(R.id.loginMainLinearLayout);
 
         userNameMaterialEditText.setTransformationMethod(new NumericKeyBoardTransformationMethod());
 

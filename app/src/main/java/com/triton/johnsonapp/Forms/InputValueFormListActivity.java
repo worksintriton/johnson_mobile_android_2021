@@ -516,10 +516,15 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
         /*
          * group_id : 61c1e5e09934282617679543
+         * subgroup_id
+         * job_id
+         * user_id
          */
         GetFieldListRequest getFieldListRequest = new GetFieldListRequest();
         getFieldListRequest.setGroup_id(group_id);
         getFieldListRequest.setSub_group_id(subgroup_id);
+        getFieldListRequest.setJob_id(job_id);
+        getFieldListRequest.setUser_id(userid);
 
         Log.w(TAG, "GetFieldListRequest " + new Gson().toJson(getFieldListRequest));
         return getFieldListRequest;
@@ -1209,13 +1214,16 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
             }*/
 
         }
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm aa", Locale.getDefault());
+        String currentDateandTime = sdf.format(new Date());
+
         // GetFieldListResponse getFieldListResponse = new GetFieldListResponse();
         getFieldListResponse.setUser_id(userid);
         getFieldListResponse.setActivity_id(activity_id);
         getFieldListResponse.setJob_id(job_id);
         getFieldListResponse.setGroup_id(group_id);
         getFieldListResponse.setData(dataBeanList);
-        getFieldListResponse.setStart_time("");
+        getFieldListResponse.setStart_time(currentDateandTime);
         getFieldListResponse.setPause_time("");
         getFieldListResponse.setStop_time("");
         getFieldListResponse.setStorage_status("");

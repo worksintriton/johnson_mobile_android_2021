@@ -7,7 +7,7 @@ public class GetFieldListResponse {
     /*
      * Status : Success
      * Message : field management List
-     *  * user_id : 123456
+     * user_id : 123456
      * activity_id : 123456
      * job_id : 123456
      * group_id : 123456

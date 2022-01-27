@@ -29,6 +29,7 @@
             tools:ignore="ContentDescription" />
 
         <TextView
+            android:id="@+id/txt_jobstatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/sourcesanspro_regular"
@@ -38,6 +39,7 @@
             android:textSize="18sp" />
 
         <TextView
+            android:id="@+id/txt_job_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/sourcesanspro_regular"
@@ -46,25 +48,46 @@
             android:textColor="@color/black"
             android:textSize="18sp" />
 
+        <Button
+            android:layout_marginTop="@dimen/_20dp"
+            android:id="@+id/btn_back"
+            android:layout_width="@dimen/_200dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/green_button_background_with_radius"
+            android:elevation="1dp"
+            android:stateListAnimator="@animator/button_elevation"
+            android:text="Back"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
             android:layout_marginTop="@dimen/_50dp"
-            android:layout_marginBottom="@dimen/_30dp">
+            android:layout_marginBottom="@dimen/_30dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
             <LinearLayout
+                android:id="@+id/ll_start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginStart="@dimen/_20dp"
-                android:id="@+id/ll_start">
+                android:orientation="vertical">
+
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:background="@drawable/ic_baseline_play_circle_outline_24"
                     tools:ignore="ContentDescription" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -75,18 +98,46 @@
                     android:textSize="18sp" />
 
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_resume"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginStart="@dimen/_40dp"
-                android:id="@+id/ll_pause">
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_baseline_restore_24"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sourcesanspro_regular"
+                    android:gravity="center_horizontal"
+                    android:text="Resume"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_pause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_40dp"
+                android:orientation="vertical">
+
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:background="@drawable/ic_baseline_pause_circle_outline_24"
                     tools:ignore="ContentDescription" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -97,18 +148,21 @@
                     android:textSize="18sp" />
 
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_stop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginStart="@dimen/_40dp"
-                android:id="@+id/ll_stop">
+                android:orientation="vertical">
+
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:background="@drawable/ic_baseline_stop_circle_24"
                     tools:ignore="ContentDescription" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -121,9 +175,6 @@
             </LinearLayout>
 
         </LinearLayout>
-
-
-
 
 
     </LinearLayout>
