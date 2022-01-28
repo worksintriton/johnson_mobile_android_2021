@@ -2,6 +2,15 @@ package com.triton.johnsonapp.requestpojo;
 
 public class FetchRecordByUserIDRequest {
     private String user_id;
+    private String activity_id;
+
+    public String getActivity_id() {
+        return activity_id;
+    }
+
+    public void setActivity_id(String activity_id) {
+        this.activity_id = activity_id;
+    }
 
     public String getUser_id() {
         return user_id;

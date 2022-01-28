@@ -79,7 +79,7 @@ public class JobDetailActivity extends AppCompatActivity {
     EditText edt_search;
 
     private String search_string ="";
-    private String status;
+    private String status = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -240,17 +240,19 @@ public class JobDetailActivity extends AppCompatActivity {
 
     }
     private JobNoManagementRequest JobNoManagementRequest() {
-
-
-
         /*
          * activedetail__id : 61c1e43497057923644090bd
+         * search_string
+         * request_type
+         * user_id
          */
 
 
         JobNoManagementRequest JobNoManagementRequest = new JobNoManagementRequest();
         JobNoManagementRequest.setActivedetail__id(activity_id);
         JobNoManagementRequest.setSearch_string(search_string);
+        JobNoManagementRequest.setRequest_type(status);
+        JobNoManagementRequest.setUser_id(userid);
 
         Log.w(TAG,"JobNoManagementRequest "+ new Gson().toJson(JobNoManagementRequest));
         return JobNoManagementRequest;

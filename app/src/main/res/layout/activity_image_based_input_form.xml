@@ -60,7 +60,6 @@
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_margin="20dp"
             android:orientation="vertical">
 
@@ -74,15 +73,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:id="@+id/ll_content">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:orientation="horizontal"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:layout_margin="10dp">
 
                     <TextView
                         android:id="@+id/txt_c4"
@@ -213,7 +213,8 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="end">
+                        android:gravity="end"
+                        android:layout_marginEnd="@dimen/_10dp">
 
                         <TextView
                             android:id="@+id/txt_icr"
@@ -348,7 +349,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="end"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginEnd="@dimen/_10dp">
 
                         <TextView
                             android:id="@+id/txt_c2"
@@ -365,7 +367,52 @@
                     </RelativeLayout>
 
                 </LinearLayout>
+
+                <TableLayout
+                    android:id="@+id/tl_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/table_header"
+                    android:layout_marginTop="@dimen/_60dp">
+                    <TableRow
+                        android:id="@+id/tableRow1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5dp">
+
+                        <TextView
+                            android:layout_width="@dimen/_100dp"
+                            android:layout_height="wrap_content"
+                            android:text="Title"
+                            android:textAlignment="textStart"/>
+
+                        <TextView
+                            android:layout_width="@dimen/_100dp"
+                            android:layout_height="wrap_content"
+                            android:text="Value 1"
+                            android:textAlignment="textStart"/>
+
+                        <TextView
+                            android:layout_width="@dimen/_100dp"
+                            android:layout_height="wrap_content"
+                            android:text="Value 2"
+                            android:textAlignment="textStart"/>
+
+                    </TableRow>
+
+
+                </TableLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_datalist"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+
+                    />
             </LinearLayout>
+
+
 
 
         </FrameLayout>

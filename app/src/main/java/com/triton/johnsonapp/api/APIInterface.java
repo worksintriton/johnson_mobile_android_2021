@@ -54,7 +54,7 @@ public interface APIInterface {
     Call<ActivityListManagementResponse> activedetailmanagementResponseCall(@Header("Content-Type") String type, @Body ActivityListManagementRequest activityListManagementRequest);
 
     /*job_no_managmentt list*/
-    @POST("job_no_managment/getlist_id")
+    @POST("job_no_managment/getlist_id1")
     Call<JobNoManagementResponse> jobnomanagmentResponseCall(@Header("Content-Type") String type, @Body JobNoManagementRequest jobNoManagementRequest);
 
     /*job_no_managmentt get list all*/

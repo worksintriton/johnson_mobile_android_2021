@@ -3,6 +3,9 @@ package com.triton.johnsonapp.Forms;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -20,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,8 +32,11 @@ import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.activity.ActivityBasedActivity;
 import com.triton.johnsonapp.activity.GroupListActivity;
+import com.triton.johnsonapp.adapter.ImageBasedArrayListAdapter;
+import com.triton.johnsonapp.adapter.RowBasedArrayListAdapter;
 import com.triton.johnsonapp.api.APIInterface;
 import com.triton.johnsonapp.api.RetrofitClient;
+import com.triton.johnsonapp.model.RowDataFormModel;
 import com.triton.johnsonapp.requestpojo.ImageBasedStroeDataRequest;
 import com.triton.johnsonapp.responsepojo.FormDataStoreResponse;
 import com.triton.johnsonapp.session.SessionManager;
@@ -97,6 +104,16 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.txt_exit)
     TextView txt_exit;
+
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.rv_datalist)
+    RecyclerView rv_datalist;
+
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.tl_header)
+    TableLayout tl_header;
+
+
     private Dialog alertdialog;
 
     private Dialog dialog;
@@ -143,6 +160,8 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
 
         }
 
+
+        tl_header.setVisibility(View.GONE);
         txt_exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -282,6 +301,12 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
                         Data.add(dataBean);
                         Log.w(TAG,"DATA LIST : "+new Gson().toJson(Data));
                         alertdialog.dismiss();
+                        if(Data != null && Data.size()>0){
+                            tl_header.setVisibility(View.VISIBLE);
+                            setView();
+                        }else{
+                            tl_header.setVisibility(View.GONE);
+                        }
                     }
 
 
@@ -391,6 +416,14 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
         Log.w(TAG, "data_store_management/create_Request " + new Gson().toJson(imageBasedStroeDataRequest));
         return imageBasedStroeDataRequest;
     }
+
+    private void setView() {
+        rv_datalist.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
+        rv_datalist.setItemAnimator(new DefaultItemAnimator());
+        ImageBasedArrayListAdapter imageBasedArrayListAdapter = new ImageBasedArrayListAdapter(this, Data);
+        rv_datalist.setAdapter(imageBasedArrayListAdapter);
+    }
+
 
 
 }

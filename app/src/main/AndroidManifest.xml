@@ -32,7 +32,7 @@
         android:allowBackup="true"
         android:icon="@drawable/app_logo"
         android:label="@string/app_name"
-        android:screenOrientation="fullSensor"
+        android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
@@ -41,48 +41,60 @@
         <activity
             android:name=".activity.MainActivity"
             android:exported="false"
-            android:screenOrientation="fullSensor"
-            android:theme="@style/AppTheme.NoActionBar"/>
+          android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
+
+            android:theme="@style/AppTheme.NoActionBar"
+           />
         <activity
             android:name=".activity.StatusActivity"
             android:exported="false"
-            android:screenOrientation="fullSensor"
+           android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activity.ActivityStatusActivity"
             android:exported="false"
-            android:screenOrientation="fullSensor"
+           android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activity.GroupListActivity"
-            android:screenOrientation="fullSensor"
+           android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.JobDetailActivity"
-            android:screenOrientation="fullSensor"
+           android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".activity.AllJobListActivity"
-            android:screenOrientation="fullSensor"
+           android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.ActivityBasedActivity"
-            android:screenOrientation="fullSensor"
+           android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Forms.JointInspectorInputFormActivity"
-            android:screenOrientation="fullSensor"
+           android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Forms.ImageBasedInputFormActivity"
-            android:screenOrientation="fullSensor"
+           android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".Forms.RowBasedInputFormActivity"
-            android:screenOrientation="fullSensor"
+           android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan"/>
         <activity
@@ -90,21 +102,25 @@
             android:theme="@style/Base.Theme.AppCompat" />
         <activity
             android:name=".Forms.InputValueFormListActivity"
-            android:screenOrientation="fullSensor"
+           android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activity.SubGroupListActivity"
-            android:screenOrientation="fullSensor"
+           android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.LoginActivity"
             android:exported="true"
-            android:screenOrientation="fullSensor"
+           android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.SplashActivity"
-            android:screenOrientation="fullSensor"
+           android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:exported="true">
             <intent-filter>

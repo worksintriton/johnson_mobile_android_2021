@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/button_text_color"
+    android:orientation="vertical">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5dp">
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5dp">
+
+            <TextView
+                android:id="@+id/txt_title"
+                android:layout_width="@dimen/_100dp"
+                android:layout_height="wrap_content"
+                android:text="Title"
+                android:maxLines="1"/>
+
+            <TextView
+                android:id="@+id/txt_value1"
+                android:layout_width="@dimen/_100dp"
+                android:layout_height="wrap_content"
+                android:text="Value 1"
+                android:textAlignment="textStart"
+                android:maxLines="1"/>
+
+            <TextView
+                android:id="@+id/txt_value2"
+                android:layout_width="@dimen/_100dp"
+                android:layout_height="wrap_content"
+                android:text="Value 2"
+                android:textAlignment="textStart"
+               android:maxLines="1"/>
+
+        </TableRow>
+
+
+    </TableLayout>
+</LinearLayout>

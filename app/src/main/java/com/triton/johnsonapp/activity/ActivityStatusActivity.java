@@ -157,15 +157,14 @@ public class ActivityStatusActivity extends AppCompatActivity {
 
     }
     private FetchRecordByUserIDRequest fetchRecordByUserIDRequest() {
-
         /*
          * user_id : 12345
-       */
-
-      
+         * activity_id
+         */
 
         FetchRecordByUserIDRequest fetchRecordByUserIDRequest = new FetchRecordByUserIDRequest();
         fetchRecordByUserIDRequest.setUser_id(userid);
+        fetchRecordByUserIDRequest.setActivity_id(activity_id);
         Log.w(TAG,"loginRequest "+ new Gson().toJson(fetchRecordByUserIDRequest));
         return fetchRecordByUserIDRequest;
     }
