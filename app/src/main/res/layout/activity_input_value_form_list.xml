@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/grey_color">
 
     <LinearLayout
         android:id="@+id/headerView"
@@ -55,8 +56,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/white"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="20dp"
+            android:background="@color/grey_color">
 
 
             <RelativeLayout

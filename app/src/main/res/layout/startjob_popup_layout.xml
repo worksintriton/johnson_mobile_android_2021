@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/sourcesanspro_regular"
             android:gravity="center_horizontal"
-            android:text="Start Job"
+            android:text="Job"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
@@ -95,7 +95,7 @@
                     android:gravity="center_horizontal"
                     android:text="Start"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -120,7 +120,7 @@
                     android:gravity="center_horizontal"
                     android:text="Resume"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -145,7 +145,7 @@
                     android:gravity="center_horizontal"
                     android:text="Pause"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -170,7 +170,7 @@
                     android:gravity="center_horizontal"
                     android:text="Stop"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 

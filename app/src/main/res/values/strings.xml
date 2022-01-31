@@ -1,4 +1,5 @@
 <resources>
+    <string name="version">Version 28.01.22.1</string>
     <string name="app_name">Johnson App</string>
     <string name="app_name_with">Johnson App Login</string>
     <string name="app_name_with_login">Johnson App Login</string>
@@ -98,7 +99,6 @@
     <string name="dim_y2">Dim Y2</string>
     <string name="remarks">Remarks</string>
     <string name="save">SAVE</string>
-    <string name="version">Version 21.01.22.1</string>
     <string name="input_value">Input Value</string>
     <string name="add_row_based_input_form">Add Row Based Input Form</string>
     <string name="search">Search</string>

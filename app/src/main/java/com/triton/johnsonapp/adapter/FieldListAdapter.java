@@ -277,11 +277,11 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
                 Log.w(TAG,"currentItem.getDrop_down() Field_comments : "+currentItem.getField_comments()+" Field_value : "+currentItem.getField_value());
 
-               if(currentItem.getField_value()!=null && !currentItem.getField_value().equals("")){
+               if(currentItem.getField_value() != null && !currentItem.getField_value().isEmpty()){
                 //if(currentItem.getField_comments()!=null && !currentItem.getField_comments().isEmpty()){
                     Log.w(TAG,"Dropdown if--->");
 
-                    String compareValue = currentItem.getField_comments();
+                    String compareValue = currentItem.getField_value();
                     holder.spr_dropdown.setAdapter(adapter);
                     if (compareValue != null) {
                         int spinnerPosition = adapter.getPosition(compareValue);
@@ -511,7 +511,7 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         if(currentItem.getField_length() != null && !currentItem.getField_length().equals("")){
-            holder.txt_field_length.setText("Field Length " +currentItem.getField_length());
+            holder.txt_field_length.setText("* Field Length " +currentItem.getField_length());
         }else{
             holder.txt_field_length.setText("");
 
