@@ -256,10 +256,13 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                         rv_fieldlist.smoothScrollToPosition(0);
                     }
                 }, 50);
-
                 currentPage += 1;
-
                 Log.w(TAG, "btnnext currentPage : " + currentPage);
+
+                int currentpagesize = currentPage;
+
+                Log.w(TAG, "btnnext totalPages  : " + totalPages+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS);
+
 
                 List<GetFieldListResponse.DataBean> dataBeanListS = new ArrayList<>();
 
@@ -282,7 +285,6 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                 double LAST_PAGE = (( double) TOTAL_NUM_ITEMS / ITEMS_PER_PAGE);
 
                 Log.w(TAG, "btnnext LAST_PAGE : " + LAST_PAGE);
-                Log.w(TAG, "btnnext if condition : " + (currentPage == LAST_PAGE - 1));
 
                 if (currentPage == LAST_PAGE - 1) {
                     Log.w(TAG, "btnnext if condition----->");
@@ -310,7 +312,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
 
                     setView(dataBeanListS, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS);
-                    Log.w(TAG, "btnnext  setView dataBeanList" + new Gson().toJson(dataBeanListS)+" ITEMS_PER_PAGE : "+ITEMS_PER_PAGE+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS);
+                    Log.w(TAG, "btnnext  setView  ITEMS_PER_PAGE : "+ITEMS_PER_PAGE+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS+" dataBeanListS : "+new Gson().toJson(dataBeanListS));
 
                     // enableDisableButtons();
                     // rv.setAdapter(new MyAdapter(MainActivity.this, p.generatePage(currentPage)));
@@ -325,17 +327,24 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                 else {
                        Log.w(TAG, "btnnext else condition----->");
                        condition = startItem + ITEMS_PER_PAGE;
-                        Log.w(TAG, "btnnext startItem : "  + startItem+" condition : "+condition);
-                        for (int i = startItem; i <dataBeanList.size(); i++) {
+                        Log.w(TAG, "btnnext  else startItem : "  + startItem+" condition : "+condition);
+
+                         for (int i = startItem; i <dataBeanList.size(); i++) {
                             //Log.w(TAG, "btnnext: dataBeanList" + new Gson().toJson(dataBeanList.get(i)));
                             dataBeanListS.add(dataBeanList.get(i));
                         }
-                        Log.w(TAG, "btnnext dataBeanList" + new Gson().toJson(dataBeanListS));
+                        Log.w(TAG, "btnnext else dataBeanList" + new Gson().toJson(dataBeanListS));
                         setView(dataBeanListS, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS);
-                        toggleButtons();
+                    Log.w(TAG, "btnnext else setView "+" ITEMS_PER_PAGE : "+ITEMS_PER_PAGE+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS+" dataBeanListS :  " + new Gson().toJson(dataBeanListS));
+
+                    toggleButtons();
+
+
 
 
                 }
+
+
 
 
             }
@@ -371,6 +380,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
                 Log.w(TAG, "btnprev dataBeanList" + new Gson().toJson(dataBeanList));
 
+                Log.w(TAG, "btnprev  setView "+" ITEMS_PER_PAGE : "+ITEMS_PER_PAGE+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS+" dataBeanListS : "+ new Gson().toJson(dataBeanListS));
 
                 setView(dataBeanListS, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS);
                 // rv.setAdapter(new MyAdapter(MainActivity.this, p.generatePage(currentPage)));
@@ -458,12 +468,6 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                             Log.w(TAG, "dataBeanList Size : " + dataBeanList.size());
 
                             if (dataBeanList != null && dataBeanList.size() > 0) {
-
-                                for(int i=0;i<dataBeanList.size();i++){
-                                    Log.w(TAG, "dataBeanList Field_name : "+ i+" "+ dataBeanList.get(i).getField_name());
-                                }
-
-
                                 if(dataBeanList.size()<5){
                                     btn_prev.setVisibility(View.INVISIBLE);
                                     btn_next.setVisibility(View.GONE);
@@ -472,16 +476,15 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
 
                                 totalPages = dataBeanList.size() / 6;
-
-                                Log.w(TAG, "totalPages  : " + totalPages);
-
                                 TOTAL_NUM_ITEMS = dataBeanList.size();
+                                Log.w(TAG, "totalPages  : " + totalPages+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS);
 
                                 ITEMS_REMAINING = TOTAL_NUM_ITEMS - ITEMS_PER_PAGE;
 
-                                Log.w(TAG, "TOTAL_NUM_ITEMS : " + TOTAL_NUM_ITEMS);
 
                                 dialog.dismiss();
+                                Log.w(TAG, " getfieldListResponseCall setView  ITEMS_PER_PAGE : "+ITEMS_PER_PAGE+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS+" dataBeanList : "+new Gson().toJson(dataBeanList));
+
 
                                 setView(dataBeanList, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS);
 
@@ -532,7 +535,6 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
     @SuppressLint("LogNotTimber")
     private void setView(List<GetFieldListResponse.DataBean> dataBeanList, int ITEMS_PER_PAGE, int TOTAL_NUM_ITEMS) {
-
         rv_fieldlist.setNestedScrollingEnabled(true);
         linearlayout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rv_fieldlist.setLayoutManager(linearlayout);
@@ -556,13 +558,12 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
     @Override
     public void getNumberListener(EditText edt_number, String s, int position, String field_length) {
-
+        Log.w(TAG,"getNumberListener : "+"s : "+s+" position : "+position+" field_length : "+field_length);
         dataBeanList.get(position).setField_value(s);
     }
 
     @Override
     public void getSpinnerListener(Spinner spr_dropdown, int positions, String sprvalue, String field_length) {
-
         dataBeanList.get(positions).setField_value(sprvalue);
     }
 

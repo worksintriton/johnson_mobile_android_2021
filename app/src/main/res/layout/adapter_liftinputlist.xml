@@ -27,10 +27,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/child_back_ground"
+                android:hint="@string/input_value"
                 android:inputType="textPersonName"
                 android:padding="@dimen/_15dp"
-                android:hint="@string/input_value"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black" />
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>

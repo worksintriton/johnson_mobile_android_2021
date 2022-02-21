@@ -102,6 +102,8 @@ public class GroupListActivity extends AppCompatActivity {
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.edt_search)
     EditText edt_search;
+
+
     private String group_id = "";
     private String subgroup_id = "";
     private AlertDialog.Builder alertDialogBuilder;

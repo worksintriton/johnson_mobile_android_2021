@@ -21,9 +21,12 @@ public class RetrofitClient {
   /*public static String BASE_URL = "http://52.25.163.13:3000/api/";
   public static String IMAGE_BASE_URL = "http://52.25.163.13:3000/";*/
 
+
+
+
     /*dev*/
-    public static String BASE_URL = "http://35.86.174.72:3000/api/";
-    public static String IMAGE_BASE_URL = "http://35.86.174.72:3000/";
+    public static String BASE_URL = "http://54.202.95.145:3000/api/";
+    public static String IMAGE_BASE_URL = "http://54.202.95.145:3000/";
 
     /*Banner Image*/
     public static String BANNER_IMAGE_URL = BASE_URL+"uploads/bannerempty.jpg";

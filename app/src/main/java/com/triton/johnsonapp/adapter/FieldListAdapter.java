@@ -112,19 +112,7 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-    /*   int ITEMS_REMAINING=TOTAL_NUM_ITEMS % ITEMS_PER_PAGE;
-        int LAST_PAGE=TOTAL_NUM_ITEMS/ITEMS_PER_PAGE;
 
-        if(currentPage==LAST_PAGE){
-            position = startItem+ITEMS_REMAINING;
-        }
-        else {
-            position = startItem+ITEMS_PER_PAGE;
-        }*/
-   /*     int startItem=currentPage*ITEMS_PER_PAGE+position;
-
-        Log.w(TAG,"currentItem startItem "+startItem);
-*/
         initLayoutOne((ViewHolderOne) holder, position);
 
 

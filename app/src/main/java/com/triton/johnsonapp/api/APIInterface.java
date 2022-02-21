@@ -4,6 +4,8 @@ import com.triton.johnsonapp.requestpojo.ActivityListManagementRequest;
 import com.triton.johnsonapp.requestpojo.CheckDataStoreRequest;
 import com.triton.johnsonapp.requestpojo.FetchRecordByUserIDRequest;
 import com.triton.johnsonapp.requestpojo.FormDataStoreRequest;
+import com.triton.johnsonapp.requestpojo.FormFiveBasedStroeDataRequest;
+import com.triton.johnsonapp.requestpojo.FormFiveDataRequest;
 import com.triton.johnsonapp.requestpojo.GetFieldListRequest;
 import com.triton.johnsonapp.requestpojo.GroupDetailManagementRequest;
 import com.triton.johnsonapp.requestpojo.ImageBasedStroeDataRequest;
@@ -20,6 +22,7 @@ import com.triton.johnsonapp.responsepojo.CheckDataStoreResponse;
 import com.triton.johnsonapp.responsepojo.FetchRecordByUserIDResponse;
 import com.triton.johnsonapp.responsepojo.FileUploadResponse;
 import com.triton.johnsonapp.responsepojo.FormDataStoreResponse;
+import com.triton.johnsonapp.responsepojo.FormFiveDataResponse;
 import com.triton.johnsonapp.responsepojo.GetFieldListResponse;
 import com.triton.johnsonapp.responsepojo.GetServiceListResponse;
 import com.triton.johnsonapp.responsepojo.GroupDetailManagementResponse;
@@ -131,5 +134,14 @@ public interface APIInterface {
     /*Stop job request*/
     @POST("data_store_management/stop_job")
     Call<SuccessResponse> stopjobRequestCall(@Header("Content-Type") String type, @Body StopJobRequest stopJobRequest);
+
+    /*Stop job request*/
+    @POST("field_management/getlist_datas")
+    Call<FormFiveDataResponse> formFiveDataResponseCall(@Header("Content-Type") String type, @Body FormFiveDataRequest formFiveDataRequest);
+
+
+    /*form  five store*/
+    @POST("data_store_management/create")
+    Call<SuccessResponse> formFiveStroeDataRequestCall(@Header("Content-Type") String type, @Body FormFiveDataResponse formFiveDataResponse);
 
 }

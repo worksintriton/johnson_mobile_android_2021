@@ -1,9 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
+
     <LinearLayout
         android:id="@+id/headerView"
         android:layout_width="match_parent"
@@ -11,15 +11,11 @@
         android:layout_alignParentTop="true"
         android:background="@color/colorPrimary"
         android:orientation="vertical">
-
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:gravity="center_vertical"
-            android:layout_marginEnd="10dp">
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
             <ImageView
                 android:id="@+id/img_back"
                 android:layout_width="24dp"
@@ -28,106 +24,41 @@
                 android:layout_marginStart="20dp"
                 android:contentDescription="@string/image"
                 app:srcCompat="@drawable/backbutton" />
+
             <TextView
                 android:id="@+id/txt_toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:background="@color/colorPrimary"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
                 android:fontFamily="@font/sourcesanspro_regular"
                 android:padding="15dp"
-                android:text="@string/activitybased"
+                android:text="Form 5"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:visibility="visible"/>
-            <LinearLayout
-                android:id="@+id/ll_logout"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="right|center_vertical"
-                android:layout_gravity="center_vertical"
-                android:layout_width="wrap_content"
-                tools:ignore="RtlHardcoded"
-                android:onClick="logOutUser">
-                <ImageView
-                    android:gravity="right|center_vertical"
-                    android:id="@+id/img_logout"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="20dp"
-                    app:srcCompat="@drawable/log_out"
-                    android:contentDescription="@string/image" />
+                android:visibility="visible" />
 
-            </LinearLayout>
+
         </LinearLayout>
 
-
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/new_rounded_corner_btn_white"
-            android:padding="10dp">
-
-            <ImageView
-                android:id="@+id/img_search"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignParentEnd="false"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center"
-                android:layout_marginStart="10dp"
-                android:contentDescription="@string/image"
-                android:src="@drawable/ic_loctn_search" />
-
-
-            <EditText
-                android:id="@+id/edt_search"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_toEndOf="@id/img_search"
-                android:background="@null"
-                android:fontFamily="@font/sourcesanspro_regular"
-                android:hint="@string/search"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
-                android:maxLines="1"
-                android:textColor="@color/colorPrimary"
-                android:textColorHint="@color/gray_btn_bg_pressed_color"
-                android:textCursorDrawable="@null"
-                android:textSize="16sp"
-                tools:ignore="Autofill,LabelFor,TextFields" />
-
-
-        </RelativeLayout>
-
     </LinearLayout>
+
     <ScrollView
         android:id="@+id/scrollablContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/footerView"
         android:layout_below="@+id/headerView"
-        android:layout_marginBottom="20dp"
         android:fillViewport="true">
 
         <LinearLayout
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
+            android:orientation="vertical"
+            android:background="@color/grey_color">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -160,27 +91,45 @@
                     android:visibility="gone" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_activitybasedlist"
+                    android:id="@+id/rv_formfive"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_margin="@dimen/_10dp"
                     android:visibility="visible" />
 
             </RelativeLayout>
 
         </LinearLayout>
     </ScrollView>
+
     <LinearLayout
         android:id="@+id/footerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
-        android:layout_marginBottom="20dp">
+        android:layout_margin="@dimen/_10dp">
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/blue_button_background_with_radius"
+            android:drawableEnd="@drawable/icn_next"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="@string/success"
+            android:textAlignment="center"
+            android:textColor="@color/white">
+
+
+        </Button>
 
 
     </LinearLayout>
-
-
 
 
 </RelativeLayout>

@@ -65,6 +65,16 @@ public class GroupDetailManagementResponse {
     public static class DataBean {
         private String _id;
         private String activity_id;
+        private String job_detail_id;
+
+        public String getJob_detail_id() {
+            return job_detail_id;
+        }
+
+        public void setJob_detail_id(String job_detail_id) {
+            this.job_detail_id = job_detail_id;
+        }
+
         private String sub_group_status;
         private String group_detail_name;
         private String group_detail_created_at;
