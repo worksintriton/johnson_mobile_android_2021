@@ -111,6 +111,8 @@ public class GroupListActivity extends AppCompatActivity {
     private boolean isPaused = false;
     private boolean isResumed = false;
     private boolean isStopped = false;
+    private String status;
+    private String fromactivity;
 
 
     @Override
@@ -140,7 +142,9 @@ public class GroupListActivity extends AppCompatActivity {
         if (extras != null) {
             activity_id = extras.getString("activity_id");
             job_id = extras.getString("job_id");
-            Log.w(TAG,"activity_id -->"+activity_id+"job_id : "+job_id);
+            status = extras.getString("status");
+            fromactivity = extras.getString("fromactivity");
+            Log.w(TAG,"activity_id -->"+activity_id+"job_id : "+job_id+" status : "+status+" fromactivity : "+fromactivity);
 
         }
 
@@ -191,10 +195,22 @@ public class GroupListActivity extends AppCompatActivity {
     // default back button action
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(GroupListActivity.this, JobDetailActivity.class);
-        intent.putExtra("activity_id",activity_id);
-        startActivity(intent);
-        overridePendingTransition(R.anim.new_right, R.anim.new_left);
+        if(fromactivity != null && fromactivity.equalsIgnoreCase("AllJobListActivity")){
+            Intent intent = new Intent(GroupListActivity.this, AllJobListActivity.class);
+            intent.putExtra("activity_id",activity_id);
+            intent.putExtra("status",status);
+            startActivity(intent);
+            overridePendingTransition(R.anim.new_right, R.anim.new_left);
+
+        }else{
+            Intent intent = new Intent(GroupListActivity.this, JobDetailActivity.class);
+            intent.putExtra("activity_id",activity_id);
+            intent.putExtra("status",status);
+            startActivity(intent);
+            overridePendingTransition(R.anim.new_right, R.anim.new_left);
+
+        }
+
 
 
     }

@@ -163,7 +163,6 @@ public class JobDetailActivity extends AppCompatActivity {
 
     // default back button action
     public void onBackPressed() {
-
         super.onBackPressed();
         Intent intent = new Intent(JobDetailActivity.this, ActivityStatusActivity.class);
         intent.putExtra("status",status);
@@ -260,11 +259,9 @@ public class JobDetailActivity extends AppCompatActivity {
 
     @SuppressLint("LogNotTimber")
     private void setView(List<JobNoManagementResponse.DataBean> dataBeanList) {
-
-
         rv_jobdetaillist.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
         rv_jobdetaillist.setItemAnimator(new DefaultItemAnimator());
-        JobDetailListAdapter jobDetailListAdapter = new JobDetailListAdapter(this, dataBeanList,activity_id);
+        JobDetailListAdapter jobDetailListAdapter = new JobDetailListAdapter(this, dataBeanList,activity_id,TAG);
         rv_jobdetaillist.setAdapter(jobDetailListAdapter);
     }
 

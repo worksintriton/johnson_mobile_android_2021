@@ -29,12 +29,15 @@ public class JobDetailListAdapter extends  RecyclerView.Adapter<RecyclerView.Vie
     JobNoManagementResponse.DataBean currentItem;
 
     private int size;
-    String activity_id;
+    String status;
+    String fromactivity;
 
-    public JobDetailListAdapter(Context context, List<JobNoManagementResponse.DataBean> dataBeanList, String activity_id) {
+    public JobDetailListAdapter(Context context, List<JobNoManagementResponse.DataBean> dataBeanList, String status,String fromactivity) {
         this.context = context;
         this.dataBeanList = dataBeanList;
-        this.activity_id=activity_id;
+        this.fromactivity = fromactivity ;
+        this.status = status ;
+
 
     }
 
@@ -81,10 +84,10 @@ public class JobDetailListAdapter extends  RecyclerView.Adapter<RecyclerView.Vie
         holder.cv_root.setOnClickListener(v -> {
 
             Intent intent = new Intent(context, GroupListActivity.class);
-
-            intent.putExtra("activity_id",activity_id);
-
+            intent.putExtra("activity_id",dataBeanList.get(position).getActivedetail__id());
             intent.putExtra("job_id",dataBeanList.get(position).get_id());
+            intent.putExtra("status",status);
+            intent.putExtra("fromactivity",fromactivity);
 
             context.startActivity(intent);
 

@@ -826,7 +826,10 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
             if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 if (resultCode == RESULT_OK) {
-                    Uri resultUri = result.getUriContent();
+                    Uri resultUri = null;
+                    if (result != null) {
+                        resultUri = result.getUriContent();
+                    }
 
                     if (resultUri != null) {
 

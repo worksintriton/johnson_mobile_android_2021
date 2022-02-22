@@ -97,7 +97,7 @@ public class AllJobListActivity extends AppCompatActivity {
         if (extras != null) {
             activity_id = extras.getString("activity_id");
             status = extras.getString("status");
-            Log.w(TAG,"activity_id -->"+activity_id);
+            Log.w(TAG,"activity_id -->"+activity_id+" status : "+status);
 
 
         }
@@ -254,11 +254,9 @@ public class AllJobListActivity extends AppCompatActivity {
 
     @SuppressLint("LogNotTimber")
     private void setView(List<JobNoManagementResponse.DataBean> dataBeanList) {
-
-
         rv_jobdetaillist.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
         rv_jobdetaillist.setItemAnimator(new DefaultItemAnimator());
-        JobDetailListAdapter jobDetailListAdapter = new JobDetailListAdapter(this, dataBeanList,activity_id);
+        JobDetailListAdapter jobDetailListAdapter = new JobDetailListAdapter(this, dataBeanList,status,TAG);
         rv_jobdetaillist.setAdapter(jobDetailListAdapter);
     }
 

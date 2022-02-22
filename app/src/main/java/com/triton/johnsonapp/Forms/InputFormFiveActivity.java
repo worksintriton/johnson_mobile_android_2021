@@ -92,6 +92,8 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
     private final FormFiveDataResponse.DataBean Data = new FormFiveDataResponse.DataBean();
     List<FormFiveDataResponse.DataBean.MaterialDetailsBean> dataBeanList;
     private String Remarks = "";
+    private String group_id;
+    private String group_detail_name;
 
 
     @Override
@@ -109,10 +111,12 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
             _id = extras.getString("_id");
             activity_id = extras.getString("activity_id");
             job_detail_id = extras.getString("job_detail_id");
-
+            group_id = extras.getString("group_id");
+            group_detail_name = extras.getString("group_detail_name");
+            job_id = extras.getString("job_id");
             Log.w(TAG,"_id -->"+_id);
             Log.w(TAG,"activity_id -->"+activity_id);
-            Log.w(TAG,"job_detail_id " + job_detail_id);
+            Log.w(TAG,"job_detail_id " + job_detail_id+" group_id : "+group_id+" group_detail_name : "+group_detail_name+" job_id : "+job_id);
 
 
         }
@@ -315,7 +319,7 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
         formFiveDataResponse.setUser_id(userid);
         formFiveDataResponse.setActivity_id(activity_id);
         formFiveDataResponse.setJob_id(job_id);
-        formFiveDataResponse.setGroup_id("");
+        formFiveDataResponse.setGroup_id(group_id);
         formFiveDataResponse.setData(Data);
         formFiveDataResponse.setStart_time("");
         formFiveDataResponse.setPause_time("");

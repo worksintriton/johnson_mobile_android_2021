@@ -39,6 +39,7 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14sp"
                     android:visibility="visible"
+                    android:textStyle="bold"
                     />
                 <TextView
                     android:layout_marginStart="@dimen/_10dp"
@@ -69,7 +70,8 @@
                     android:text="Material Desc"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14sp"
-                    android:visibility="visible" />
+                    android:visibility="visible"
+                    android:textStyle="bold"/>
                 <TextView
                     android:layout_marginStart="@dimen/_10dp"
                     android:id="@+id/txt_material_desc"
@@ -101,7 +103,8 @@
                     android:text="Desp Qty"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14sp"
-                    android:visibility="visible" />
+                    android:visibility="visible"
+                    android:textStyle="bold"/>
                 <TextView
                     android:layout_marginStart="@dimen/_10dp"
                     android:id="@+id/txt_desp_qty"
@@ -134,6 +137,7 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14sp"
                     android:visibility="visible"
+                    android:textStyle="bold"
                    />
                 <EditText
                     android:id="@+id/edt_accept_qty"
@@ -158,6 +162,7 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14sp"
                     android:visibility="visible"
+                    android:textStyle="bold"
                     android:layout_marginStart="@dimen/_5dp"/>
                 <EditText
                     android:id="@+id/edt_damageqty"
@@ -186,7 +191,8 @@
                     android:text="Short : "
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14sp"
-                    android:visibility="visible" />
+                    android:visibility="visible"
+                    android:textStyle="bold"/>
                 <EditText
                     android:text="0"
                     android:id="@+id/edt_short"
@@ -214,6 +220,7 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14sp"
                     android:visibility="visible"
+                    android:textStyle="bold"
                     android:layout_marginStart="@dimen/_5dp"/>
                 <EditText
                     android:text="0"
@@ -249,6 +256,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="@string/remarks"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sp"
+            android:visibility="visible"
+            android:textStyle="bold"
             />
         <EditText
             android:id="@+id/edt_textarea_remarks"

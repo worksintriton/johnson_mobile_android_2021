@@ -39,6 +39,7 @@
         <entry key="..\:/TritonAppsGIt/johnson_mobile_android_2021/app/src/main/res/layout/adapter_staticdatalist.xml" value="0.2477355072463768" />
         <entry key="..\:/TritonAppsGIt/johnson_mobile_android_2021/app/src/main/res/layout/imagebased_popup_layout.xml" value="0.12360688956433637" />
         <entry key="..\:/TritonAppsGIt/johnson_mobile_android_2021/app/src/main/res/layout/startjob_popup_layout.xml" value="0.264" />
+        <entry key="..\:/TritonAppsGit/johnson_mobile_android_2021/app/src/main/res/layout/adapter_from_five.xml" value="0.15534420289855072" />
         <entry key="..\:/Users/santh/Documents/GitHub/johnson_mobile_android_2021/app/src/main/res/drawable/new_rounded_corner_btn_white.xml" value="0.290625" />
         <entry key="..\:/Users/santh/Documents/GitHub/johnson_mobile_android_2021/app/src/main/res/drawable/rectangular_corner_bg_lightgrey.xml" value="0.290625" />
         <entry key="..\:/Users/santh/Documents/GitHub/johnson_mobile_android_2021/app/src/main/res/drawable/rectangular_corner_bg_lightgreyy.xml" value="0.290625" />
@@ -128,7 +129,7 @@
       </value>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
