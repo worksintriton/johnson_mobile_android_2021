@@ -141,7 +141,7 @@ public interface APIInterface {
 
 
     /*form  five store*/
-    @POST("data_store_management/create")
+    @POST("data_store_management/form_5_create")
     Call<SuccessResponse> formFiveStroeDataRequestCall(@Header("Content-Type") String type, @Body FormFiveDataResponse formFiveDataResponse);
 
 }

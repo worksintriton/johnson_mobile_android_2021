@@ -265,7 +265,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
                 int currentpagesize = currentPage;
 
-                Log.w(TAG, "btnnext totalPages  : " + totalPages+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS);
+                Log.w(TAG, "btnnext totalPages  : " + totalPages+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS+" currentpagesize : "+currentpagesize);
 
 
                 List<GetFieldListResponse.DataBean> dataBeanListS = new ArrayList<>();
@@ -334,27 +334,14 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                         Log.w(TAG, "btnnext  else startItem : "  + startItem+" condition : "+condition);
 
                          for (int i = startItem; i <dataBeanList.size(); i++) {
-                            //Log.w(TAG, "btnnext: dataBeanList" + new Gson().toJson(dataBeanList.get(i)));
                             dataBeanListS.add(dataBeanList.get(i));
-                             if (dataBeanList.get(i).getField_value().isEmpty()) {
-                                // dataBeanList.get(i).setError("Please enter userName");
-                                 flag=false;
-                             }
+
                         }
 
-                    if (flag){
-                        Toast.makeText(InputValueFormListActivity.this, "Valid data", Toast.LENGTH_SHORT).show();
-                        Log.w(TAG, "btnnext else dataBeanList" + new Gson().toJson(dataBeanListS));
-                        setView(dataBeanListS, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS);
-                        Log.w(TAG, "btnnext else setView "+" ITEMS_PER_PAGE : "+ITEMS_PER_PAGE+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS+" dataBeanListS :  " + new Gson().toJson(dataBeanListS));
-                        toggleButtons();
-                    }else {
-                        Toast.makeText(InputValueFormListActivity.this, "Invalid data", Toast.LENGTH_SHORT).show();
-                    }
-
-
-
-
+                    Log.w(TAG, "btnnext else dataBeanList" + new Gson().toJson(dataBeanListS));
+                    setView(dataBeanListS, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS);
+                    Log.w(TAG, "btnnext else setView "+" ITEMS_PER_PAGE : "+ITEMS_PER_PAGE+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS+" dataBeanListS :  " + new Gson().toJson(dataBeanListS));
+                    toggleButtons();
 
                 }
 

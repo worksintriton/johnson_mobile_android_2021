@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         Log.w(TAG,"Oncreate -->");
         session = new SessionManager(getApplicationContext());
 
+        btn_activity.setVisibility(View.INVISIBLE);
+
         btn_job.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

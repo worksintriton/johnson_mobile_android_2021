@@ -35,7 +35,7 @@
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/sourcesanspro_regular"
                 android:padding="15dp"
-                android:text="@string/group"
+                android:text="@string/activity_list"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="18sp"

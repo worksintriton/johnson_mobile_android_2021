@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.activity.ActivityBasedActivity;
+import com.triton.johnsonapp.activity.GroupListActivity;
 import com.triton.johnsonapp.adapter.FormFiveListAdapter;
 import com.triton.johnsonapp.api.APIInterface;
 import com.triton.johnsonapp.api.RetrofitClient;
@@ -94,6 +95,7 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
     private String Remarks = "";
     private String group_id;
     private String group_detail_name;
+    private String status;
 
 
     @Override
@@ -114,6 +116,7 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
             group_id = extras.getString("group_id");
             group_detail_name = extras.getString("group_detail_name");
             job_id = extras.getString("job_id");
+            status = extras.getString("status");
             Log.w(TAG,"_id -->"+_id);
             Log.w(TAG,"activity_id -->"+activity_id);
             Log.w(TAG,"job_detail_id " + job_detail_id+" group_id : "+group_id+" group_detail_name : "+group_detail_name+" job_id : "+job_id);
@@ -274,7 +277,13 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
                     if (200 == response.body().getCode()) {
                         if (response.body().getData() != null) {
                             Toasty.success(getApplicationContext(), "" + message, Toasty.LENGTH_LONG).show();
-                            startActivity(new Intent(InputFormFiveActivity.this, ActivityBasedActivity.class));
+                            Intent intent = new Intent(InputFormFiveActivity.this, GroupListActivity.class);
+                            intent.putExtra("activity_id",activity_id);
+                            intent.putExtra("job_id",job_id);
+                            intent.putExtra("status",status);
+                            startActivity(intent);
+                            finish();
+                            dialog.dismiss();
 
                         }
 

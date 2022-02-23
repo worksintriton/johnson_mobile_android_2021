@@ -1,5 +1,5 @@
 <resources>
-    <string name="version">Version 22.02.22.1</string>
+    <string name="version">Version 23.02.22.1</string>
     <string name="app_name">Johnson App</string>
     <string name="app_name_with">Johnson App Login</string>
     <string name="app_name_with_login">Johnson App Login</string>
@@ -88,6 +88,7 @@
     <string name="activitybased">Activity Based</string>
     <string name="jobdetail">Job Details</string>
     <string name="group">Group List</string>
+    <string name="activity_list">Activity List</string>
     <string name="info">i</string>
     <string name="s_no">S.No</string>
     <string name="nob">No of bracket</string>

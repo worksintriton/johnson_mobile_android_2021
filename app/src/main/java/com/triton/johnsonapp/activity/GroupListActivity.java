@@ -303,8 +303,9 @@ public class GroupListActivity extends AppCompatActivity {
 
         rv_grouplist.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
         rv_grouplist.setItemAnimator(new DefaultItemAnimator());
-        GroupListAdapter groupListAdapter = new GroupListAdapter(this, dataBeanList,activity_id,job_id);
+        GroupListAdapter groupListAdapter = new GroupListAdapter(this, dataBeanList,activity_id,job_id,status,fromactivity);
         rv_grouplist.setAdapter(groupListAdapter);
+
     }
 
     private void showPopupStartJoB() {
