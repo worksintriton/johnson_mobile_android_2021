@@ -217,6 +217,16 @@ public class GetFieldListResponse {
         private String field_name;
         private String field_type;
         private String field_value;
+
+        public String getError() {
+            return error;
+        }
+
+        public void setError(String error) {
+            this.error = error;
+        }
+
+        private String error;
         private String field_length;
         private String field_comments;
         private String field_update_reason;

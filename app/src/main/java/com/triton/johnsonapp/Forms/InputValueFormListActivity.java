@@ -185,6 +185,8 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
     GetFieldListResponse getFieldListResponse = new GetFieldListResponse();
     private AlertDialog.Builder alertDialogBuilder;
 
+    FieldListAdapter fieldListAdapter;
+
 
 
     @Override
@@ -249,6 +251,8 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                boolean flag=true;
+
                 rv_fieldlist.scrollToPosition(0);
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -332,17 +336,29 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                          for (int i = startItem; i <dataBeanList.size(); i++) {
                             //Log.w(TAG, "btnnext: dataBeanList" + new Gson().toJson(dataBeanList.get(i)));
                             dataBeanListS.add(dataBeanList.get(i));
+                             if (dataBeanList.get(i).getField_value().isEmpty()) {
+                                // dataBeanList.get(i).setError("Please enter userName");
+                                 flag=false;
+                             }
                         }
+
+                    if (flag){
+                        Toast.makeText(InputValueFormListActivity.this, "Valid data", Toast.LENGTH_SHORT).show();
                         Log.w(TAG, "btnnext else dataBeanList" + new Gson().toJson(dataBeanListS));
                         setView(dataBeanListS, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS);
-                    Log.w(TAG, "btnnext else setView "+" ITEMS_PER_PAGE : "+ITEMS_PER_PAGE+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS+" dataBeanListS :  " + new Gson().toJson(dataBeanListS));
+                        Log.w(TAG, "btnnext else setView "+" ITEMS_PER_PAGE : "+ITEMS_PER_PAGE+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS+" dataBeanListS :  " + new Gson().toJson(dataBeanListS));
+                        toggleButtons();
+                    }else {
+                        Toast.makeText(InputValueFormListActivity.this, "Invalid data", Toast.LENGTH_SHORT).show();
+                    }
 
-                    toggleButtons();
 
 
 
 
                 }
+
+
 
 
 
@@ -539,8 +555,8 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         linearlayout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rv_fieldlist.setLayoutManager(linearlayout);
         rv_fieldlist.setItemAnimator(new DefaultItemAnimator());
-        FieldListAdapter FieldListAdapter = new FieldListAdapter(getApplicationContext(), dataBeanList, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS, this, this, this, this, this, this, this, this, this, this, currentPage);
-        rv_fieldlist.setAdapter(FieldListAdapter);
+        fieldListAdapter = new FieldListAdapter(getApplicationContext(), dataBeanList, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS, this, this, this, this, this, this, this, this, this, this, currentPage);
+        rv_fieldlist.setAdapter(fieldListAdapter);
     }
 
     @Override
