@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -174,16 +176,22 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
         });
 
         img_add.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint({"NewApi", "ResourceAsColor"})
             @Override
             public void onClick(View v) {
 
-                if(edt_dimx1.getText().toString().equals("")||edt_dimx2.getText().toString().equals("")
+                if(edt_dimx1.getText().toString().equals("")
+                        || edt_dimx2.getText().toString().equals("")
+                        || edt_dimx3.getText().toString().equals("")
+                        || edt_dimx4.getText().toString().equals("")
+                        || edt_dimy1.getText().toString().equals("")
+                        || edt_dimy2.getText().toString().equals("")
+                ){
 
-                ||edt_dimx3.getText().toString().equals("")||edt_dimx4.getText().toString().equals("")||edt_dimy1.getText().toString().equals("")||edt_dimy2.getText().toString().equals("")
-
-                ||edt_rem.getText().toString().equals("")){
-
-                    Toasty.warning(getApplicationContext(),"Please enter all fields",Toasty.LENGTH_LONG).show();
+                    Toast toast = Toast.makeText(getApplicationContext(), "please enter all required data", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.getView().setBackgroundTintList(ColorStateList.valueOf(R.color.warning));
+                    toast.show();
                 }
 
                 else {
@@ -254,13 +262,16 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
         });
 
         btn_save.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint({"NewApi", "ResourceAsColor"})
             @Override
             public void onClick(View view) {
                 if(Data != null && Data.size()>0) {
                     rowBasedStroeDataRequestCall();
                 }else{
-                    Toasty.warning(getApplicationContext(),"Please enter all fields",Toasty.LENGTH_LONG).show();
-
+                    Toast toast = Toast.makeText(getApplicationContext(), "please enter all required data", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.getView().setBackgroundTintList(ColorStateList.valueOf(R.color.warning));
+                    toast.show();
 
                 }
 

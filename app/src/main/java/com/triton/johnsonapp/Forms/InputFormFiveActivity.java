@@ -3,8 +3,12 @@ package com.triton.johnsonapp.Forms;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -15,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -153,6 +158,8 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
 
 
         btn_submit.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View view) {
                 if(Remarks != null && !Remarks.isEmpty()){
@@ -160,7 +167,10 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
                     Data.setMaterial_details(dataBeanList);
                     formFiveStroeDataRequestCall();
                 }else{
-                    Toasty.warning(getApplicationContext(),"Please enter the remarks",Toasty.LENGTH_LONG).show();
+                    Toast toast = Toast.makeText(getApplicationContext(), "please enter the remarks", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.getView().setBackgroundTintList(ColorStateList.valueOf(R.color.warning));
+                    toast.show();
 
                 }
 

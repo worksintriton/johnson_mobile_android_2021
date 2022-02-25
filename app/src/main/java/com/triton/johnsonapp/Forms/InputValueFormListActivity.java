@@ -18,13 +18,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -44,7 +47,6 @@ import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.google.android.gms.common.util.IOUtils;
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
-import com.triton.johnsonapp.activity.ActivityBasedActivity;
 import com.triton.johnsonapp.activity.GroupListActivity;
 import com.triton.johnsonapp.adapter.FieldListAdapter;
 import com.triton.johnsonapp.adapter.LiftInputTypeListAdapter;
@@ -250,6 +252,8 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
         //NAVIGATE
         btn_next.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View view) {
                 boolean flag = true;
@@ -275,9 +279,9 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                         if(dataBeanList.get(i).getField_value().isEmpty() || dataBeanList.get(i).getField_value().equalsIgnoreCase("Select Value")){
                             if(dataBeanList.get(i).getField_type() !=  null && dataBeanList.get(i).getField_type().equalsIgnoreCase("Lift")){
                                 dataBeanList.get(i).setField_value("LIFT");
-                            }else if(dataBeanList.get(i).getField_type() !=  null && dataBeanList.get(i).getField_type().equalsIgnoreCase("File upload")){
+                            }/*else if(dataBeanList.get(i).getField_type() !=  null && dataBeanList.get(i).getField_type().equalsIgnoreCase("File upload")){
                                 dataBeanList.get(i).setField_value("File upload");
-                            }
+                            }*/
                             flag = false;
                         }
                     }
@@ -293,9 +297,9 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                         if(dataBeanList.get(i).getField_value().isEmpty() || dataBeanList.get(i).getField_value().equalsIgnoreCase("Select Value")){
                             if(dataBeanList.get(i).getField_type() !=  null && dataBeanList.get(i).getField_type().equalsIgnoreCase("Lift")){
                                 dataBeanList.get(i).setField_value("LIFT");
-                            }else if(dataBeanList.get(i).getField_type() !=  null && dataBeanList.get(i).getField_type().equalsIgnoreCase("File upload")){
+                            }/*else if(dataBeanList.get(i).getField_type() !=  null && dataBeanList.get(i).getField_type().equalsIgnoreCase("File upload")){
                                 dataBeanList.get(i).setField_value("File upload");
-                            }
+                            }*/
                             flag = false;
                         }
                         Log.w(TAG, "index : "  + i+" endvaleue "+ (enditem-1));
@@ -383,7 +387,11 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                         Log.w(TAG, "btnnext else setView " + " ITEMS_PER_PAGE : " + ITEMS_PER_PAGE + " TOTAL_NUM_ITEMS : " + TOTAL_NUM_ITEMS + " dataBeanListS :  " + new Gson().toJson(dataBeanListS));
                         toggleButtons();
                     }else{
-                        Toast.makeText(InputValueFormListActivity.this, "Please fill all the data", Toast.LENGTH_SHORT).show();
+
+                        Toast toast = Toast.makeText(getApplicationContext(), "please enter all required data", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.getView().setBackgroundTintList(ColorStateList.valueOf(R.color.warning));
+                        toast.show();
 
                     }
 
@@ -436,6 +444,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
             }
         });
         btn_success.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint({"NewApi", "ResourceAsColor"})
             @Override
             public void onClick(View v) {
                 if (networkStatus.equalsIgnoreCase("Not connected to Internet")) {
@@ -449,9 +458,9 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                         if(dataBeanList.get(i).getField_value().isEmpty() || dataBeanList.get(i).getField_value().equalsIgnoreCase("Select Value")){
                             if(dataBeanList.get(i).getField_type() !=  null && dataBeanList.get(i).getField_type().equalsIgnoreCase("Lift")){
                                 dataBeanList.get(i).setField_value("LIFT");
-                            }else if(dataBeanList.get(i).getField_type() !=  null && dataBeanList.get(i).getField_type().equalsIgnoreCase("File upload")){
+                            }/*else if(dataBeanList.get(i).getField_type() !=  null && dataBeanList.get(i).getField_type().equalsIgnoreCase("File upload")){
                                 dataBeanList.get(i).setField_value("File upload");
-                            }
+                            }*/
                             flag = false;
                         }
 
@@ -463,8 +472,10 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                     if(flag){
                         getformdataListResponseCall();
                     }else{
-                        Toast.makeText(InputValueFormListActivity.this, "Please fill all the data", Toast.LENGTH_SHORT).show();
-
+                        Toast toast = Toast.makeText(getApplicationContext(), "please enter all required data", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.getView().setBackgroundTintList(ColorStateList.valueOf(R.color.warning));
+                        toast.show();
                     }
 
 
@@ -956,13 +967,13 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
     }
 
     private void uploadImage() {
+        dialog = new Dialog(InputValueFormListActivity.this, R.style.NewProgressDialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.progroess_popup);
+        dialog.show();
 
         APIInterface apiInterface = RetrofitClient.getImageClient().create(APIInterface.class);
-
-
         Call<FileUploadResponse> call = apiInterface.getImageStroeResponse(filePart);
-
-
         Log.w(TAG, "url  :%s" + call.request().url().toString());
 
         call.enqueue(new Callback<FileUploadResponse>() {
@@ -972,6 +983,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
                 if (response.body() != null) {
                     if (200 == response.body().getCode()) {
+                        dialog.dismiss();
                         Log.w(TAG, "Profpic" + "--->" + new Gson().toJson(response.body()));
 
                    /*     DocBusInfoUploadRequest.ClinicPicBean clinicPicBean = new DocBusInfoUploadRequest.ClinicPicBean(response.body().getData().trim());
@@ -1014,6 +1026,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
             @Override
             public void onFailure(@NonNull Call<FileUploadResponse> call, @NonNull Throwable t) {
                 // avi_indicator.smoothToHide();
+                dialog.dismiss();
                 Log.w(TAG, "ServerUrlImagePath" + "On failure working" + t.getMessage());
                 //Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }

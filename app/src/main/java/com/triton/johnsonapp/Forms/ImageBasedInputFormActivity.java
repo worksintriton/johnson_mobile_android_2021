@@ -11,11 +11,13 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -215,6 +217,7 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
         });
 
         btn_save.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint({"NewApi", "ResourceAsColor"})
             @Override
             public void onClick(View view) {
                 if(Data != null && Data.size()>0){
@@ -240,8 +243,10 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
                     }
 
                 }else{
-                    Toasty.warning(getApplicationContext(),"Please enter all fields",Toasty.LENGTH_LONG).show();
-
+                    Toast toast = Toast.makeText(getApplicationContext(), "please enter all required data", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.getView().setBackgroundTintList(ColorStateList.valueOf(R.color.warning));
+                    toast.show();
                 }
 
 
@@ -291,10 +296,14 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
             Button btn_save = alertdialog.findViewById(R.id.btn_save);
 
             btn_save.setOnClickListener(new View.OnClickListener() {
+                @SuppressLint({"NewApi", "ResourceAsColor"})
                 @Override
                 public void onClick(View view) {
                     if(edt_inputValue1.getText().toString().equals("")||edt_inputValue2.getText().toString().equals("")){
-                        Toasty.warning(getApplicationContext(),"Please enter all fields",Toasty.LENGTH_LONG).show();
+                        Toast toast = Toast.makeText(getApplicationContext(), "please enter all required data", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.getView().setBackgroundTintList(ColorStateList.valueOf(R.color.warning));
+                        toast.show();
                     }else{
                         ImageBasedStroeDataRequest.DataBean dataBean = new ImageBasedStroeDataRequest.DataBean();
                         dataBean.setTitle(txt_header_title.getText().toString());

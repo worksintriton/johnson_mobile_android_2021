@@ -130,6 +130,9 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
         Log.w(TAG,"currentItem POS "+position);
         Log.w(TAG,"currentItem Field_name "+position+" "+currentItem.getField_name());
 
+        Log.w(TAG,"currentItem.getField_value() ---->"+currentItem.getField_value());
+
+
         if(currentItem.getField_name() != null && !currentItem.getField_name().equals("")){
             holder.txt_field_title.setText(currentItem.getField_name());
         }else{
@@ -351,11 +354,16 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
                 Log.w(TAG,"currentItem.getField_value() ---->"+currentItem.getField_value());
 
-                if(currentItem.getField_value()!=null&&!currentItem.getField_value().equals("")){
+                if(currentItem.getField_value()!=null  && !currentItem.getField_value().equals("")){
+                    if(currentItem.getField_value().equalsIgnoreCase("File upload")){
+                        holder.img_file_upload.setVisibility(View.GONE);
+                        holder.cv_image.setVisibility(View.GONE);
+                    }
                     String uploadimagepath = currentItem.getField_value();
-                    holder.cv_image.setVisibility(View.VISIBLE);
-                    holder.img_file_upload.setVisibility(View.VISIBLE);
-                    if (uploadimagepath!=null) {
+                    if (uploadimagepath!= null && !uploadimagepath.isEmpty()) {
+
+                        holder.img_file_upload.setVisibility(View.VISIBLE);
+                        holder.cv_image.setVisibility(View.VISIBLE);
                         Glide.with(context)
                                 .load(uploadimagepath)
                                 .into(holder.img_file_upload);
@@ -363,6 +371,9 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                     }
 
 
+                }else{
+                    holder.img_file_upload.setVisibility(View.GONE);
+                    holder.cv_image.setVisibility(View.GONE);
                 }
 
 
@@ -373,9 +384,10 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                     public void onClick(View v) {
 
                         dataBeanList.get(position).setField_value("");
-
-                        notifyDataSetChanged();
                         holder.img_file_upload.setVisibility(View.GONE);
+                        holder.cv_image.setVisibility(View.GONE);
+                        notifyDataSetChanged();
+
 
                     }
                 });
