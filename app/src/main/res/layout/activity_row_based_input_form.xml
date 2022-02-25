@@ -488,7 +488,6 @@
                                                 android:ellipsize="end"
                                                 android:gravity="center"
                                                 android:hint="@string/remarks"
-                                                android:maxLength="6"
                                                 android:maxLines="1"
                                                 android:textAlignment="center"
                                                 android:textColor="@color/black" />

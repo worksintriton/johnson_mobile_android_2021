@@ -14,20 +14,19 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:orientation="vertical"
                 android:visibility="visible">
 
                 <TextView
                     android:id="@+id/textView"
                     style="@style/table_header"
-                    android:layout_width="match_parent"
+                    android:layout_width="@dimen/_60dp"
                     android:layout_height="@dimen/_35dp"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center"
@@ -38,7 +37,7 @@
                 <EditText
                     android:id="@+id/edt_sno"
                     style="@style/table_row_item"
-                    android:layout_width="60dp"
+                    android:layout_width="@dimen/_60dp"
                     android:layout_height="@dimen/_40dp"
                     android:layout_gravity="center_horizontal"
                     android:ellipsize="end"
@@ -52,14 +51,13 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/txt_dimx1"
                     style="@style/table_header"
-                    android:layout_width="match_parent"
+                    android:layout_width="@dimen/_60dp"
                     android:layout_height="@dimen/_35dp"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center"
@@ -70,7 +68,7 @@
                 <EditText
                     android:id="@+id/edt_dimx1"
                     style="@style/table_row_item"
-                    android:layout_width="60dp"
+                    android:layout_width="@dimen/_60dp"
                     android:layout_height="@dimen/_40dp"
                     android:layout_gravity="center_horizontal"
                     android:ellipsize="end"
@@ -85,14 +83,13 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/txt_dimx2"
                     style="@style/table_header"
-                    android:layout_width="match_parent"
+                    android:layout_width="@dimen/_60dp"
                     android:layout_height="@dimen/_35dp"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center"
@@ -103,7 +100,7 @@
                 <EditText
                     android:id="@+id/edt_dimx2"
                     style="@style/table_row_item"
-                    android:layout_width="60dp"
+                    android:layout_width="@dimen/_60dp"
                     android:layout_height="@dimen/_40dp"
                     android:layout_gravity="center_horizontal"
                     android:ellipsize="end"
@@ -117,14 +114,13 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/txt_dimx3"
                     style="@style/table_header"
-                    android:layout_width="match_parent"
+                    android:layout_width="@dimen/_60dp"
                     android:layout_height="@dimen/_35dp"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center"
@@ -135,7 +131,7 @@
                 <EditText
                     android:id="@+id/edt_dimx3"
                     style="@style/table_row_item"
-                    android:layout_width="60dp"
+                    android:layout_width="@dimen/_60dp"
                     android:layout_height="@dimen/_40dp"
                     android:layout_gravity="center_horizontal"
                     android:ellipsize="end"
@@ -149,14 +145,14 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
+
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/txt_dimx4"
                     style="@style/table_header"
-                    android:layout_width="match_parent"
+                    android:layout_width="@dimen/_60dp"
                     android:layout_height="@dimen/_35dp"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center"
@@ -167,7 +163,7 @@
                 <EditText
                     android:id="@+id/edt_dimx4"
                     style="@style/table_row_item"
-                    android:layout_width="60dp"
+                    android:layout_width="@dimen/_60dp"
                     android:layout_height="@dimen/_40dp"
                     android:layout_gravity="center_horizontal"
                     android:ellipsize="end"
@@ -181,14 +177,14 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
+
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/txt_dimy1"
                     style="@style/table_header"
-                    android:layout_width="match_parent"
+                    android:layout_width="@dimen/_60dp"
                     android:layout_height="@dimen/_35dp"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center"
@@ -199,7 +195,7 @@
                 <EditText
                     android:id="@+id/edt_dimy1"
                     style="@style/table_row_item"
-                    android:layout_width="60dp"
+                    android:layout_width="@dimen/_60dp"
                     android:layout_height="@dimen/_40dp"
                     android:layout_gravity="center_horizontal"
                     android:ellipsize="end"
@@ -213,14 +209,14 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
+
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/txt_dimy2"
                     style="@style/table_header"
-                    android:layout_width="match_parent"
+                    android:layout_width="@dimen/_60dp"
                     android:layout_height="@dimen/_35dp"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center"
@@ -231,7 +227,7 @@
                 <EditText
                     android:id="@+id/edt_dimy2"
                     style="@style/table_row_item"
-                    android:layout_width="60dp"
+                    android:layout_width="@dimen/_60dp"
                     android:layout_height="@dimen/_40dp"
                     android:layout_gravity="center_horizontal"
                     android:ellipsize="end"
@@ -245,14 +241,14 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
+
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/txt_rem"
                     style="@style/table_header"
-                    android:layout_width="match_parent"
+                    android:layout_width="@dimen/_60dp"
                     android:layout_height="@dimen/_35dp"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center"
@@ -263,7 +259,7 @@
                 <EditText
                     android:id="@+id/edt_rem"
                     style="@style/table_row_item"
-                    android:layout_width="@dimen/_150dp"
+                    android:layout_width="@dimen/_60dp"
                     android:layout_height="@dimen/_40dp"
                     android:layout_gravity="center_horizontal"
                     android:ellipsize="end"
@@ -278,8 +274,7 @@
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
@@ -293,14 +288,24 @@
                     android:text="Action"
                     android:visibility="gone"/>
 
-                <ImageView
-                    android:id="@+id/img_delete"
-                    android:layout_width="@dimen/_24dp"
-                    android:layout_height="@dimen/_24dp"
-                    android:layout_gravity="center|center_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_baseline_delete_forever_24" />
+                <RelativeLayout
+                    android:layout_width="@dimen/_60dp"
+                    android:layout_height="@dimen/_35dp"
+                    android:gravity="center">
+
+
+                    <ImageView
+                        android:layout_marginStart="@dimen/_5dp"
+                        android:id="@+id/img_delete"
+                        android:layout_width="@dimen/_24dp"
+                        android:layout_height="@dimen/_24dp"
+                        android:layout_gravity="center|center_horizontal"
+                        android:gravity="center"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_baseline_delete_forever_24" />
+                </RelativeLayout>
+
+
             </LinearLayout>
 
         </LinearLayout>
