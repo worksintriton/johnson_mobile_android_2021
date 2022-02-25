@@ -100,6 +100,7 @@ public class GroupListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                 intent.putExtra("job_id",job_id);
                 intent.putExtra("group_id",dataBeanList.get(position).get_id());
                 intent.putExtra("group_detail_name",dataBeanList.get(position).getGroup_detail_name());
+                intent.putExtra("status",status);
                 context.startActivity(intent);
 
             }
@@ -115,7 +116,7 @@ public class GroupListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                         intent.putExtra("group_id",dataBeanList.get(position).get_id());
                         intent.putExtra("group_detail_name",dataBeanList.get(position).getGroup_detail_name());
                         intent.putExtra("subgroup_id","");
-
+                        intent.putExtra("status",status);
                         context.startActivity(intent);
                     }
                     else if(dataBeanList.get(position).getForm_type().equals("2")){
@@ -126,7 +127,7 @@ public class GroupListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                         intent.putExtra("group_id",dataBeanList.get(position).get_id());
                         intent.putExtra("group_detail_name",dataBeanList.get(position).getGroup_detail_name());
                         intent.putExtra("subgroup_id","");
-
+                        intent.putExtra("status",status);
                         context.startActivity(intent);
                     }
                     else if(dataBeanList.get(position).getForm_type().equals("3")){
@@ -136,6 +137,7 @@ public class GroupListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                         intent.putExtra("group_id",dataBeanList.get(position).get_id());
                         intent.putExtra("group_detail_name",dataBeanList.get(position).getGroup_detail_name());
                         intent.putExtra("subgroup_id","");
+                        intent.putExtra("status",status);
                         context.startActivity(intent);
                     }
                     else if(dataBeanList.get(position).getForm_type().equals("4")){
@@ -147,6 +149,7 @@ public class GroupListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                         intent.putExtra("group_detail_name",dataBeanList.get(position).getGroup_detail_name());
                         intent.putExtra("job_id",job_id);
                         intent.putExtra("subgroup_id","");
+                        intent.putExtra("status",status);
                         context.startActivity(intent);
                     }
                     else if(dataBeanList.get(position).getForm_type().equals("5")){

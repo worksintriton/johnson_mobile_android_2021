@@ -33,11 +33,18 @@
 
             <TextView
                 android:id="@+id/txt_value2"
-                android:layout_width="@dimen/_100dp"
+                android:layout_width="@dimen/_50dp"
                 android:layout_height="wrap_content"
                 android:text="Value 2"
                 android:textAlignment="textStart"
                android:maxLines="1"/>
+
+            <ImageView
+                android:id="@+id/img_delete"
+                android:layout_width="@dimen/_50dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_delete_forever_24"
+                />
 
         </TableRow>
 

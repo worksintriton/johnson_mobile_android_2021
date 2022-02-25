@@ -118,6 +118,7 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
 
     private Dialog dialog;
     private String userid;
+    private String status;
     List<ImageBasedStroeDataRequest.DataBean> Data = new ArrayList<>();
     private String networkStatus = "";
 
@@ -147,6 +148,7 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
             job_id = extras.getString("job_id");
 
             subgroup_id= extras.getString("subgroup_id");
+            status= extras.getString("status");
 
             Log.w(TAG,"activity_id -->"+activity_id);
 
@@ -238,7 +240,7 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
                     }
 
                 }else{
-                    Toasty.warning(getApplicationContext(),"Plz enter all fields",Toasty.LENGTH_LONG).show();
+                    Toasty.warning(getApplicationContext(),"Please enter all fields",Toasty.LENGTH_LONG).show();
 
                 }
 
@@ -292,7 +294,7 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     if(edt_inputValue1.getText().toString().equals("")||edt_inputValue2.getText().toString().equals("")){
-                        Toasty.warning(getApplicationContext(),"Plz enter all fields",Toasty.LENGTH_LONG).show();
+                        Toasty.warning(getApplicationContext(),"Please enter all fields",Toasty.LENGTH_LONG).show();
                     }else{
                         ImageBasedStroeDataRequest.DataBean dataBean = new ImageBasedStroeDataRequest.DataBean();
                         dataBean.setTitle(txt_header_title.getText().toString());
@@ -350,8 +352,13 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
                     if (200 == response.body().getCode()) {
                         if (response.body().getData() != null) {
                             Toasty.success(getApplicationContext(), "" + message, Toasty.LENGTH_LONG).show();
-                            startActivity(new Intent(ImageBasedInputFormActivity.this, ActivityBasedActivity.class));
-
+                            Intent intent = new Intent(ImageBasedInputFormActivity.this, GroupListActivity.class);
+                            intent.putExtra("activity_id",activity_id);
+                            intent.putExtra("job_id",job_id);
+                            intent.putExtra("status",status);
+                            startActivity(intent);
+                            finish();
+                            dialog.dismiss();
                         }
 
 

@@ -176,7 +176,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
     public String digitalSignatureServerUrlImagePath;
 
-    String string_value, message, service_id, activity_id, job_id, group_id, subgroup_id;
+    String string_value, message, service_id, activity_id, job_id, group_id, subgroup_id,status;
 
     int string_value_pos;
 
@@ -205,6 +205,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
             activity_id = extras.getString("activity_id");
 
             job_id = extras.getString("job_id");
+            status = extras.getString("status");
 
             subgroup_id = extras.getString("subgroup_id");
             String group_detail_name = extras.getString("group_detail_name");
@@ -251,7 +252,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean flag=true;
+                boolean flag = true;
 
                 rv_fieldlist.scrollToPosition(0);
                 new Handler().postDelayed(new Runnable() {
@@ -260,22 +261,60 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                         rv_fieldlist.smoothScrollToPosition(0);
                     }
                 }, 50);
-                currentPage += 1;
+
                 Log.w(TAG, "btnnext currentPage : " + currentPage);
-
                 int currentpagesize = currentPage;
-
                 Log.w(TAG, "btnnext totalPages  : " + totalPages+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS+" currentpagesize : "+currentpagesize);
-
-
                 List<GetFieldListResponse.DataBean> dataBeanListS = new ArrayList<>();
-
                 int startItem = currentPage * ITEMS_PER_PAGE;
-
-
-                Log.w(TAG, "btnnext ITEMS_PER_PAGE : " + ITEMS_PER_PAGE);
-                Log.w(TAG, "btnnext ITEMS_REMAINING : " + ITEMS_REMAINING);
                 Log.w(TAG, "btnnext startItem : "  + startItem);
+
+
+                if (currentPage == 0) {
+                    for (int i = 0; i <6; i++) {
+                        if(dataBeanList.get(i).getField_value().isEmpty() || dataBeanList.get(i).getField_value().equalsIgnoreCase("Select Value")){
+                            if(dataBeanList.get(i).getField_type() !=  null && dataBeanList.get(i).getField_type().equalsIgnoreCase("Lift")){
+                                dataBeanList.get(i).setField_value("LIFT");
+                            }else if(dataBeanList.get(i).getField_type() !=  null && dataBeanList.get(i).getField_type().equalsIgnoreCase("File upload")){
+                                dataBeanList.get(i).setField_value("File upload");
+                            }
+                            flag = false;
+                        }
+                    }
+
+                }
+                else {
+                    int enditem = (currentPage+1)*ITEMS_PER_PAGE;
+                   Log.w(TAG, "currentPage else currentPage : " + currentPage+" startItem : "+startItem+" enditem : "+enditem+" ITEMS_PER_PAGE : "+ITEMS_PER_PAGE);
+
+                    Log.w(TAG, "btnnext enditem : "  + enditem);
+                    for (int i = startItem; i <enditem; i++) {
+                        Log.w(TAG, "loop fieldvalue : "  + dataBeanList.get(i).getField_value()+" i : "+i);
+                        if(dataBeanList.get(i).getField_value().isEmpty() || dataBeanList.get(i).getField_value().equalsIgnoreCase("Select Value")){
+                            if(dataBeanList.get(i).getField_type() !=  null && dataBeanList.get(i).getField_type().equalsIgnoreCase("Lift")){
+                                dataBeanList.get(i).setField_value("LIFT");
+                            }else if(dataBeanList.get(i).getField_type() !=  null && dataBeanList.get(i).getField_type().equalsIgnoreCase("File upload")){
+                                dataBeanList.get(i).setField_value("File upload");
+                            }
+                            flag = false;
+                        }
+                        Log.w(TAG, "index : "  + i+" endvaleue "+ (enditem-1));
+
+
+                    }
+
+
+                }
+                Log.w(TAG, "btnnext flag : " + flag);
+
+                if(flag){
+                    currentPage += 1;
+                     startItem = currentPage * ITEMS_PER_PAGE;
+                    Log.w(TAG, "currentPage flag : " + currentPage+" startItem : "+startItem+" ITEMS_PER_PAGE : "+ITEMS_PER_PAGE);
+                }
+
+
+
 
 
 
@@ -288,7 +327,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
                 double LAST_PAGE = (( double) TOTAL_NUM_ITEMS / ITEMS_PER_PAGE);
 
-                Log.w(TAG, "btnnext LAST_PAGE : " + LAST_PAGE);
+                Log.w(TAG, "btnnext LAST_PAGE : " + LAST_PAGE+" currentPage : "+currentPage);
 
                 if (currentPage == LAST_PAGE - 1) {
                     Log.w(TAG, "btnnext if condition----->");
@@ -306,13 +345,12 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
 
 
-                    for (int i = startItem; i < condition; i++) {
+                    for (int i = startItem; i < dataBeanList.size(); i++) {
                         dataBeanListS.add(dataBeanList.get(i));
 
 
 
                     }
-
 
 
                     setView(dataBeanListS, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS);
@@ -329,19 +367,25 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                     btn_success.setVisibility(View.VISIBLE);
                 }
                 else {
-                       Log.w(TAG, "btnnext else condition----->");
-                       condition = startItem + ITEMS_PER_PAGE;
-                        Log.w(TAG, "btnnext  else startItem : "  + startItem+" condition : "+condition);
+                    if(flag) {
+                        Log.w(TAG, "btnnext else condition----->");
+                        condition = startItem + ITEMS_PER_PAGE;
+                        Log.w(TAG, "btnnext  else startItem : " + startItem + " condition : " + condition+"size : "+ dataBeanList.size());
 
-                         for (int i = startItem; i <dataBeanList.size(); i++) {
+                        for (int i = startItem; i < dataBeanList.size(); i++) {
+                            Log.w(TAG,"dataBeanList.get(i) : "+dataBeanList.get(i));
                             dataBeanListS.add(dataBeanList.get(i));
 
                         }
 
-                    Log.w(TAG, "btnnext else dataBeanList" + new Gson().toJson(dataBeanListS));
-                    setView(dataBeanListS, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS);
-                    Log.w(TAG, "btnnext else setView "+" ITEMS_PER_PAGE : "+ITEMS_PER_PAGE+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS+" dataBeanListS :  " + new Gson().toJson(dataBeanListS));
-                    toggleButtons();
+                        Log.w(TAG, "btnnext else dataBeanList" + new Gson().toJson(dataBeanListS));
+                        setView(dataBeanListS, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS);
+                        Log.w(TAG, "btnnext else setView " + " ITEMS_PER_PAGE : " + ITEMS_PER_PAGE + " TOTAL_NUM_ITEMS : " + TOTAL_NUM_ITEMS + " dataBeanListS :  " + new Gson().toJson(dataBeanListS));
+                        toggleButtons();
+                    }else{
+                        Toast.makeText(InputValueFormListActivity.this, "Please fill all the data", Toast.LENGTH_SHORT).show();
+
+                    }
 
                 }
 
@@ -399,10 +443,32 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                     Toasty.warning(getApplicationContext(), "No Internet", Toasty.LENGTH_LONG).show();
 
                 } else {
-                    getformdataListResponseCall();
-                    // getFieldListResponse();
+                    boolean flag = true;
+                    for (int i = 0; i <dataBeanList.size(); i++) {
+                        Log.w(TAG, "loop fieldvalue : "  + dataBeanList.get(i).getField_value()+" i : "+i);
+                        if(dataBeanList.get(i).getField_value().isEmpty() || dataBeanList.get(i).getField_value().equalsIgnoreCase("Select Value")){
+                            if(dataBeanList.get(i).getField_type() !=  null && dataBeanList.get(i).getField_type().equalsIgnoreCase("Lift")){
+                                dataBeanList.get(i).setField_value("LIFT");
+                            }else if(dataBeanList.get(i).getField_type() !=  null && dataBeanList.get(i).getField_type().equalsIgnoreCase("File upload")){
+                                dataBeanList.get(i).setField_value("File upload");
+                            }
+                            flag = false;
+                        }
 
-                    Log.w(TAG, "getFieldListResponse " + new Gson().toJson(getFieldListResponse));
+
+                    }
+
+                    Log.w(TAG, "flag " + flag);
+
+                    if(flag){
+                        getformdataListResponseCall();
+                    }else{
+                        Toast.makeText(InputValueFormListActivity.this, "Please fill all the data", Toast.LENGTH_SHORT).show();
+
+                    }
+
+
+
 
                 }
 
@@ -1151,8 +1217,13 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                     if (200 == response.body().getCode()) {
                         if (response.body().getData() != null) {
                             Toasty.success(getApplicationContext(), "" + message, Toasty.LENGTH_LONG).show();
-                            startActivity(new Intent(InputValueFormListActivity.this, ActivityBasedActivity.class));
-
+                            Intent intent = new Intent(InputValueFormListActivity.this, GroupListActivity.class);
+                            intent.putExtra("activity_id",activity_id);
+                            intent.putExtra("job_id",job_id);
+                            intent.putExtra("status",status);
+                            startActivity(intent);
+                            finish();
+                            dialog.dismiss();
                         }
 
 

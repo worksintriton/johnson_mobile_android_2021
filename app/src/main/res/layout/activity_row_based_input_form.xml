@@ -59,13 +59,15 @@
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginStart="@dimen/_20dp"
+            android:layout_marginEnd="@dimen/_20dp"
+            android:layout_marginTop="@dimen/_10dp">
 
             <ImageView
                 android:id="@+id/img_load"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="160dp"
                 android:layout_gravity="center"
                 android:contentDescription="@string/image"
                 android:scaleType="fitXY"
@@ -209,8 +211,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -223,15 +224,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginBottom="@dimen/_20dp"
                         android:fontFamily="@font/sourcesanspro_regular"
-                        android:padding="15dp"
                         android:text="@string/row_dimension"
                         android:textAlignment="center"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="12sp"
                         android:textStyle="bold"
-                        android:visibility="visible" />
+                        android:visibility="visible"
+                        android:layout_marginTop="@dimen/_10dp"
+                        android:layout_marginBottom="@dimen/_10dp"/>
 
                     <LinearLayout
                         android:id="@+id/ll_add"
@@ -251,7 +252,7 @@
                                 android:id="@+id/horizontalView1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="5dip"
+                                android:layout_marginTop="5dp"
                                 android:scrollbars="horizontal|vertical">
 
                                 <LinearLayout
@@ -294,7 +295,8 @@
                                                 android:maxLength="6"
                                                 android:maxLines="1"
                                                 android:textAlignment="center"
-                                                android:textColor="@color/black" />
+                                                android:textColor="@color/black"
+                                                android:inputType="number"/>
                                         </LinearLayout>
 
                                         <LinearLayout
@@ -325,7 +327,8 @@
                                                 android:maxLength="6"
                                                 android:maxLines="1"
                                                 android:textAlignment="center"
-                                                android:textColor="@color/black" />
+                                                android:textColor="@color/black"
+                                                android:inputType="number"/>
                                         </LinearLayout>
 
                                         <LinearLayout
@@ -356,7 +359,8 @@
                                                 android:maxLength="6"
                                                 android:maxLines="1"
                                                 android:textAlignment="center"
-                                                android:textColor="@color/black" />
+                                                android:textColor="@color/black"
+                                                android:inputType="number"/>
                                         </LinearLayout>
 
                                         <LinearLayout
@@ -387,7 +391,8 @@
                                                 android:maxLength="6"
                                                 android:maxLines="1"
                                                 android:textAlignment="center"
-                                                android:textColor="@color/black" />
+                                                android:textColor="@color/black"
+                                                android:inputType="number"/>
                                         </LinearLayout>
 
                                         <LinearLayout
@@ -418,7 +423,8 @@
                                                 android:maxLength="6"
                                                 android:maxLines="1"
                                                 android:textAlignment="center"
-                                                android:textColor="@color/black" />
+                                                android:textColor="@color/black"
+                                                android:inputType="number"/>
                                         </LinearLayout>
 
                                         <LinearLayout
@@ -449,7 +455,8 @@
                                                 android:maxLength="6"
                                                 android:maxLines="1"
                                                 android:textAlignment="center"
-                                                android:textColor="@color/black" />
+                                                android:textColor="@color/black"
+                                                android:inputType="number"/>
                                         </LinearLayout>
 
                                         <LinearLayout

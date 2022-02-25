@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -67,6 +68,15 @@ public class ImageBasedArrayListAdapter extends  RecyclerView.Adapter<RecyclerVi
             holder.txt_value2.setText(""+Data.get(position).getValue_b());
         }
 
+        holder.img_delete.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onClick(View view) {
+                Data.remove(holder.getAdapterPosition());
+                notifyDataSetChanged();
+            }
+        });
+
 
 
 
@@ -89,12 +99,14 @@ public class ImageBasedArrayListAdapter extends  RecyclerView.Adapter<RecyclerVi
 
     static class ViewHolderOne extends RecyclerView.ViewHolder {
         TextView txt_title,txt_value1,txt_value2;
+        ImageView img_delete;
 
         public ViewHolderOne(View itemView) {
             super(itemView);
             txt_title = itemView.findViewById(R.id.txt_title);
             txt_value1 = itemView.findViewById(R.id.txt_value1);
             txt_value2 = itemView.findViewById(R.id.txt_value2);
+            img_delete = itemView.findViewById(R.id.img_delete);
 
         }
 

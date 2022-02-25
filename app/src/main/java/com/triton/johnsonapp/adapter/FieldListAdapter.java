@@ -349,22 +349,19 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
                 holder.ll_file_upload.setVisibility(View.VISIBLE);
 
+                Log.w(TAG,"currentItem.getField_value() ---->"+currentItem.getField_value());
 
                 if(currentItem.getField_value()!=null&&!currentItem.getField_value().equals("")){
-
                     String uploadimagepath = currentItem.getField_value();
-
                     holder.cv_image.setVisibility(View.VISIBLE);
-
                     holder.img_file_upload.setVisibility(View.VISIBLE);
-
-
                     if (uploadimagepath!=null) {
                         Glide.with(context)
                                 .load(uploadimagepath)
                                 .into(holder.img_file_upload);
 
                     }
+
 
                 }
 
@@ -375,11 +372,11 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                     @Override
                     public void onClick(View v) {
 
-                      //  dataBeanList.get(position).setField_update_reason("");
+                        dataBeanList.get(position).setField_value("");
 
                         notifyDataSetChanged();
-
                         holder.img_file_upload.setVisibility(View.GONE);
+
                     }
                 });
 

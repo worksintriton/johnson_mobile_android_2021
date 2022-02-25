@@ -124,6 +124,7 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
     int i=0;
     private Dialog dialog;
     private String userid;
+    private String status;
 
     private List<RowBasedStroeDataRequest.DataBean> Data = new ArrayList<>();
 
@@ -151,6 +152,7 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
             job_id = extras.getString("job_id");
 
             subgroup_id= extras.getString("subgroup_id");
+            status = extras.getString("status");
 
             Log.w(TAG,"activity_id -->"+activity_id);
 
@@ -181,7 +183,7 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
 
                 ||edt_rem.getText().toString().equals("")){
 
-                    Toasty.warning(getApplicationContext(),"Plz enter all fields",Toasty.LENGTH_LONG).show();
+                    Toasty.warning(getApplicationContext(),"Please enter all fields",Toasty.LENGTH_LONG).show();
                 }
 
                 else {
@@ -257,7 +259,7 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
                 if(Data != null && Data.size()>0) {
                     rowBasedStroeDataRequestCall();
                 }else{
-                    Toasty.warning(getApplicationContext(),"Plz enter all fields",Toasty.LENGTH_LONG).show();
+                    Toasty.warning(getApplicationContext(),"Please enter all fields",Toasty.LENGTH_LONG).show();
 
 
                 }
@@ -325,8 +327,13 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
                     if (200 == response.body().getCode()) {
                         if (response.body().getData() != null) {
                             Toasty.success(getApplicationContext(), "" + message, Toasty.LENGTH_LONG).show();
-                            startActivity(new Intent(RowBasedInputFormActivity.this, ActivityBasedActivity.class));
-
+                            Intent intent = new Intent(RowBasedInputFormActivity.this, GroupListActivity.class);
+                            intent.putExtra("activity_id",activity_id);
+                            intent.putExtra("job_id",job_id);
+                            intent.putExtra("status",status);
+                            startActivity(intent);
+                            finish();
+                            dialog.dismiss();
                         }
 
 

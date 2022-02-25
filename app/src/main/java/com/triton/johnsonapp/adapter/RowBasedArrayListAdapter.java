@@ -67,6 +67,7 @@ public class RowBasedArrayListAdapter extends  RecyclerView.Adapter<RecyclerView
 
         if(position==0){
             holder.textView.setVisibility(View.VISIBLE);
+            holder.textView11.setVisibility(View.VISIBLE);
             holder.txt_dimx1.setVisibility(View.VISIBLE);
             holder.txt_dimx2.setVisibility(View.VISIBLE);
             holder.txt_dimx3.setVisibility(View.VISIBLE);
@@ -78,6 +79,7 @@ public class RowBasedArrayListAdapter extends  RecyclerView.Adapter<RecyclerView
         }
         else {
             holder.textView.setVisibility(View.GONE);
+            holder.textView11.setVisibility(View.GONE);
             holder.txt_dimx1.setVisibility(View.GONE);
             holder.txt_dimx2.setVisibility(View.GONE);
             holder.txt_dimx3.setVisibility(View.GONE);
@@ -148,6 +150,15 @@ public class RowBasedArrayListAdapter extends  RecyclerView.Adapter<RecyclerView
 
         }
 
+        holder.img_delete.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onClick(View view) {
+                dataBeanLists.remove(holder.getAdapterPosition());
+                notifyDataSetChanged();
+            }
+        });
+
     }
 
     @Override
@@ -163,7 +174,8 @@ public class RowBasedArrayListAdapter extends  RecyclerView.Adapter<RecyclerView
 
     static class ViewHolderOne extends RecyclerView.ViewHolder {
         EditText edt_sno, edt_dimx1,edt_dimx2, edt_dimx3,edt_dimx4,edt_dimy1,edt_dimy2,edt_rem;
-        TextView textView,txt_dimx1,txt_dimx2,txt_dimx3,txt_dimx4,txt_dimy1,txt_dimy2,txt_rem;
+        TextView textView,txt_dimx1,txt_dimx2,txt_dimx3,txt_dimx4,txt_dimy1,txt_dimy2,txt_rem,textView11;
+        ImageView img_delete;
 
         public ViewHolderOne(View itemView) {
             super(itemView);
@@ -176,6 +188,7 @@ public class RowBasedArrayListAdapter extends  RecyclerView.Adapter<RecyclerView
             edt_dimy2=itemView.findViewById(R.id.edt_dimy2);
             edt_rem=itemView.findViewById(R.id.edt_rem);
             textView=itemView.findViewById(R.id.textView);
+            textView11=itemView.findViewById(R.id.textView11);
             txt_dimx1=itemView.findViewById(R.id.txt_dimx1);
             txt_dimx2=itemView.findViewById(R.id.txt_dimx2);
             txt_dimx3=itemView.findViewById(R.id.txt_dimx3);
@@ -183,6 +196,7 @@ public class RowBasedArrayListAdapter extends  RecyclerView.Adapter<RecyclerView
             txt_dimy1=itemView.findViewById(R.id.txt_dimy1);
             txt_dimy2=itemView.findViewById(R.id.txt_dimy2);
             txt_rem=itemView.findViewById(R.id.txt_rem);
+            img_delete=itemView.findViewById(R.id.img_delete);
         }
 
 
