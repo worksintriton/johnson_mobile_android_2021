@@ -121,6 +121,7 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
     private Dialog dialog;
     private String userid;
     private String status;
+    private String fromactivity;
     List<ImageBasedStroeDataRequest.DataBean> Data = new ArrayList<>();
     private String networkStatus = "";
 
@@ -151,6 +152,7 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
 
             subgroup_id= extras.getString("subgroup_id");
             status= extras.getString("status");
+            fromactivity= extras.getString("fromactivity");
 
             Log.w(TAG,"activity_id -->"+activity_id);
 
@@ -271,6 +273,8 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
                         Intent intent = new Intent(ImageBasedInputFormActivity.this, GroupListActivity.class);
                         intent.putExtra("activity_id", activity_id);
                         intent.putExtra("job_id", job_id);
+                        intent.putExtra("status", status);
+                        intent.putExtra("fromactivity", fromactivity);
                         startActivity(intent);
                         overridePendingTransition(R.anim.new_right, R.anim.new_left);
                         finish();
@@ -365,6 +369,7 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
                             intent.putExtra("activity_id",activity_id);
                             intent.putExtra("job_id",job_id);
                             intent.putExtra("status",status);
+                            intent.putExtra("fromactivity",fromactivity);
                             startActivity(intent);
                             finish();
                             dialog.dismiss();

@@ -202,6 +202,13 @@ public class GroupListActivity extends AppCompatActivity {
             startActivity(intent);
             overridePendingTransition(R.anim.new_right, R.anim.new_left);
 
+        }  else if(fromactivity != null && fromactivity.equalsIgnoreCase("CustomerDetailsActivity")){
+            Intent intent = new Intent(GroupListActivity.this, CustomerDetailsActivity.class);
+            intent.putExtra("activity_id",activity_id);
+            intent.putExtra("status",status);
+            startActivity(intent);
+            overridePendingTransition(R.anim.new_right, R.anim.new_left);
+
         }else{
             Intent intent = new Intent(GroupListActivity.this, JobDetailActivity.class);
             intent.putExtra("activity_id",activity_id);

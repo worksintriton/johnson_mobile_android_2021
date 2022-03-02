@@ -36,12 +36,14 @@ public class ServiceListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewH
     String activity_id;
     String job_id;
     String group_id;
-    public ServiceListAdapter(Context context, List<SubGroupDetailManagementResponse.DataBean> dataBeanList, String activity_id, String job_id, String group_id) {
+    String fromactivity;
+    public ServiceListAdapter(Context context, List<SubGroupDetailManagementResponse.DataBean> dataBeanList, String activity_id, String job_id, String group_id,  String fromactivity) {
         this.context = context;
         this.dataBeanList = dataBeanList;
         this.activity_id=activity_id;
         this.job_id=job_id;
         this.group_id=group_id;
+        this.fromactivity=fromactivity;
 
     }
 
@@ -90,12 +92,12 @@ public class ServiceListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewH
             if(dataBeanList.get(position).getForm_type()!=null){
 
                 if(dataBeanList.get(position).getForm_type().equals("1")){
-
                     Intent intent = new Intent(context, InputValueFormListActivity.class);
                     intent.putExtra("activity_id",activity_id);
                     intent.putExtra("job_id",job_id);
                     intent.putExtra("group_id",group_id);
                     intent.putExtra("subgroup_id",dataBeanList.get(position).get_id());
+                    intent.putExtra("fromactivity",fromactivity);
                     context.startActivity(intent);
                 }
 

@@ -43,24 +43,39 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:visibility="visible"/>
+
             <LinearLayout
                 android:id="@+id/ll_logout"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="right|center_vertical"
-                android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
-                tools:ignore="RtlHardcoded"
-                android:onClick="logOutUser">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="right|center_vertical"
+                android:onClick="logOutUser"
+                android:orientation="vertical"
+                tools:ignore="RtlHardcoded">
+
                 <ImageView
-                    android:gravity="right|center_vertical"
                     android:id="@+id/img_logout"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="20dp"
-                    app:srcCompat="@drawable/log_out"
-                    android:contentDescription="@string/image" />
+                    android:layout_marginStart="12dp"
+                    android:contentDescription="@string/image"
+                    android:gravity="right|center_vertical"
+                    app:srcCompat="@drawable/log_out" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:fontFamily="@font/sourcesanspro_regular"
+                    android:gravity="center"
+                    android:text="@string/logout"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
 
             </LinearLayout>
         </LinearLayout>

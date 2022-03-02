@@ -364,6 +364,15 @@ public class GetFieldListResponse {
 
         public static class LiftListBean {
             private String left;
+            private String title;
+
+            public String getTitle() {
+                return title;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
+            }
 
             public String getLeft() {
                 return left;

@@ -80,6 +80,7 @@ public class SubGroupListActivity extends AppCompatActivity {
     EditText edt_search;
 
     private String search_string ="";
+    private String fromactivity ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,30 +99,16 @@ public class SubGroupListActivity extends AppCompatActivity {
         if (extras != null) {
 
             group_id = extras.getString("group_id");
-
             activity_id = extras.getString("activity_id");
-
             job_id = extras.getString("job_id");
-
+            fromactivity = extras.getString("fromactivity");
             Log.w(TAG,"activity_id -->"+activity_id);
-
             Log.w(TAG,"group_id -->"+group_id);
+            Log.w(TAG,"job_id -->"+job_id);
+            Log.w(TAG,"fromactivity -->"+fromactivity);
 
         }
-/*
-        if(username!=null){
 
-            txt_logout.setText(username+" Logout");
-        }
-
-        txt_logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                session.logoutUser();
-                startActivity(new Intent(SubGroupListActivity.this,LoginActivity.class));
-            }
-        });*/
 
         img_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -277,7 +264,7 @@ public class SubGroupListActivity extends AppCompatActivity {
 
         rv_subgrouplist.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
         rv_subgrouplist.setItemAnimator(new DefaultItemAnimator());
-        ServiceListAdapter serviceListAdapter = new ServiceListAdapter(this, dataBeanList,activity_id,job_id, group_id);
+        ServiceListAdapter serviceListAdapter = new ServiceListAdapter(this, dataBeanList,activity_id,job_id, group_id,TAG);
         rv_subgrouplist.setAdapter(serviceListAdapter);
     }
 

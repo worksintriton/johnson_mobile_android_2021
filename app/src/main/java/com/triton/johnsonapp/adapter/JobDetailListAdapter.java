@@ -14,6 +14,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.triton.johnsonapp.R;
+import com.triton.johnsonapp.activity.CustomerDetailsActivity;
 import com.triton.johnsonapp.activity.GroupListActivity;
 import com.triton.johnsonapp.responsepojo.JobNoManagementResponse;
 
@@ -82,8 +83,8 @@ public class JobDetailListAdapter extends  RecyclerView.Adapter<RecyclerView.Vie
         }*/
 
         holder.cv_root.setOnClickListener(v -> {
-
-            Intent intent = new Intent(context, GroupListActivity.class);
+            //Intent intent = new Intent(context, GroupListActivity.class);
+            Intent intent = new Intent(context, CustomerDetailsActivity.class);
             intent.putExtra("activity_id",dataBeanList.get(position).getActivedetail__id());
             intent.putExtra("job_id",dataBeanList.get(position).get_id());
             intent.putExtra("status",status);

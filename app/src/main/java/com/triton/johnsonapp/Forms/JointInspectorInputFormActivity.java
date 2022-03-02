@@ -15,6 +15,7 @@ public class JointInspectorInputFormActivity extends AppCompatActivity {
     private String _id;
     private String job_detail_id;
     private String group_detail_name;
+    private String fromactivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +34,11 @@ public class JointInspectorInputFormActivity extends AppCompatActivity {
             group_detail_name = extras.getString("group_detail_name");
             job_id = extras.getString("job_id");
             subgroup_id= extras.getString("subgroup_id");
+            fromactivity= extras.getString("fromactivity");
 
 
 
-            Log.w(TAG,"activity_id -->"+activity_id);
+            Log.w(TAG,"activity_id -->"+activity_id+" fromactivity : "+fromactivity);
 
             Log.w(TAG,"group_id -->"+group_id);
 

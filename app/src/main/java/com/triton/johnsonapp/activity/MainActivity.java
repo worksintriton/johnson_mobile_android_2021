@@ -76,8 +76,14 @@ public class MainActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setMessage("Are you sure you want to exit?")
                 .setCancelable(false)
-                .setPositiveButton("Yes", (dialog, id) -> session.logoutUser())
+                .setPositiveButton("Yes", (dialog, id) -> {
+                    session.logoutUser();
+                })
                 .setNegativeButton("No", null)
                 .show();
     }
+
+
+
+
 }

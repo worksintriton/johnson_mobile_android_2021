@@ -1,6 +1,8 @@
 package com.triton.johnsonapp.api;
 
 import com.triton.johnsonapp.requestpojo.ActivityListManagementRequest;
+import com.triton.johnsonapp.requestpojo.AttendanceCreateRequest;
+import com.triton.johnsonapp.requestpojo.AttendanceLogoutRequest;
 import com.triton.johnsonapp.requestpojo.CheckDataStoreRequest;
 import com.triton.johnsonapp.requestpojo.FetchRecordByUserIDRequest;
 import com.triton.johnsonapp.requestpojo.FormDataStoreRequest;
@@ -81,6 +83,10 @@ public interface APIInterface {
     @POST("field_management/getlist_id")
     Call<GetFieldListResponse> getfieldListResponseCall(@Header("Content-Type") String type, @Body GetFieldListRequest getFieldListRequest);
 
+    /*joint inspection field screen list*/
+    @POST("joininspection/getlist_id")
+    Call<GetFieldListResponse> joinInspectionGetFieldListResponseCall(@Header("Content-Type") String type, @Body GetFieldListRequest getFieldListRequest);
+
 
     /*Image upload*/
     @Multipart
@@ -95,6 +101,10 @@ public interface APIInterface {
     /*form store*/
     @POST("data_store_management/create")
     Call<FormDataStoreResponse> getformdataListResponseCall1(@Header("Content-Type") String type, @Body GetFieldListResponse getFieldListResponse);
+
+    /*join inspection form store*/
+    @POST("joininspection/create")
+    Call<FormDataStoreResponse> joinInspectionCreateRequestCall(@Header("Content-Type") String type, @Body GetFieldListResponse getFieldListResponse);
 
 
     /*ImageBased form store*/
@@ -143,5 +153,16 @@ public interface APIInterface {
     /*form  five store*/
     @POST("data_store_management/form_5_create")
     Call<SuccessResponse> formFiveStroeDataRequestCall(@Header("Content-Type") String type, @Body FormFiveDataResponse formFiveDataResponse);
+
+
+
+    /*Attendance create*/
+    @POST("attendance/create")
+    Call<SuccessResponse> attendanceCreateRequestCall(@Header("Content-Type") String type, @Body AttendanceCreateRequest attendanceCreateRequest);
+
+    /*Attendance logout */
+    @POST("attendance/logout")
+    Call<SuccessResponse> attendanceLogoutRequestCall(@Header("Content-Type") String type, @Body AttendanceLogoutRequest attendanceLogoutRequest);
+
 
 }

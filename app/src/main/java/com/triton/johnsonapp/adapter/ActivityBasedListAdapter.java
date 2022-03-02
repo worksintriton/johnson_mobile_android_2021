@@ -14,13 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.triton.johnsonapp.Forms.ImageBasedInputFormActivity;
-import com.triton.johnsonapp.Forms.InputValueFormListActivity;
-import com.triton.johnsonapp.Forms.JointInspectorInputFormActivity;
-import com.triton.johnsonapp.Forms.RowBasedInputFormActivity;
+
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.activity.ActivityStatusActivity;
-import com.triton.johnsonapp.activity.JobDetailActivity;
 import com.triton.johnsonapp.responsepojo.ActivityListManagementResponse;
 
 import java.util.List;

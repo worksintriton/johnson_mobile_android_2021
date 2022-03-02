@@ -101,6 +101,7 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
     private String group_id;
     private String group_detail_name;
     private String status;
+    private String fromactivity;
 
 
     @Override
@@ -122,6 +123,7 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
             group_detail_name = extras.getString("group_detail_name");
             job_id = extras.getString("job_id");
             status = extras.getString("status");
+            fromactivity = extras.getString("fromactivity");
             Log.w(TAG,"_id -->"+_id);
             Log.w(TAG,"activity_id -->"+activity_id);
             Log.w(TAG,"job_detail_id " + job_detail_id+" group_id : "+group_id+" group_detail_name : "+group_detail_name+" job_id : "+job_id);
@@ -291,6 +293,7 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
                             intent.putExtra("activity_id",activity_id);
                             intent.putExtra("job_id",job_id);
                             intent.putExtra("status",status);
+                            intent.putExtra("fromactivity",fromactivity);
                             startActivity(intent);
                             finish();
                             dialog.dismiss();
@@ -417,5 +420,11 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
     @Override
     public void getRemarksListner(String s) {
         Remarks = s;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

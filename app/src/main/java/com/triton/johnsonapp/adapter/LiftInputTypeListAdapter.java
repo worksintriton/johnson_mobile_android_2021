@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -65,11 +66,23 @@ public class LiftInputTypeListAdapter extends  RecyclerView.Adapter<RecyclerView
 
         Log.w(TAG,"id -->"+size);
 
-        if(list.get(position).getLeft()!=null&&!list.get(position).getLeft().equals("")){
+        if(list.get(position).getLeft()!=null &&!list.get(position).getLeft().equals("")){
 
            // holder.edt_inputValue.setText(list.get(position).getLeft());
 
+
         }
+        if(list.get(position).getTitle() != null && !list.get(position).getTitle().isEmpty()){
+            holder.txt_title.setVisibility(View.VISIBLE);
+            holder.txt_title.setText(list.get(position).getTitle());
+        }else{
+            holder.txt_title.setVisibility(View.GONE);
+        }
+
+
+
+
+
 
         holder.edt_inputValue.addTextChangedListener(new TextWatcher() {
             @Override
@@ -109,6 +122,8 @@ public class LiftInputTypeListAdapter extends  RecyclerView.Adapter<RecyclerView
     static class ViewHolderOne extends RecyclerView.ViewHolder {
 
         public EditText edt_inputValue;
+        public TextView txt_title;
+
 
         CardView cv_root;
 
@@ -116,6 +131,8 @@ public class LiftInputTypeListAdapter extends  RecyclerView.Adapter<RecyclerView
             super(itemView);
 
             edt_inputValue = itemView.findViewById(R.id.edt_inputValue);
+            txt_title = itemView.findViewById(R.id.txt_title);
+            txt_title.setVisibility(View.GONE);
 
             cv_root = itemView.findViewById(R.id.cv_root);
 

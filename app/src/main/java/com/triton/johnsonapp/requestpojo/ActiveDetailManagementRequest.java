@@ -10,4 +10,6 @@ public class ActiveDetailManagementRequest {
     public void setSearch_string(String search_string) {
         this.search_string = search_string;
     }
+
+
 }
