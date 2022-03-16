@@ -298,7 +298,9 @@ public class LoginActivity extends AppCompatActivity implements OnMapReadyCallba
                                     response.body().getData().getUser_designation(),
                                     response.body().getData().getUser_token(),
                                     response.body().getData().getUser_status(),
-                                    String.valueOf(response.body().getData().getUser_type())
+                                    String.valueOf(response.body().getData().getUser_type()),
+                                    response.body().getData().getUser_role()
+
                             );
 
                             attendanceCreateRequestCall(response.body().getData().get_id(), response.body().getData().getUser_name());

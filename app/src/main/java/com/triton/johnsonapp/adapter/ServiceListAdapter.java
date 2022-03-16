@@ -37,13 +37,15 @@ public class ServiceListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewH
     String job_id;
     String group_id;
     String fromactivity;
-    public ServiceListAdapter(Context context, List<SubGroupDetailManagementResponse.DataBean> dataBeanList, String activity_id, String job_id, String group_id,  String fromactivity) {
+    String status;
+    public ServiceListAdapter(Context context, List<SubGroupDetailManagementResponse.DataBean> dataBeanList, String activity_id, String job_id, String group_id,  String fromactivity,String status) {
         this.context = context;
         this.dataBeanList = dataBeanList;
         this.activity_id=activity_id;
         this.job_id=job_id;
         this.group_id=group_id;
         this.fromactivity=fromactivity;
+        this.status=status;
 
     }
 
@@ -98,6 +100,8 @@ public class ServiceListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewH
                     intent.putExtra("group_id",group_id);
                     intent.putExtra("subgroup_id",dataBeanList.get(position).get_id());
                     intent.putExtra("fromactivity",fromactivity);
+                    intent.putExtra("status",status);
+                    intent.putExtra("sub_group_detail_name",dataBeanList.get(position).getSub_group_detail_name());
                     context.startActivity(intent);
                 }
 
@@ -108,6 +112,8 @@ public class ServiceListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewH
                     intent.putExtra("job_id",job_id);
                     intent.putExtra("group_id",group_id);
                     intent.putExtra("subgroup_id",dataBeanList.get(position).get_id());
+                    intent.putExtra("sub_group_detail_name",dataBeanList.get(position).getSub_group_detail_name());
+                    intent.putExtra("status",status);
                     context.startActivity(intent);
                 }
                 else if(dataBeanList.get(position).getForm_type().equals("3")){
@@ -117,16 +123,19 @@ public class ServiceListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewH
                     intent.putExtra("job_id",job_id);
                     intent.putExtra("group_id",group_id);
                     intent.putExtra("subgroup_id",dataBeanList.get(position).get_id());
+                    intent.putExtra("sub_group_detail_name",dataBeanList.get(position).getSub_group_detail_name());
+                    intent.putExtra("status",status);
                     context.startActivity(intent);
                 }
 
                 else if(dataBeanList.get(position).getForm_type().equals("4")){
-
                     Intent intent = new Intent(context, JointInspectorInputFormActivity.class);
                     intent.putExtra("activity_id",activity_id);
                     intent.putExtra("job_id",job_id);
                     intent.putExtra("group_id",group_id);
                     intent.putExtra("subgroup_id",dataBeanList.get(position).get_id());
+                    intent.putExtra("sub_group_detail_name",dataBeanList.get(position).getSub_group_detail_name());
+                    intent.putExtra("status",status);
                     context.startActivity(intent);
                 }
             }

@@ -21,6 +21,7 @@ import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -85,6 +87,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -103,6 +106,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
     private String TAG = "InputValueFormListActivity";
 
     String userid, username;
+    private String userrole = "";
 
 
     @SuppressLint("NonConstantResourceId")
@@ -119,6 +123,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
     TextView txt_no_records;
 
     Dialog dialog;
+    Dialog alertdialog;
 
     String networkStatus = "";
 
@@ -200,7 +205,13 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
     FieldListAdapter fieldListAdapter;
     private String fromactivity;
 
+    private String work_status = "" ;
+    private String resWorkStatus;
+    public static String responsemessage;
+    private Dialog alertDialog;
 
+
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -218,15 +229,21 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
             subgroup_id = extras.getString("subgroup_id");
             fromactivity = extras.getString("fromactivity");
             String group_detail_name = extras.getString("group_detail_name");
+            String  sub_group_detail_name = extras.getString("sub_group_detail_name");
+
 
             Log.w(TAG, "activity_id -->" + activity_id+ "status : "+status+" fromactivity : "+fromactivity);
 
             Log.w(TAG, "group_id -->" + group_id);
 
             Log.w(TAG, "service_id" + service_id);
+            Log.w(TAG, "group_detail_name " + group_detail_name);
+            Log.w(TAG, "sub_group_detail_name " + sub_group_detail_name);
 
             if(group_detail_name != null){
                 txt_toolbar_title.setText(""+group_detail_name);
+            } else if(sub_group_detail_name != null){
+                txt_toolbar_title.setText(""+sub_group_detail_name);
             }
 
         }
@@ -234,6 +251,10 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         SessionManager session = new SessionManager(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
         userid = user.get(SessionManager.KEY_ID);
+        userrole = user.get(SessionManager.KEY_USERROLE);
+
+
+        Log.w(TAG,"userrole  : "+userrole);
 
         username = user.get(SessionManager.KEY_USERNAME);
         footerView.setVisibility(View.GONE);
@@ -383,8 +404,15 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                     btn_next.setVisibility(View.GONE);
                     btn_success.setVisibility(View.VISIBLE);
                     if(fromactivity != null && fromactivity.equalsIgnoreCase("SubGroupListActivity")){
-                        btn_success.setText("Pending");
-                        btn_clear.setVisibility(View.VISIBLE);
+                        if(userrole != null && userrole.equalsIgnoreCase("ESPD")){
+                            btn_success.setText("Pending");
+                            btn_clear.setVisibility(View.VISIBLE);
+                        }else{
+                            btn_success.setText("Submit");
+                            btn_clear.setVisibility(View.GONE);
+                        }
+
+
 
                     }else{
                         btn_success.setText("Submit");
@@ -410,10 +438,16 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                         toggleButtons();
                     }else{
 
+                        showErrorLoading();
+/*
                         Toast toast = Toast.makeText(getApplicationContext(), "please enter all required data", Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER, 0, 0);
-                        toast.getView().setBackgroundTintList(ColorStateList.valueOf(R.color.warning));
-                        toast.show();
+                        if(toast.getView() != null){
+                            toast.getView().setBackgroundTintList(ColorStateList.valueOf(R.color.warning));
+                            toast.show();
+                        }
+                        toast.show();*/
+
 
                     }
 
@@ -426,6 +460,10 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
             }
         });
+
+
+
+
         btn_prev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -493,7 +531,16 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
                     if(flag){
                         if(fromactivity != null && fromactivity.equalsIgnoreCase("SubGroupListActivity")){
+                            if(userrole != null && userrole.equalsIgnoreCase("ESP")){
+                                work_status = "Pending";
+                            }else{
+                                work_status = "Submitted";
+                            }
+
+
+                            Log.w(TAG,"Workstatus -->"+ work_status);
                             joinInspectionCreateRequestCall();
+
                         }else{
                             getformdataListResponseCall();
 
@@ -513,9 +560,26 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
             }
         });
 
+        btn_clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(fromactivity != null && fromactivity.equalsIgnoreCase("SubGroupListActivity")){
+                    if(userrole != null && userrole.equalsIgnoreCase("ESP")){
+                        work_status = "Clear";
+                    }
+                    joinInspectionCreateRequestCall();
+                }else{
+                    getformdataListResponseCall();
+
+                }
+
+            }
+        });
+
     }
 
 
+    @SuppressLint("SetTextI18n")
     private void toggleButtons() {
         if (currentPage == 0) {
             btn_next.setBackgroundResource(R.drawable.blue_button_background_with_radius);
@@ -533,8 +597,13 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
             btn_next.setVisibility(View.GONE);
             btn_success.setVisibility(View.VISIBLE);
             if(fromactivity != null && fromactivity.equalsIgnoreCase("SubGroupListActivity")){
-                btn_success.setText("Pending");
-                btn_clear.setVisibility(View.VISIBLE);
+                if(userrole != null && userrole.equalsIgnoreCase("ESP")){
+                    btn_success.setText("Pending");
+                    btn_clear.setVisibility(View.VISIBLE);
+                }else{
+                    btn_success.setText("Submit");
+                    btn_clear.setVisibility(View.GONE);
+                }
 
             }else{
                 btn_success.setText("Submit");
@@ -575,6 +644,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                 if (response.body() != null) {
                     if (200 == response.body().getCode()) {
                         dialog.dismiss();
+                        responsemessage =  response.body().getMessage();
                         Log.w(TAG, "GetFieldListResponse" + new Gson().toJson(response.body()));
 
                         if (response.body().getData() != null) {
@@ -582,6 +652,13 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                             dataBeanList = response.body().getData();
 
                             Log.w(TAG, "dataBeanList Size : " + dataBeanList.size());
+
+                            resWorkStatus = response.body().getWork_status();
+                            Log.w(TAG, "resWorkStatus -->" + resWorkStatus);
+
+                            if(resWorkStatus != null && resWorkStatus.equalsIgnoreCase("Clear")){
+                                showWarningWorkStatusClear();
+                            }
 
                             if (dataBeanList != null && dataBeanList.size() > 0) {
                                 footerView.setVisibility(View.VISIBLE);
@@ -645,14 +722,25 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         Log.w(TAG, "url  :%s" + call.request().url().toString());
 
         call.enqueue(new Callback<GetFieldListResponse>() {
-            @SuppressLint("LogNotTimber")
+            @SuppressLint({"LogNotTimber", "SetTextI18n"})
             @Override
             public void onResponse(@NonNull Call<GetFieldListResponse> call, @NonNull Response<GetFieldListResponse> response) {
 
 
                 if (response.body() != null) {
                     if (200 == response.body().getCode()) {
+
                         dialog.dismiss();
+
+                       responsemessage =  response.body().getMessage();
+
+                       resWorkStatus = response.body().getWork_status();
+                        Log.w(TAG, "resWorkStatus -->" + resWorkStatus);
+
+                       if(resWorkStatus != null && resWorkStatus.equalsIgnoreCase("Clear")){
+                           showWarningWorkStatusClear();
+                       }
+
                         Log.w(TAG, "joinInspectionGetFieldListResponseCall" + new Gson().toJson(response.body()));
 
                         if (response.body().getData() != null) {
@@ -669,8 +757,13 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                                     btn_success.setVisibility(View.VISIBLE);
 
                                     if(fromactivity != null && fromactivity.equalsIgnoreCase("SubGroupListActivity")){
-                                        btn_success.setText("Pending");
-                                        btn_clear.setVisibility(View.VISIBLE);
+                                        if(userrole != null && userrole.equalsIgnoreCase("ESP")){
+                                            btn_success.setText("Pending");
+                                            btn_clear.setVisibility(View.VISIBLE);
+                                        }else{
+                                            btn_success.setText("Submit");
+                                            btn_clear.setVisibility(View.GONE);
+                                        }
 
                                     }else{
                                         btn_success.setText("Submit");
@@ -732,6 +825,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         getFieldListRequest.setSub_group_id(subgroup_id);
         getFieldListRequest.setJob_id(job_id);
         getFieldListRequest.setUser_id(userid);
+        getFieldListRequest.setUser_role(userrole);
 
         Log.w(TAG, "GetFieldListRequest " + new Gson().toJson(getFieldListRequest));
         return getFieldListRequest;
@@ -743,7 +837,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         linearlayout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rv_fieldlist.setLayoutManager(linearlayout);
         rv_fieldlist.setItemAnimator(new DefaultItemAnimator());
-        fieldListAdapter = new FieldListAdapter(getApplicationContext(), dataBeanList, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS, this, this, this, this, this, this, this, this, this, this, currentPage);
+        fieldListAdapter = new FieldListAdapter(getApplicationContext(), dataBeanList, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS, this, this, this, this, this, this, this, this, this, this, currentPage,userrole);
         rv_fieldlist.setAdapter(fieldListAdapter);
     }
 
@@ -1504,6 +1598,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         getFieldListResponse.setCreated_by("");
         getFieldListResponse.setUpdated_by("");
         getFieldListResponse.setUpdate_reason("");
+        getFieldListResponse.setWork_status(work_status);
 
         Log.w(TAG, "data_store_management/create_Request " + new Gson().toJson(getFieldListResponse));
         return getFieldListResponse;
@@ -1581,4 +1676,75 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
 
     }
+
+    private void showWarningWorkStatusClear1() {
+        new AlertDialog.Builder(this)
+                .setMessage("All data cleared successfully...")
+                .setCancelable(false)
+                .setPositiveButton("Back", (dialog, id) -> {
+                    Intent intent = new Intent(InputValueFormListActivity.this, SubGroupListActivity.class);
+                    intent.putExtra("activity_id",activity_id);
+                    intent.putExtra("job_id",job_id);
+                    intent.putExtra("group_id",group_id);
+                    intent.putExtra("status", status);
+                    intent.putExtra("fromactivity", fromactivity);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.new_right, R.anim.new_left);
+                    finish();
+
+                })
+                .setNegativeButton("", null)
+                .show();
+    }
+
+
+    private void showWarningWorkStatusClear() {
+           Log.w(TAG, "showWarningWorkStatusClear -->" + resWorkStatus);
+        alertdialog = new Dialog(InputValueFormListActivity.this);
+        alertdialog.setCancelable(false);
+        alertdialog.setContentView(R.layout.alert_sucess_clear);
+            Button btn_goback = alertdialog.findViewById(R.id.btn_goback);
+            btn_goback.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    alertdialog.dismiss();
+                    Intent intent = new Intent(InputValueFormListActivity.this, SubGroupListActivity.class);
+                    intent.putExtra("activity_id",activity_id);
+                    intent.putExtra("job_id",job_id);
+                    intent.putExtra("group_id",group_id);
+                    intent.putExtra("status", status);
+                    intent.putExtra("fromactivity", fromactivity);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.new_right, R.anim.new_left);
+                    finish();
+
+                }
+            });
+            Objects.requireNonNull(alertdialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertdialog.show();
+
+      
+
+
+
+
+    }
+
+    public void showErrorLoading(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("please enter all required data");
+        alertDialogBuilder.setPositiveButton("ok",
+                (arg0, arg1) -> hideLoading());
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+    public void hideLoading(){
+        try {
+            alertDialog.dismiss();
+        }catch (Exception ignored){
+
+        }
+    }
+
+
 }

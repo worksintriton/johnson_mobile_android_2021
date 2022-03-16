@@ -72,11 +72,20 @@ public class LoginResponse {
         private String user_designation;
         private String user_type;
         private String user_status;
+        private String user_role;
         private String reg_date_time;
         private String user_token;
         private String last_login_time;
         private String last_logout_time;
         private int __v;
+
+        public String getUser_role() {
+            return user_role;
+        }
+
+        public void setUser_role(String user_role) {
+            this.user_role = user_role;
+        }
 
         public String get_id() {
             return _id;

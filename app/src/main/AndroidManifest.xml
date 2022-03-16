@@ -41,6 +41,10 @@
         tools:ignore="AllowBackup"
         tools:targetApi="m">
         <activity
+            android:name=".activity.TestOrientationActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".activity.CustomerDetailsActivity"
             android:exported="false"
             android:screenOrientation="portrait"

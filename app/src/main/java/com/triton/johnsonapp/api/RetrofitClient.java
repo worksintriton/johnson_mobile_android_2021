@@ -18,24 +18,21 @@ public class RetrofitClient {
 
 
     /*live*/
-  /*public static String BASE_URL = "http://52.25.163.13:3000/api/";
-  public static String IMAGE_BASE_URL = "http://52.25.163.13:3000/";*/
+  public static String BASE_URL = "http://54.202.95.145:3000/api/";
+  public static String IMAGE_BASE_URL = "http://54.202.95.145::3000/";
 
 
 
 
     /*dev*/
-    public static String BASE_URL = "http://54.202.95.145:3000/api/";
-    public static String IMAGE_BASE_URL = "http://54.202.95.145:3000/";
+   /* public static String BASE_URL = "http://smart.johnsonliftsltd.com:3000/api/";
+    public static String IMAGE_BASE_URL = "http://smart.johnsonliftsltd.com:3000/";*/
 
     /*Banner Image*/
     public static String BANNER_IMAGE_URL = BASE_URL+"uploads/bannerempty.jpg";
 
     /* Profile or other Image*/
     public static String PROFILE_IMAGE_URL = BASE_URL+"uploads/picempty.jpg";
-
-
-
 
     public static Retrofit getClient() {
         client = new OkHttpClient();
@@ -71,6 +68,8 @@ public class RetrofitClient {
 
         return retrofit;
     }
+
+
 }
 
 

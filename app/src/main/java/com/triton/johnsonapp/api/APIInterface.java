@@ -4,6 +4,7 @@ import com.triton.johnsonapp.requestpojo.ActivityListManagementRequest;
 import com.triton.johnsonapp.requestpojo.AttendanceCreateRequest;
 import com.triton.johnsonapp.requestpojo.AttendanceLogoutRequest;
 import com.triton.johnsonapp.requestpojo.CheckDataStoreRequest;
+import com.triton.johnsonapp.requestpojo.CheckLocationRequest;
 import com.triton.johnsonapp.requestpojo.FetchRecordByUserIDRequest;
 import com.triton.johnsonapp.requestpojo.FormDataStoreRequest;
 import com.triton.johnsonapp.requestpojo.FormFiveBasedStroeDataRequest;
@@ -11,6 +12,7 @@ import com.triton.johnsonapp.requestpojo.FormFiveDataRequest;
 import com.triton.johnsonapp.requestpojo.GetFieldListRequest;
 import com.triton.johnsonapp.requestpojo.GroupDetailManagementRequest;
 import com.triton.johnsonapp.requestpojo.ImageBasedStroeDataRequest;
+import com.triton.johnsonapp.requestpojo.JobFetchAddressRequest;
 import com.triton.johnsonapp.requestpojo.JobNoManagementRequest;
 import com.triton.johnsonapp.requestpojo.LoginRequest;
 import com.triton.johnsonapp.requestpojo.PauseJobRequest;
@@ -28,6 +30,7 @@ import com.triton.johnsonapp.responsepojo.FormFiveDataResponse;
 import com.triton.johnsonapp.responsepojo.GetFieldListResponse;
 import com.triton.johnsonapp.responsepojo.GetServiceListResponse;
 import com.triton.johnsonapp.responsepojo.GroupDetailManagementResponse;
+import com.triton.johnsonapp.responsepojo.JobFetchAddressResponse;
 import com.triton.johnsonapp.responsepojo.JobNoManagementResponse;
 import com.triton.johnsonapp.responsepojo.LoginResponse;
 import com.triton.johnsonapp.responsepojo.SubGroupDetailManagementResponse;
@@ -163,6 +166,18 @@ public interface APIInterface {
     /*Attendance logout */
     @POST("attendance/logout")
     Call<SuccessResponse> attendanceLogoutRequestCall(@Header("Content-Type") String type, @Body AttendanceLogoutRequest attendanceLogoutRequest);
+
+
+    /*Attendance logout */
+    @POST("data_store_management/check_location")
+    Call<SuccessResponse> checkLocationRequestCall(@Header("Content-Type") String type, @Body CheckLocationRequest checkLocationRequest);
+
+    /*fetch address */
+    @POST("job_no_managment/fetch_address")
+    Call<JobFetchAddressResponse> JobFetchAddressRequestCall(@Header("Content-Type") String type, @Body JobFetchAddressRequest jobFetchAddressRequest);
+
+
+
 
 
 }

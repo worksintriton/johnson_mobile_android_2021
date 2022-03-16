@@ -89,6 +89,7 @@ public class JobDetailListAdapter extends  RecyclerView.Adapter<RecyclerView.Vie
             intent.putExtra("job_id",dataBeanList.get(position).get_id());
             intent.putExtra("status",status);
             intent.putExtra("fromactivity",fromactivity);
+            intent.putExtra("job_detail_no",dataBeanList.get(position).getJob_detail_no());
 
             context.startActivity(intent);
 

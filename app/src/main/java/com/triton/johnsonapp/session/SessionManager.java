@@ -43,6 +43,7 @@ public class SessionManager {
     public static final String KEY_TOKEN = "usertoken";
     public static final String KEY_USERSTATUS = "userstatus";
     public static final String KEY_USERTYPE = "usertype";
+    public static final String KEY_USERROLE = "userrole";
 
     private String TAG ="SessionManager";
 
@@ -72,7 +73,9 @@ public class SessionManager {
         user.put(KEY_ID, pref.getString(KEY_ID, null));
         user.put(KEY_USERNAME, pref.getString(KEY_USERNAME, null));
         user.put(KEY_MOBILE, pref.getString(KEY_MOBILE, null));
-        Log.w(TAG,"KEY_ID :"+KEY_ID);
+        user.put(KEY_ROLE, pref.getString(KEY_ROLE, null));
+        user.put(KEY_USERROLE, pref.getString(KEY_USERROLE, null));
+        Log.w(TAG,"KEY_ID :"+KEY_ID+" KEY_ROLE : "+KEY_ROLE+" KEY_USERROLE : "+KEY_USERROLE);
         return user;
 
     }
@@ -137,7 +140,7 @@ public class SessionManager {
 
     }*/
 
-    public void createSessionLogin(String id,String userid, String username,String user_email, String designation, String token, String status, String user_type) {
+    public void createSessionLogin(String id,String userid, String username,String user_email, String designation, String token, String status, String user_type,String user_role) {
         editor.putBoolean(IS_LOGIN, true);
         editor.putString(KEY_ID, id);
         editor.putString(KEY_USERID, userid);
@@ -147,6 +150,7 @@ public class SessionManager {
         editor.putString(KEY_TOKEN,token);
         editor.putString(KEY_USERSTATUS,status);
         editor.putString(KEY_USERTYPE,user_type);
+        editor.putString(KEY_USERROLE,user_role);
         editor.commit();
 
     }

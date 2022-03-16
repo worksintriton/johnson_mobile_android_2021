@@ -1,19 +1,33 @@
 package com.triton.johnsonapp.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -28,12 +42,26 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.adapter.GroupListAdapter;
 import com.triton.johnsonapp.api.APIInterface;
 import com.triton.johnsonapp.api.RetrofitClient;
 import com.triton.johnsonapp.requestpojo.CheckDataStoreRequest;
+import com.triton.johnsonapp.requestpojo.CheckLocationRequest;
 import com.triton.johnsonapp.requestpojo.FormDataStoreRequest;
 import com.triton.johnsonapp.requestpojo.GroupDetailManagementRequest;
 import com.triton.johnsonapp.requestpojo.PauseJobRequest;
@@ -44,6 +72,7 @@ import com.triton.johnsonapp.responsepojo.CheckDataStoreResponse;
 import com.triton.johnsonapp.responsepojo.FormDataStoreResponse;
 import com.triton.johnsonapp.responsepojo.GroupDetailManagementResponse;
 import com.triton.johnsonapp.responsepojo.SuccessResponse;
+import com.triton.johnsonapp.service.GPSTracker;
 import com.triton.johnsonapp.session.SessionManager;
 import com.triton.johnsonapp.utils.ConnectionDetector;
 import com.triton.johnsonapp.utils.RestUtils;
@@ -63,12 +92,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class GroupListActivity extends AppCompatActivity {
+public class GroupListActivity extends AppCompatActivity  implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
 
     private String TAG ="GroupListActivity";
 
-    String userid,username;
+    String userid,username,userrole;
 
 
     @SuppressLint("NonConstantResourceId")
@@ -86,6 +116,10 @@ public class GroupListActivity extends AppCompatActivity {
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.txt_no_records)
     TextView txt_no_records;
+
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.txt_toolbar_title)
+    TextView txt_toolbar_title;
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.rl_menu)
@@ -113,8 +147,19 @@ public class GroupListActivity extends AppCompatActivity {
     private boolean isStopped = false;
     private String status;
     private String fromactivity;
+    private String job_detail_no;
 
 
+    private static final int REQUEST_CHECK_SETTINGS_GPS = 0x1;
+    private GoogleApiClient googleApiClient;
+    Location mLastLocation;
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+    private double latitude;
+    private double longitude;
+    private Dialog alertDialog;
+
+
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,6 +172,13 @@ public class GroupListActivity extends AppCompatActivity {
         userid = user.get(SessionManager.KEY_ID);
 
         username = user.get(SessionManager.KEY_USERNAME);
+
+        userrole = user.get(SessionManager.KEY_USERROLE);
+
+
+        Log.w(TAG,"userrole  : "+userrole);
+
+        googleApiConnected();
 
 
 
@@ -144,8 +196,13 @@ public class GroupListActivity extends AppCompatActivity {
             job_id = extras.getString("job_id");
             status = extras.getString("status");
             fromactivity = extras.getString("fromactivity");
-            Log.w(TAG,"activity_id -->"+activity_id+"job_id : "+job_id+" status : "+status+" fromactivity : "+fromactivity);
+            job_detail_no = extras.getString("job_detail_no");
+            Log.w(TAG,"activity_id -->"+activity_id+"job_id : "+job_id+" status : "+status+" fromactivity : "+fromactivity+" job_detail_no : "+job_detail_no);
 
+
+            if(job_detail_no != null){
+                txt_toolbar_title.setText(getResources().getString(R.string.activity_list)+" : "+job_detail_no);
+            }
         }
 
 
@@ -210,7 +267,7 @@ public class GroupListActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.new_right, R.anim.new_left);
 
         }else{
-            Intent intent = new Intent(GroupListActivity.this, JobDetailActivity.class);
+            Intent intent = new Intent(GroupListActivity.this, CustomerDetailsActivity.class);
             intent.putExtra("activity_id",activity_id);
             intent.putExtra("status",status);
             startActivity(intent);
@@ -327,6 +384,7 @@ public class GroupListActivity extends AppCompatActivity {
             LinearLayout ll_stop = alertdialog.findViewById(R.id.ll_stop);
             LinearLayout ll_resume = alertdialog.findViewById(R.id.ll_resume);
             ImageView img_close = alertdialog.findViewById(R.id.img_close);
+            alertdialog.setCancelable(false);
             Button btn_back = alertdialog.findViewById(R.id.btn_back);
             btn_back.setVisibility(View.GONE);
 
@@ -402,7 +460,17 @@ public class GroupListActivity extends AppCompatActivity {
             });
 
 
-            img_close.setOnClickListener(v -> alertdialog.dismiss());
+           img_close.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   alertdialog.dismiss();
+                   Intent intent = new Intent(GroupListActivity.this, AllJobListActivity.class);
+                   intent.putExtra("activity_id",activity_id);
+                   intent.putExtra("status",status);
+                   startActivity(intent);
+                   overridePendingTransition(R.anim.new_right, R.anim.new_left);
+               }
+           });
             Objects.requireNonNull(alertdialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             alertdialog.show();
 
@@ -424,7 +492,23 @@ public class GroupListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1)
                     {
-                        startWorkRequestCall();
+                        if(latitude != 0 && longitude != 0){
+                            startWorkRequestCall();
+
+                          /*  if(userrole != null && userrole.equalsIgnoreCase("ESP")){
+                                startWorkRequestCall();
+                            } else if(userrole != null && userrole.equalsIgnoreCase("USER")){
+                                checkLocationRequestCall();
+
+                            }*/
+
+
+
+
+                        }else{
+                            googleApiConnected();
+                        }
+
 
                     }
                 });
@@ -570,6 +654,8 @@ public class GroupListActivity extends AppCompatActivity {
          * job_id : 123456
          * start_time : 23-10-2021 11:00 AM
          * date_of_create : 23-10-2021 11:00 AM
+         *   job_lat;
+            job_long;
         */
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm aa", Locale.getDefault());
         String currentDateandTime = sdf.format(new Date());
@@ -582,10 +668,94 @@ public class GroupListActivity extends AppCompatActivity {
         startWorkRequest.setJob_id(job_id);
         startWorkRequest.setStart_time(currentDateandTime);
         startWorkRequest.setDate_of_create("");
+        startWorkRequest.setJob_lat(latitude);
+        startWorkRequest.setJob_long(longitude);
 
 
         Log.w(TAG,"startWorkRequest "+ new Gson().toJson(startWorkRequest));
         return startWorkRequest;
+    }
+
+    @SuppressLint("LogNotTimber")
+    private void checkLocationRequestCall() {
+        dialog = new Dialog(GroupListActivity.this, R.style.NewProgressDialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.progroess_popup);
+        dialog.show();
+
+        APIInterface apiInterface = RetrofitClient.getClient().create(APIInterface.class);
+        Call<SuccessResponse> call = apiInterface.checkLocationRequestCall(RestUtils.getContentType(), checkLocationRequest());
+        Log.w(TAG,"startWorkRequestCall url  :%s"+" "+ call.request().url().toString());
+
+        call.enqueue(new Callback<SuccessResponse>() {
+            @SuppressLint("LogNotTimber")
+            @Override
+            public void onResponse(@NonNull Call<SuccessResponse> call, @NonNull Response<SuccessResponse> response) {
+
+                Log.w(TAG,"startWorkRequestCall" + new Gson().toJson(response.body()));
+                if (response.body() != null) {
+                    message = response.body().getMessage();
+                    if (200 == response.body().getCode()) {
+                        dialog.dismiss();
+                        alertdialog.dismiss();
+                        startWorkRequestCall();
+
+
+                    } else {
+                        dialog.dismiss();
+                        showErrorLoading(response.body().getMessage());
+
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<SuccessResponse> call, @NonNull Throwable t) {
+                dialog.dismiss();
+                Log.e(TAG, "--->" + t.getMessage());
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+    private CheckLocationRequest checkLocationRequest() {
+
+        /*
+         * job_id : 61f222396667ac391fc85c55
+         * job_long : 80.2235346
+         * job_lat : 12.9831482
+         */
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm aa", Locale.getDefault());
+        String currentDateandTime = sdf.format(new Date());
+        CheckLocationRequest checkLocationRequest = new CheckLocationRequest();
+        checkLocationRequest.setJob_id(job_id);
+        checkLocationRequest.setJob_lat(latitude);
+        checkLocationRequest.setJob_long(longitude);
+
+
+        Log.w(TAG,"checkLocationRequest "+ new Gson().toJson(checkLocationRequest));
+        return checkLocationRequest;
+    }
+
+    public void showErrorLoading(String errormesage){
+        alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage(errormesage);
+        alertDialogBuilder.setPositiveButton("ok",
+                (arg0, arg1) -> hideLoading());
+
+
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+    public void hideLoading(){
+        try {
+            alertDialog.dismiss();
+        }catch (Exception ignored){
+
+        }
     }
 
 
@@ -991,6 +1161,220 @@ public class GroupListActivity extends AppCompatActivity {
         checkDataStoreRequest.setJob_id(job_id);
         Log.w(TAG,"checkDataStoreRequest "+ new Gson().toJson(checkDataStoreRequest));
         return checkDataStoreRequest;
+    }
+
+    @SuppressLint("LogNotTimber")
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CHECK_SETTINGS_GPS) {
+            switch (resultCode) {
+                case Activity.RESULT_OK:
+                case Activity.RESULT_CANCELED:
+                    getMyLocation();
+                    break;
+            }
+        }
+
+
+
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frame_schedule);
+        if (fragment != null) {
+            fragment.onActivityResult(requestCode,resultCode,data);
+        }
+    }
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @org.jetbrains.annotations.NotNull String @org.jetbrains.annotations.NotNull [] permissions, @org.jetbrains.annotations.NotNull int @org.jetbrains.annotations.NotNull [] grantResults) {
+        if (requestCode == MY_PERMISSIONS_REQUEST_LOCATION) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(getApplicationContext(),
+                        Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    getMyLocation();
+
+                }
+            } else {
+                Toast.makeText(getApplicationContext(), "permission denied", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+    private void getLatandLong() {
+        try {
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(GroupListActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
+            } else {
+                GPSTracker gps = new GPSTracker(getApplicationContext());
+                // Check if GPS enabled
+                if (gps.canGetLocation()) {
+                    latitude = gps.getLatitude();
+                    longitude = gps.getLongitude();
+                    if(latitude != 0 && longitude != 0){
+                        LatLng latLng = new LatLng(latitude,longitude);
+                        Log.w(TAG,"getLatandLong latitude : "+latitude+" longitude : "+longitude);
+
+
+                    }
+
+
+
+
+                }
+            }
+
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void googleApiConnected() {
+        googleApiClient = new GoogleApiClient.Builder(Objects.requireNonNull(getApplicationContext())).
+                addConnectionCallbacks(this).
+                addOnConnectionFailedListener(this).
+                addApi(LocationServices.API).build();
+        googleApiClient.connect();
+
+    }
+    private void checkLocation() {
+        try {
+            LocationManager lm = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+            boolean gps_enabled = false;
+            boolean network_enabled = false;
+
+            try {
+                gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            } catch (Exception ignored) {
+            }
+
+            try {
+                network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            } catch (Exception ignored) {
+            }
+
+            if (!gps_enabled && !network_enabled) {
+
+                if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    getMyLocation();
+                }
+
+            } else {
+                getLatandLong();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    @Override
+    public void onLocationChanged(Location location) {
+        mLastLocation = location;
+        latitude = mLastLocation.getLatitude();
+        longitude = mLastLocation.getLongitude();
+
+
+
+
+
+
+
+    }
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        permissionChecking();
+    }
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+    @SuppressLint("LongLogTag")
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+
+    }
+    private void permissionChecking() {
+        if (getApplicationContext() != null) {
+            if (Build.VERSION.SDK_INT >= 23 && (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) &&
+                    (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+
+                ActivityCompat.requestPermissions(GroupListActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 5);
+
+            } else {
+
+                checkLocation();
+            }
+        }
+    }
+    public void getMyLocation() {
+        if (googleApiClient != null) {
+
+            if (googleApiClient.isConnected()) {
+                if(getApplicationContext() != null){
+                    if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+
+                }
+
+                mLastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+                LocationRequest locationRequest = new LocationRequest();
+                locationRequest.setInterval(2000);
+                locationRequest.setFastestInterval(2000);
+                locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
+                builder.setAlwaysShow(true);
+                LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+                PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
+                result.setResultCallback(result1 -> {
+                    Status status = result1.getStatus();
+                    switch (status.getStatusCode()) {
+                        case LocationSettingsStatusCodes.SUCCESS:
+                            // All location settings are satisfied.
+                            // You can initialize location requests here.
+                            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+                            Handler handler = new Handler();
+                            int delay = 1000; //milliseconds
+
+                            handler.postDelayed(new Runnable() {
+                                @SuppressLint({"LongLogTag", "LogNotTimber"})
+                                public void run() {
+                                    //do something
+                                    if(getApplicationContext() != null) {
+                                        if(latitude != 0 && longitude != 0) {
+                                            LatLng latLng = new LatLng(latitude,longitude);
+
+                                            Log.w(TAG,"getMyLocation latitude : "+latitude+" longitude : "+longitude);
+
+                                        }
+                                    }
+                                }
+                            }, delay);
+
+
+                            break;
+                        case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                            try {
+                                status.startResolutionForResult(GroupListActivity.this, REQUEST_CHECK_SETTINGS_GPS);
+                            } catch (IntentSender.SendIntentException e) {
+                                // Ignore the error.
+                            }
+                            break;
+                        case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                            break;
+                    }
+                });
+            }
+
+
+        }
     }
 
 

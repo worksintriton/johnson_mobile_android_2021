@@ -6,6 +6,24 @@ public class StartWorkRequest {
     private String job_id ;
     private String start_time;
     private String date_of_create;
+    private double job_lat;
+    private double job_long;
+
+    public double getJob_lat() {
+        return job_lat;
+    }
+
+    public void setJob_lat(double job_lat) {
+        this.job_lat = job_lat;
+    }
+
+    public double getJob_long() {
+        return job_long;
+    }
+
+    public void setJob_long(double job_long) {
+        this.job_long = job_long;
+    }
 
     public String getUser_id() {
         return user_id;

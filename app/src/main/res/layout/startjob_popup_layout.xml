@@ -49,12 +49,12 @@
             android:textSize="18sp" />
 
         <Button
-            android:layout_marginTop="@dimen/_20dp"
             android:id="@+id/btn_back"
             android:layout_width="@dimen/_200dp"
             android:layout_height="45dp"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="@dimen/_20dp"
             android:layout_marginRight="20dp"
             android:background="@drawable/green_button_background_with_radius"
             android:elevation="1dp"

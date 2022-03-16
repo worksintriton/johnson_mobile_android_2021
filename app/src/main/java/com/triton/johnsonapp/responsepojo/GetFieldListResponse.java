@@ -52,6 +52,9 @@ public class GetFieldListResponse {
 
     private List<DataBean> Data;
 
+    public GetFieldListResponse() {
+    }
+
     public String getStatus() {
         return Status;
     }
@@ -98,6 +101,15 @@ public class GetFieldListResponse {
     private String created_by;
     private String updated_by;
     private String update_reason;
+    private String work_status ;
+
+    public String getWork_status() {
+        return work_status;
+    }
+
+    public void setWork_status(String work_status) {
+        this.work_status = work_status;
+    }
 
     public String getUser_id() {
         return user_id;

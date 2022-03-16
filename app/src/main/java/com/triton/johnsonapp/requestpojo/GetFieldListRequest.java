@@ -8,6 +8,8 @@ public class GetFieldListRequest {
     private String sub_group_id;
     private String job_id;
     private String user_id ;
+    private String user_role;
+
 
     public String getUser_id() {
         return user_id;
@@ -39,5 +41,13 @@ public class GetFieldListRequest {
 
     public void setSub_group_id(String sub_group_id) {
         this.sub_group_id = sub_group_id;
+    }
+
+    public String getUser_role() {
+        return user_role;
+    }
+
+    public void setUser_role(String user_role) {
+        this.user_role = user_role;
     }
 }

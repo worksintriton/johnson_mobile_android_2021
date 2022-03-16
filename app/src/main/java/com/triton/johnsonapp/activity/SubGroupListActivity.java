@@ -68,6 +68,7 @@ public class SubGroupListActivity extends AppCompatActivity {
     Dialog  dialog;
 
     String networkStatus = "",message,activity_id,job_id,group_id;
+    String status;
 
     int number=0;
 
@@ -79,8 +80,13 @@ public class SubGroupListActivity extends AppCompatActivity {
     @BindView(R.id.edt_search)
     EditText edt_search;
 
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.txt_toolbar_title)
+    TextView txt_toolbar_title;
+
     private String search_string ="";
     private String fromactivity ;
+    private String group_detail_name ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,15 +103,22 @@ public class SubGroupListActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-
+            status = extras.getString("status");
             group_id = extras.getString("group_id");
             activity_id = extras.getString("activity_id");
             job_id = extras.getString("job_id");
             fromactivity = extras.getString("fromactivity");
+            group_detail_name = extras.getString("group_detail_name");
             Log.w(TAG,"activity_id -->"+activity_id);
             Log.w(TAG,"group_id -->"+group_id);
             Log.w(TAG,"job_id -->"+job_id);
             Log.w(TAG,"fromactivity -->"+fromactivity);
+            Log.w(TAG,"group_detail_name -->"+group_detail_name);
+            Log.w(TAG,"status -->"+status);
+
+            if(group_detail_name != null){
+                txt_toolbar_title.setText(""+group_detail_name);
+            }
 
         }
 
@@ -168,12 +181,11 @@ public class SubGroupListActivity extends AppCompatActivity {
 
     // default back button action
     public void onBackPressed() {
-
-
         super.onBackPressed();
         Intent intent = new Intent(SubGroupListActivity.this, GroupListActivity.class);
         intent.putExtra("activity_id",activity_id);
         intent.putExtra("job_id",job_id);
+        intent.putExtra("status",status);
         startActivity(intent);
         overridePendingTransition(R.anim.new_right, R.anim.new_left);
 
@@ -242,29 +254,21 @@ public class SubGroupListActivity extends AppCompatActivity {
 
     }
     private SubGroupDetailManagementRequest SubGroupDetailManagementRequest() {
-
-
-
-        /**
+        /*
          * group_id : 61c1e5e09934282617679543
          * search_string
          */
         SubGroupDetailManagementRequest SubGroupDetailManagementRequest = new SubGroupDetailManagementRequest();
         SubGroupDetailManagementRequest.setGroup_id(group_id);
         SubGroupDetailManagementRequest.setSearch_string(search_string);
-
-
-
         Log.w(TAG,"SubGroupDetailManagementRequest "+ new Gson().toJson(SubGroupDetailManagementRequest));
         return SubGroupDetailManagementRequest;
     }
     @SuppressLint("LogNotTimber")
     private void setView(List<SubGroupDetailManagementResponse.DataBean> dataBeanList) {
-
-
         rv_subgrouplist.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
         rv_subgrouplist.setItemAnimator(new DefaultItemAnimator());
-        ServiceListAdapter serviceListAdapter = new ServiceListAdapter(this, dataBeanList,activity_id,job_id, group_id,TAG);
+        ServiceListAdapter serviceListAdapter = new ServiceListAdapter(this, dataBeanList,activity_id,job_id, group_id,TAG,status);
         rv_subgrouplist.setAdapter(serviceListAdapter);
     }
 

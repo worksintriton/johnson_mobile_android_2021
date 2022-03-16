@@ -26,6 +26,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.google.gson.Gson;
+import com.triton.johnsonapp.Forms.InputValueFormListActivity;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.interfaces.GetDateTimeListener;
 import com.triton.johnsonapp.interfaces.GetDigitalSignUploadAddListener;
@@ -83,9 +84,10 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
     int check = 0;
     private List<?> arrayListdropdown;
+    private String userrole;
 
     public FieldListAdapter(Context context, List<GetFieldListResponse.DataBean> dataBeanList, int ITEMS_PER_PAGE, int TOTAL_NUM_ITEMS, GetStringListener getStringListener, GetTextAreaListener getTextAreaListener, GetSpinnerListener getSpinnerListener, GetNumberListener getNumberListener, GetDateTimeListener getDateTimeListener,
-                            GetFileUploadListener getFileUploadListener, GetDigitalSignUploadListener getDigitalSignUploadListener, GetDigitalSignUploadAddListener getDigitalSignUploadAddListener, GetDigitalSignUploadClearListener getDigitalSignUploadClearListener,  GetInputFieldListener getInputFieldListener,int currentPage) {
+                            GetFileUploadListener getFileUploadListener, GetDigitalSignUploadListener getDigitalSignUploadListener, GetDigitalSignUploadAddListener getDigitalSignUploadAddListener, GetDigitalSignUploadClearListener getDigitalSignUploadClearListener,  GetInputFieldListener getInputFieldListener,int currentPage,String userrole) {
         this.context = context;
         this.dataBeanList = dataBeanList;
         this.ITEMS_PER_PAGE = ITEMS_PER_PAGE;
@@ -101,6 +103,7 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
         this.getDigitalSignUploadClearListener = getDigitalSignUploadClearListener;
         this.currentPage=currentPage;
         this.getInputFieldListener = getInputFieldListener;
+        this.userrole = userrole;
     }
 
     @NonNull
@@ -247,81 +250,253 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
 
             else if(currentItem.getField_type().equals("Dropdown")){
-                arrayListdropdown =  currentItem.getDrop_down();
-                Log.w(TAG,"currentItem.getDrop_down() : "+new Gson().toJson(currentItem.getDrop_down()));
 
-                holder.ll_dropdown.setVisibility(View.VISIBLE);
+                Log.w(TAG,"responsemessage : "+InputValueFormListActivity.responsemessage );
 
-                ArrayList<String> arrayList = new ArrayList<>();
+                if(InputValueFormListActivity.responsemessage != null && InputValueFormListActivity.responsemessage.equalsIgnoreCase("Joininspection")){
+                    if(userrole != null && userrole.equalsIgnoreCase("USER")){
+                        if(currentItem.getField_value() != null && !currentItem.getField_value().equalsIgnoreCase("OK")){
+                            arrayListdropdown =  currentItem.getDrop_down();
+                            Log.w(TAG,"currentItem.getDrop_down() : "+new Gson().toJson(currentItem.getDrop_down()));
 
-                arrayList.add("Select Value");
+                            holder.ll_dropdown.setVisibility(View.VISIBLE);
 
-                for (int i = 0; i < currentItem.getDrop_down().size(); i++) {
-                    String string = currentItem.getDrop_down().get(i).toString();
-                    Log.w(TAG, "spr string-->" + string);
-                    arrayList.add(string);
+                            ArrayList<String> arrayList = new ArrayList<>();
+
+                            arrayList.add("Select Value");
+
+                            for (int i = 0; i < currentItem.getDrop_down().size(); i++) {
+                                String string = currentItem.getDrop_down().get(i).toString();
+                                Log.w(TAG, "spr string-->" + string);
+                                arrayList.add(string);
+
+                            }
+
+                            ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, arrayList);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                            Log.w(TAG,"currentItem.getDrop_down() Field_comments : "+currentItem.getField_comments()+" Field_value : "+currentItem.getField_value());
+
+                            if(currentItem.getField_value() != null && !currentItem.getField_value().isEmpty()){
+                                //if(currentItem.getField_comments()!=null && !currentItem.getField_comments().isEmpty()){
+                                Log.w(TAG,"Dropdown if--->");
+
+                                String compareValue = currentItem.getField_value();
+                                holder.spr_dropdown.setAdapter(adapter);
+                                if (compareValue != null) {
+                                    int spinnerPosition = adapter.getPosition(compareValue);
+                                    holder.spr_dropdown.setSelection(spinnerPosition);
+
+                                }
+                                holder.spr_dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+
+                                        if(++check > 1) {
+
+                                            Log.w(TAG,"currentItem POS "+startItem);
+
+                                            Log.w(TAG,"currentItem POS "+parent.getItemAtPosition(pos));
+
+                                            getSpinnerListener.getSpinnerListener(holder.spr_dropdown,startItem,parent.getItemAtPosition(pos).toString(),currentItem.getField_length());
+
+                                        }
+
+                                    }
+                                    public void onNothingSelected(AdapterView<?> parent) {
+
+
+                                    }
+                                });
+
+                            }
+                            else {
+                                Log.w(TAG,"Dropdown else--->");
+                                holder.spr_dropdown.setAdapter(adapter);
+                                holder.spr_dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                                        if(++check > 1) {
+
+                                            Log.w(TAG,"currentItem POS "+startItem);
+
+                                            Log.w(TAG,"currentItem POS "+parent.getItemAtPosition(pos));
+
+                                            getSpinnerListener.getSpinnerListener(holder.spr_dropdown,startItem,parent.getItemAtPosition(pos).toString(),currentItem.getField_length());
+
+                                        }
+                                    }
+                                    public void onNothingSelected(AdapterView<?> parent) {
+
+
+                                    }
+                                });
+
+                            }
+
+                        }
+                        else{
+                            holder.cv_root.setVisibility(View.GONE);
+                        }
+
+                    }   else{
+                        holder.cv_root.setVisibility(View.VISIBLE);
+                        arrayListdropdown =  currentItem.getDrop_down();
+                        Log.w(TAG,"currentItem.getDrop_down() : "+new Gson().toJson(currentItem.getDrop_down()));
+
+                        holder.ll_dropdown.setVisibility(View.VISIBLE);
+
+                        ArrayList<String> arrayList = new ArrayList<>();
+
+                        arrayList.add("Select Value");
+
+                        for (int i = 0; i < currentItem.getDrop_down().size(); i++) {
+                            String string = currentItem.getDrop_down().get(i).toString();
+                            Log.w(TAG, "spr string-->" + string);
+                            arrayList.add(string);
+
+                        }
+
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, arrayList);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                        Log.w(TAG,"currentItem.getDrop_down() Field_comments : "+currentItem.getField_comments()+" Field_value : "+currentItem.getField_value());
+
+                        if(currentItem.getField_value() != null && !currentItem.getField_value().isEmpty()){
+                            //if(currentItem.getField_comments()!=null && !currentItem.getField_comments().isEmpty()){
+                            Log.w(TAG,"Dropdown if--->");
+
+                            String compareValue = currentItem.getField_value();
+                            holder.spr_dropdown.setAdapter(adapter);
+                            if (compareValue != null) {
+                                int spinnerPosition = adapter.getPosition(compareValue);
+                                holder.spr_dropdown.setSelection(spinnerPosition);
+
+                            }
+                            holder.spr_dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+
+                                    if(++check > 1) {
+
+                                        Log.w(TAG,"currentItem POS "+startItem);
+
+                                        Log.w(TAG,"currentItem POS "+parent.getItemAtPosition(pos));
+
+                                        getSpinnerListener.getSpinnerListener(holder.spr_dropdown,startItem,parent.getItemAtPosition(pos).toString(),currentItem.getField_length());
+
+                                    }
+
+                                }
+                                public void onNothingSelected(AdapterView<?> parent) {
+
+
+                                }
+                            });
+
+                        }
+                        else {
+                            Log.w(TAG,"Dropdown else--->");
+                            holder.spr_dropdown.setAdapter(adapter);
+                            holder.spr_dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                                    if(++check > 1) {
+
+                                        Log.w(TAG,"currentItem POS "+startItem);
+
+                                        Log.w(TAG,"currentItem POS "+parent.getItemAtPosition(pos));
+
+                                        getSpinnerListener.getSpinnerListener(holder.spr_dropdown,startItem,parent.getItemAtPosition(pos).toString(),currentItem.getField_length());
+
+                                    }
+                                }
+                                public void onNothingSelected(AdapterView<?> parent) {
+
+
+                                }
+                            });
+
+                        }
+                    }
 
                 }
+                else{
+                    holder.cv_root.setVisibility(View.VISIBLE);
+                    arrayListdropdown =  currentItem.getDrop_down();
+                    Log.w(TAG,"currentItem.getDrop_down() : "+new Gson().toJson(currentItem.getDrop_down()));
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, arrayList);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    holder.ll_dropdown.setVisibility(View.VISIBLE);
 
-                Log.w(TAG,"currentItem.getDrop_down() Field_comments : "+currentItem.getField_comments()+" Field_value : "+currentItem.getField_value());
+                    ArrayList<String> arrayList = new ArrayList<>();
 
-               if(currentItem.getField_value() != null && !currentItem.getField_value().isEmpty()){
-                //if(currentItem.getField_comments()!=null && !currentItem.getField_comments().isEmpty()){
-                    Log.w(TAG,"Dropdown if--->");
+                    arrayList.add("Select Value");
 
-                    String compareValue = currentItem.getField_value();
-                    holder.spr_dropdown.setAdapter(adapter);
-                    if (compareValue != null) {
-                        int spinnerPosition = adapter.getPosition(compareValue);
-                        holder.spr_dropdown.setSelection(spinnerPosition);
+                    for (int i = 0; i < currentItem.getDrop_down().size(); i++) {
+                        String string = currentItem.getDrop_down().get(i).toString();
+                        Log.w(TAG, "spr string-->" + string);
+                        arrayList.add(string);
 
                     }
-                    holder.spr_dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 
-                            if(++check > 1) {
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, arrayList);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-                                Log.w(TAG,"currentItem POS "+startItem);
+                    Log.w(TAG,"currentItem.getDrop_down() Field_comments : "+currentItem.getField_comments()+" Field_value : "+currentItem.getField_value());
 
-                                Log.w(TAG,"currentItem POS "+parent.getItemAtPosition(pos));
+                    if(currentItem.getField_value() != null && !currentItem.getField_value().isEmpty()){
+                        //if(currentItem.getField_comments()!=null && !currentItem.getField_comments().isEmpty()){
+                        Log.w(TAG,"Dropdown if--->");
 
-                                getSpinnerListener.getSpinnerListener(holder.spr_dropdown,startItem,parent.getItemAtPosition(pos).toString(),currentItem.getField_length());
+                        String compareValue = currentItem.getField_value();
+                        holder.spr_dropdown.setAdapter(adapter);
+                        if (compareValue != null) {
+                            int spinnerPosition = adapter.getPosition(compareValue);
+                            holder.spr_dropdown.setSelection(spinnerPosition);
+
+                        }
+                        holder.spr_dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+
+                                if(++check > 1) {
+
+                                    Log.w(TAG,"currentItem POS "+startItem);
+
+                                    Log.w(TAG,"currentItem POS "+parent.getItemAtPosition(pos));
+
+                                    getSpinnerListener.getSpinnerListener(holder.spr_dropdown,startItem,parent.getItemAtPosition(pos).toString(),currentItem.getField_length());
+
+                                }
 
                             }
+                            public void onNothingSelected(AdapterView<?> parent) {
 
-                        }
-                        public void onNothingSelected(AdapterView<?> parent) {
-
-
-                        }
-                    });
-
-                }
-                else {
-                    Log.w(TAG,"Dropdown else--->");
-                    holder.spr_dropdown.setAdapter(adapter);
-                    holder.spr_dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                            if(++check > 1) {
-
-                                Log.w(TAG,"currentItem POS "+startItem);
-
-                                Log.w(TAG,"currentItem POS "+parent.getItemAtPosition(pos));
-
-                                getSpinnerListener.getSpinnerListener(holder.spr_dropdown,startItem,parent.getItemAtPosition(pos).toString(),currentItem.getField_length());
 
                             }
-                        }
-                        public void onNothingSelected(AdapterView<?> parent) {
+                        });
+
+                    }
+                    else {
+                        Log.w(TAG,"Dropdown else--->");
+                        holder.spr_dropdown.setAdapter(adapter);
+                        holder.spr_dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                                if(++check > 1) {
+
+                                    Log.w(TAG,"currentItem POS "+startItem);
+
+                                    Log.w(TAG,"currentItem POS "+parent.getItemAtPosition(pos));
+
+                                    getSpinnerListener.getSpinnerListener(holder.spr_dropdown,startItem,parent.getItemAtPosition(pos).toString(),currentItem.getField_length());
+
+                                }
+                            }
+                            public void onNothingSelected(AdapterView<?> parent) {
 
 
-                        }
-                    });
+                            }
+                        });
 
+                    }
                 }
+
+
 
 
             }
@@ -535,7 +710,7 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
         public Button mClearButton,mSaveButton;
         SignaturePad mSignaturePad;
         RecyclerView rv_liftinputlist;
-        CardView cv_image;
+        CardView cv_image,cv_root;
 
 
 
@@ -563,6 +738,7 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
             txt_field_length = itemView.findViewById(R.id.txt_field_length);
             cv_image = itemView.findViewById(R.id.cv_image);
             rv_liftinputlist = itemView.findViewById(R.id.rv_liftinputlist);
+            cv_root = itemView.findViewById(R.id.cv_root);
         }
 
 
