@@ -123,8 +123,6 @@ public class CustomerDetailsActivity extends AppCompatActivity {
             JobFetchAddressRequestCall();
 
 
-
-
         }
 
         btn_continue.setOnClickListener(new View.OnClickListener() {

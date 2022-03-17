@@ -204,13 +204,12 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
                     message = response.body().getMessage();
                     if (200 == response.body().getCode()) {
                         if(response.body().getData() != null){
-                            dialog.dismiss();
+
 
                            dataBeanList = response.body().getData().getMaterial_details();
 
                            if(dataBeanList != null && dataBeanList.size()>0){
-
-                                footerView.setVisibility(View.VISIBLE);
+                               footerView.setVisibility(View.VISIBLE);
                                 rv_formfive.setVisibility(View.VISIBLE);
                                 setView(dataBeanList);
                                 txt_no_records.setVisibility(View.GONE);
@@ -265,6 +264,7 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
         rv_formfive.setItemAnimator(new DefaultItemAnimator());
         FormFiveListAdapter formFiveListAdapter = new FormFiveListAdapter(this, dataBeanList,activity_id,job_id,this,this,this,this,this);
         rv_formfive.setAdapter(formFiveListAdapter);
+        dialog.dismiss();
     }
 
     @SuppressLint("LogNotTimber")

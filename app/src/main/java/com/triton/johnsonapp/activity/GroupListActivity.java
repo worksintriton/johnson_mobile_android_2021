@@ -262,7 +262,9 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
         }  else if(fromactivity != null && fromactivity.equalsIgnoreCase("CustomerDetailsActivity")){
             Intent intent = new Intent(GroupListActivity.this, CustomerDetailsActivity.class);
             intent.putExtra("activity_id",activity_id);
+            intent.putExtra("job_id",job_id);
             intent.putExtra("status",status);
+            intent.putExtra("job_detail_no",job_detail_no);
             startActivity(intent);
             overridePendingTransition(R.anim.new_right, R.anim.new_left);
 
