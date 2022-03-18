@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -28,8 +29,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
                 <TextView
                     android:id="@+id/txt_toolbar_title"
                     android:layout_width="wrap_content"
@@ -37,7 +37,7 @@
                     android:layout_marginStart="10dp"
                     android:fontFamily="@font/sourcesanspro_regular"
                     android:padding="5dp"
-                    android:text="Address Details"
+                    android:text="View Info Details"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -57,8 +57,6 @@
                     android:maxLines="2"
                     android:layout_marginBottom="5dp"/>
             </LinearLayout>
-
-
         </LinearLayout>
 
 
@@ -161,57 +159,79 @@
                         android:layout_margin="10dp"
                         android:orientation="vertical">
 
-
-
-                        <TextView
-                            android:id="@+id/txt_pet_details"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="Installation  Address"
-                            android:textColor="@color/black"
-                            android:textSize="16sp"
-                            android:textStyle="bold"/>
-
-                        <TextView
-                            android:id="@+id/txt_customer_address"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/new_sec_txt_color"
-                            android:textSize="14sp"
-                            android:text=""
-                            android:layout_marginTop="@dimen/_10dp"
-                            android:layout_marginBottom="@dimen/_5dp"
-                            android:textStyle="bold"/>
-
-
                         <LinearLayout
-                            android:id="@+id/ll_name"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="15dp"
                             android:layout_marginEnd="5dp"
-                            android:orientation="horizontal"
-                            android:visibility="gone">
+                            android:orientation="horizontal">
 
                             <TextView
                                 android:layout_width="@dimen/width_appoitmentdetails"
                                 android:layout_height="wrap_content"
-                                android:text="Customer name"
+                                android:text="Sequence Number"
                                 android:textColor="@color/black"
                                 android:textSize="14sp" />
 
                             <TextView
-                                android:id="@+id/txt_customer_name"
+                                android:id="@+id/txt_seqno"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:ellipsize="end"
                                 android:maxLines="1"
                                 android:textColor="@color/new_sec_txt_color"
                                 android:textSize="14sp"
-                                android:text="Mohammed Imthiyas"/>
+                                android:text=""/>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="5dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="@dimen/width_appoitmentdetails"
+                                android:layout_height="wrap_content"
+                                android:text="DC Number"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/txt_dcno"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textColor="@color/new_sec_txt_color"
+                                android:textSize="14sp"
+                                android:text=""/>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="5dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="@dimen/width_appoitmentdetails"
+                                android:layout_height="wrap_content"
+                                android:text="Bill To"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/txt_billdo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textColor="@color/new_sec_txt_color"
+                                android:textSize="14sp"
+                                android:text=""/>
 
                         </LinearLayout>
 
@@ -222,22 +242,22 @@
                             android:layout_marginTop="5dp"
                             android:layout_marginEnd="5dp"
                             android:orientation="horizontal"
-                            android:visibility="gone">
+                           >
 
                             <TextView
                                 android:layout_width="@dimen/width_appoitmentdetails"
                                 android:layout_height="wrap_content"
-                                android:text="Customer id"
+                                android:text="Vehicle No"
                                 android:textColor="@color/black"
                                 android:textSize="14sp" />
 
                             <TextView
-                                android:id="@+id/txt_customer_id"
+                                android:id="@+id/txt_vehicleno"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/new_sec_txt_color"
                                 android:textSize="14sp"
-                                android:text="Imthi009"/>
+                                android:text=""/>
 
                         </LinearLayout>
 
@@ -248,23 +268,23 @@
                             android:layout_marginTop="5dp"
                             android:layout_marginEnd="5dp"
                             android:orientation="horizontal"
-                            android:visibility="gone">
+                           >
 
                             <TextView
                                 android:layout_width="@dimen/width_appoitmentdetails"
                                 android:layout_height="wrap_content"
-                                android:text="Customer Phone"
+                                android:text="Gp No"
                                 android:textColor="@color/black"
                                 android:textSize="14sp" />
 
                             <TextView
-                                android:id="@+id/txt_customer_phone"
+                                android:id="@+id/txt_gpno"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/new_sec_txt_color"
                                 android:textSize="14sp"
                                 android:maxLength="10"
-                                android:text="9898989898"/>
+                                android:text=""/>
 
                         </LinearLayout>
 
@@ -274,20 +294,70 @@
                             android:layout_height="match_parent"
                             android:layout_marginTop="5dp"
                             android:layout_marginEnd="5dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="@dimen/width_appoitmentdetails"
+                                android:layout_height="wrap_content"
+                                android:text="GP Date"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/txt_gpdate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/new_sec_txt_color"
+                                android:textSize="14sp"
+                                android:text=""/>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/ll_vacinateddate"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="5dp"
                             android:orientation="horizontal"
-                            android:layout_marginBottom="@dimen/_20dp"
+                            android:layout_marginBottom="@dimen/_20dp">
+
+                            <TextView
+                                android:layout_width="@dimen/width_appoitmentdetails"
+                                android:layout_height="wrap_content"
+                                android:text="Installation  Addres"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/txt_insulationaddres"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/new_sec_txt_color"
+                                android:textSize="14sp"
+                                android:text=""/>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/ll_vacinateddate"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:orientation="horizontal"
                             android:visibility="gone"
+
+
                             >
 
                             <TextView
                                 android:layout_width="@dimen/width_appoitmentdetails"
                                 android:layout_height="wrap_content"
-                                android:text="Customer Email id"
+                                android:text="Lorry No"
                                 android:textColor="@color/black"
                                 android:textSize="14sp" />
 
                             <TextView
-                                android:id="@+id/txt_customer_emailid"
+                                android:id="@+id/txt_lorryno"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/new_sec_txt_color"
@@ -462,7 +532,6 @@
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/blue_button_background_with_radius"
-            android:drawableEnd="@drawable/icn_next"
             android:gravity="center"
             android:orientation="horizontal"
             android:paddingStart="20dp"

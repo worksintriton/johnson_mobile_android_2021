@@ -17,15 +17,15 @@ public class RetrofitClient {
     private static OkHttpClient client;
 
 
-    /*live*/
-/*  public static String BASE_URL = "http://54.202.95.145:3000/api/";
+    /*dev*/
+  /*public static String BASE_URL = "http://54.202.95.145:3000/api/";
   public static String IMAGE_BASE_URL = "http://54.202.95.145::3000/";*/
 
 
 
 
-    /*dev*/
-   public static String BASE_URL = "http://smart.johnsonliftsltd.com:3000/api/";
+    /*live*/
+    public static String BASE_URL = "http://smart.johnsonliftsltd.com:3000/api/";
     public static String IMAGE_BASE_URL = "http://smart.johnsonliftsltd.com:3000/";
 
     /*Banner Image*/

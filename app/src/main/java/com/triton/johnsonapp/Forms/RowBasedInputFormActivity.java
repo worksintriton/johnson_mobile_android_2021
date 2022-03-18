@@ -131,6 +131,10 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
 
     private List<RowBasedStroeDataRequest.DataBean> Data = new ArrayList<>();
 
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.txt_job_no)
+    TextView txt_job_no;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,6 +172,10 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
                 txt_toolbar_title.setText(group_detail_name);
             }
 
+        }
+
+        if(job_id != null){
+            txt_job_no.setText("Job No : "+job_id);
         }
         txt_exit.setOnClickListener(new View.OnClickListener() {
             @Override

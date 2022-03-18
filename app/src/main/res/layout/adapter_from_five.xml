@@ -188,7 +188,7 @@
                     android:ellipsize="end"
                     android:fontFamily="@font/sourcesanspro_regular"
                     android:maxLines="1"
-                    android:text="Short : "
+                    android:text="Short / Excess  : "
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14sp"
                     android:visibility="visible"
@@ -219,9 +219,10 @@
                     android:text="Excess : "
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14sp"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:textStyle="bold"
-                    android:layout_marginStart="@dimen/_5dp"/>
+                    android:layout_marginStart="@dimen/_5dp"
+                    />
                 <EditText
                     android:text="0"
                     android:id="@+id/edt_excess"
@@ -237,7 +238,8 @@
                     android:editable="false"
                     android:focusable="false"
                     android:clickable="false"
-                    tools:ignore="Deprecated" />
+                    tools:ignore="Deprecated"
+                    android:visibility="gone"/>
             </LinearLayout>
 
 

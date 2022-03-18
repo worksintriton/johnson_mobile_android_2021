@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,8 +28,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
-import com.triton.johnsonapp.activity.ActivityBasedActivity;
 import com.triton.johnsonapp.activity.GroupListActivity;
+import com.triton.johnsonapp.activity.ViewInfoDetailsActivity;
 import com.triton.johnsonapp.adapter.FormFiveListAdapter;
 import com.triton.johnsonapp.api.APIInterface;
 import com.triton.johnsonapp.api.RetrofitClient;
@@ -76,6 +77,14 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
     TextView txt_no_records;
 
     @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.txt_toolbar_title)
+    TextView txt_toolbar_title;
+
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.txt_job_no)
+    TextView txt_job_no;
+
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.footerView)
     LinearLayout footerView;
 
@@ -102,6 +111,10 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
     private String group_detail_name;
     private String status;
     private String fromactivity;
+
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.rl_viewinfo)
+    RelativeLayout rl_viewinfo;
 
 
     @Override
@@ -131,6 +144,13 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
 
         }
 
+        if(group_detail_name != null){
+            txt_toolbar_title.setText(group_detail_name);
+        }
+        if(job_id != null){
+            txt_job_no.setText("Job No : "+job_id);
+        }
+
 
 
         SessionManager session = new SessionManager(getApplicationContext());
@@ -144,6 +164,15 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
             public void onClick(View v) {
 
                 onBackPressed();
+            }
+        });
+
+        rl_viewinfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ViewInfoDetailsActivity.class);
+                intent.putExtra("job_id",job_id);
+                startActivity(intent);
             }
         });
 

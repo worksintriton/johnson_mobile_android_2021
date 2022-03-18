@@ -125,26 +125,32 @@ public class FormFiveListAdapter extends  RecyclerView.Adapter<RecyclerView.View
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+                Log.w(TAG," s---> : "+s.toString());
+                if(s.toString().isEmpty()){
+                    holder.edt_short.setText(""+0);
+                }
                 int descqty = dataBeanList.get(position).getDesc_qty();
                 int acceptqty = 0;
 
+
                 try {
-                    acceptqty = Integer.parseInt(s.toString());
+                    acceptqty = Integer.parseInt(s.toString().trim());
                     Log.w(TAG," descqty : "+descqty+" acceptqty : "+acceptqty);
                     if(descqty<acceptqty){
                         int qty = descqty - acceptqty;
                         int x = Math.abs(qty);
 
                         Log.w(TAG," qty if: "+x);
-                        holder.edt_excess.setText(""+x);
-                        holder.edt_short.setText("0");
+                        //holder.edt_excess.setText(""+x);
+                      //  holder.edt_short.setText("0");
+                        holder.edt_short.setText(""+x);
 
                     }else {
                         int qty = descqty - acceptqty;
                         int x = Math.abs(qty);
                         Log.w(TAG," qty else : "+x);
-                        holder.edt_short.setText(""+x);
-                        holder.edt_excess.setText("0");
+                        holder.edt_short.setText("-"+qty);
+                      //  holder.edt_excess.setText("0");
 
                     }
                 } catch(NumberFormatException nfe) {

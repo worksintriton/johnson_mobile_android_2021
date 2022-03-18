@@ -6,6 +6,7 @@ public class GetFieldListResponse {
 
     /*
      * Status : Success
+     * Submitted_status : Success
      * Message : field management List
      * user_id : 123456
      * activity_id : 123456
@@ -28,6 +29,16 @@ public class GetFieldListResponse {
 
 
     private String Status;
+    private String Submitted_status;
+
+    public String getSubmitted_status() {
+        return Submitted_status;
+    }
+
+    public void setSubmitted_status(String submitted_status) {
+        Submitted_status = submitted_status;
+    }
+
     private String Message;
     private int Code;
 

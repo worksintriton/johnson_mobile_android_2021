@@ -35,6 +35,7 @@ import com.triton.johnsonapp.responsepojo.JobNoManagementResponse;
 import com.triton.johnsonapp.responsepojo.LoginResponse;
 import com.triton.johnsonapp.responsepojo.SubGroupDetailManagementResponse;
 import com.triton.johnsonapp.responsepojo.SuccessResponse;
+import com.triton.johnsonapp.responsepojo.ViewInfoResponse;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
@@ -175,6 +176,11 @@ public interface APIInterface {
     /*fetch address */
     @POST("job_no_managment/fetch_address")
     Call<JobFetchAddressResponse> JobFetchAddressRequestCall(@Header("Content-Type") String type, @Body JobFetchAddressRequest jobFetchAddressRequest);
+
+    /*view info details */
+    @POST("job_no_managment/fetch_rm_info")
+    Call<ViewInfoResponse> ViewInfoRequestCall(@Header("Content-Type") String type, @Body JobFetchAddressRequest jobFetchAddressRequest);
+
 
 
 

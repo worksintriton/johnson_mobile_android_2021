@@ -75,6 +75,8 @@ import com.triton.johnsonapp.session.SessionManager;
 import com.triton.johnsonapp.utils.ConnectionDetector;
 import com.triton.johnsonapp.utils.RestUtils;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -124,6 +126,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
     Dialog dialog;
     Dialog alertdialog;
+    Dialog submittedSuccessfulalertdialog;
 
     String networkStatus = "";
 
@@ -150,6 +153,10 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.txt_toolbar_title)
     TextView txt_toolbar_title;
+
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.txt_job_no)
+    TextView txt_job_no;
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.footerView)
@@ -244,6 +251,9 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                 txt_toolbar_title.setText(""+group_detail_name);
             } else if(sub_group_detail_name != null){
                 txt_toolbar_title.setText(""+sub_group_detail_name);
+            }
+            if(job_id != null){
+                txt_job_no.setText("Job No : "+job_id);
             }
 
         }
@@ -642,58 +652,72 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
 
                 if (response.body() != null) {
-                    if (200 == response.body().getCode()) {
-                        dialog.dismiss();
-                        responsemessage =  response.body().getMessage();
-                        Log.w(TAG, "GetFieldListResponse" + new Gson().toJson(response.body()));
+                    Log.w(TAG, "Submitted_status " +response.body().getSubmitted_status());
+                    if(response.body().getSubmitted_status() != null){
+                        String Submitted_status = response.body().getSubmitted_status();
+                        if(Submitted_status != null && Submitted_status.equalsIgnoreCase("Not Submitted")){
+                            dialog.dismiss();
+                            if (200 == response.body().getCode()) {
+                                dialog.dismiss();
+                                responsemessage =  response.body().getMessage();
+                                Log.w(TAG, "GetFieldListResponse" + new Gson().toJson(response.body()));
 
-                        if (response.body().getData() != null) {
+                                if (response.body().getData() != null) {
 
-                            dataBeanList = response.body().getData();
+                                    dataBeanList = response.body().getData();
 
-                            Log.w(TAG, "dataBeanList Size : " + dataBeanList.size());
+                                    Log.w(TAG, "dataBeanList Size : " + dataBeanList.size());
 
-                            resWorkStatus = response.body().getWork_status();
-                            Log.w(TAG, "resWorkStatus -->" + resWorkStatus);
+                                    resWorkStatus = response.body().getWork_status();
+                                    Log.w(TAG, "resWorkStatus -->" + resWorkStatus);
 
-                            if(resWorkStatus != null && resWorkStatus.equalsIgnoreCase("Clear")){
-                                showWarningWorkStatusClear();
-                            }
+                                    if(resWorkStatus != null && resWorkStatus.equalsIgnoreCase("Clear")){
+                                        showWarningWorkStatusClear();
+                                    }
 
-                            if (dataBeanList != null && dataBeanList.size() > 0) {
-                                footerView.setVisibility(View.VISIBLE);
-                                if(dataBeanList.size()<5){
-                                    btn_prev.setVisibility(View.INVISIBLE);
-                                    btn_next.setVisibility(View.GONE);
-                                    btn_success.setVisibility(View.VISIBLE);
+                                    if (dataBeanList != null && dataBeanList.size() > 0) {
+                                        footerView.setVisibility(View.VISIBLE);
+                                        if(dataBeanList.size()<5){
+                                            btn_prev.setVisibility(View.INVISIBLE);
+                                            btn_next.setVisibility(View.GONE);
+                                            btn_success.setVisibility(View.VISIBLE);
 
+                                        }
+
+
+                                        totalPages = dataBeanList.size() / 6;
+                                        TOTAL_NUM_ITEMS = dataBeanList.size();
+                                        Log.w(TAG, "totalPages  : " + totalPages+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS);
+
+                                        ITEMS_REMAINING = TOTAL_NUM_ITEMS - ITEMS_PER_PAGE;
+
+
+                                        dialog.dismiss();
+                                        Log.w(TAG, " getfieldListResponseCall setView  ITEMS_PER_PAGE : "+ITEMS_PER_PAGE+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS+" dataBeanList : "+new Gson().toJson(dataBeanList));
+
+
+                                        setView(dataBeanList, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS);
+
+                                        txt_no_records.setVisibility(View.GONE);
+                                    } else {
+                                        footerView.setVisibility(View.GONE);
+                                        txt_no_records.setVisibility(View.VISIBLE);
+                                        txt_no_records.setText("No Input Fields Available");
+
+                                    }
                                 }
 
 
-                                totalPages = dataBeanList.size() / 6;
-                                TOTAL_NUM_ITEMS = dataBeanList.size();
-                                Log.w(TAG, "totalPages  : " + totalPages+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS);
-
-                                ITEMS_REMAINING = TOTAL_NUM_ITEMS - ITEMS_PER_PAGE;
-
-
-                                dialog.dismiss();
-                                Log.w(TAG, " getfieldListResponseCall setView  ITEMS_PER_PAGE : "+ITEMS_PER_PAGE+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS+" dataBeanList : "+new Gson().toJson(dataBeanList));
-
-
-                                setView(dataBeanList, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS);
-
-                                txt_no_records.setVisibility(View.GONE);
-                            } else {
-                                footerView.setVisibility(View.GONE);
-                                txt_no_records.setVisibility(View.VISIBLE);
-                                txt_no_records.setText("No Input Fields Available");
-
                             }
+
+                        }else{
+                            dialog.dismiss();
+                            Log.w(TAG, "Submitted_status else--> " +response.body().getSubmitted_status());
+                            showSubmittedSuccessful();
                         }
-
-
                     }
+
+
 
 
                 }
@@ -1498,6 +1522,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                 Log.w(TAG, "joinInspectionCreateRequestCall" + new Gson().toJson(response.body()));
                 if (response.body() != null) {
                     message = response.body().getMessage();
+
                     if (200 == response.body().getCode()) {
                         if (response.body().getData() != null) {
                             Toasty.success(getApplicationContext(), "" + message, Toasty.LENGTH_LONG).show();
@@ -1724,6 +1749,39 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         alertdialog.show();
 
       
+
+
+
+
+    }
+    private void showSubmittedSuccessful() {
+        Log.w(TAG, "showSubmittedSuccessful -->+");
+        submittedSuccessfulalertdialog = new Dialog(InputValueFormListActivity.this);
+        submittedSuccessfulalertdialog.setCancelable(false);
+        submittedSuccessfulalertdialog.setContentView(R.layout.alert_sucess_clear);
+            Button btn_goback = submittedSuccessfulalertdialog.findViewById(R.id.btn_goback);
+            TextView txt_success_msg = submittedSuccessfulalertdialog.findViewById(R.id.txt_success_msg);
+        txt_success_msg.setText("All data submitted successfully.");
+            btn_goback.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    submittedSuccessfulalertdialog.dismiss();
+                    Intent intent = new Intent(InputValueFormListActivity.this, GroupListActivity.class);
+                    intent.putExtra("activity_id", activity_id);
+                    intent.putExtra("job_id", job_id);
+                    intent.putExtra("group_id",group_id);
+                    intent.putExtra("status", status);
+                    intent.putExtra("fromactivity", fromactivity);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.new_right, R.anim.new_left);
+                    finish();
+
+                }
+            });
+            Objects.requireNonNull(submittedSuccessfulalertdialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        submittedSuccessfulalertdialog.show();
+
+
 
 
 

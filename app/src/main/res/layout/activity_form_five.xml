@@ -2,6 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white">
 
     <LinearLayout
@@ -11,6 +12,7 @@
         android:layout_alignParentTop="true"
         android:background="@color/colorPrimary"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -25,23 +27,99 @@
                 android:contentDescription="@string/image"
                 app:srcCompat="@drawable/backbutton" />
 
-            <TextView
-                android:id="@+id/txt_toolbar_title"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/txt_toolbar_title"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/sourcesanspro_regular"
+                    android:padding="5dp"
+                    android:text="@string/activity_list"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:visibility="visible"
+                    android:maxLines="2"/>
+                <TextView
+                    android:id="@+id/txt_job_no"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/sourcesanspro_regular"
+                    android:padding="5dp"
+                    android:text="@string/jobdetail"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:visibility="visible"
+                    android:maxLines="2"/>
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="@dimen/_20dp"
+                android:id="@+id/rl_viewinfo">
+
+                <ImageView
+                    android:layout_width="@dimen/_24dp"
+                    android:layout_height="@dimen/_24dp"
+                    android:background="@drawable/information" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/new_rounded_corner_btn_white"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/img_search"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentEnd="false"
+                android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:layout_marginStart="10dp"
+                android:contentDescription="@string/image"
+                android:src="@drawable/ic_loctn_search" />
+
+
+            <EditText
+                android:id="@+id/edt_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_toEndOf="@id/img_search"
+                android:background="@null"
                 android:fontFamily="@font/sourcesanspro_regular"
-                android:padding="15dp"
-                android:text="Form 5"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:visibility="visible" />
+                android:hint="@string/search"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textColor="@color/colorPrimary"
+                android:textColorHint="@color/gray_btn_bg_pressed_color"
+                android:textCursorDrawable="@null"
+                android:textSize="16sp"
+                tools:ignore="Autofill,LabelFor,TextFields" />
 
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </LinearLayout>
 

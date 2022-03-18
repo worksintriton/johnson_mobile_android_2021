@@ -115,6 +115,10 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
     @BindView(R.id.tl_header)
     TableLayout tl_header;
 
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.txt_job_no)
+    TextView txt_job_no;
+
 
     private Dialog alertdialog;
 
@@ -165,7 +169,9 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
             }
 
         }
-
+        if(job_id != null){
+            txt_job_no.setText("Job No : "+job_id);
+        }
 
         tl_header.setVisibility(View.GONE);
         txt_exit.setOnClickListener(new View.OnClickListener() {
