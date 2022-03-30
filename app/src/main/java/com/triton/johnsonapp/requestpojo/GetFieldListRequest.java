@@ -11,6 +11,7 @@ public class GetFieldListRequest {
     private String user_role;
 
 
+
     public String getUser_id() {
         return user_id;
     }

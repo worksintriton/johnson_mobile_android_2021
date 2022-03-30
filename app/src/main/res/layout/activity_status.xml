@@ -1,11 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/login_main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="RtlHardcoded"
+        android:gravity="end"
+        android:layout_marginEnd="@dimen/_20dp"
+        android:layout_marginTop="@dimen/_20dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end">
+            <ImageView
+                android:id="@+id/img_logout"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@string/image"
+                android:gravity="end|center_vertical"
+                app:srcCompat="@drawable/logout_color"
+                android:layout_marginEnd="@dimen/_10dp"
+                />
+        </RelativeLayout>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sourcesanspro_regular"
+            android:text="@string/logout"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="visible"
+          />
+
+    </LinearLayout>
+
 
 
     <RelativeLayout
@@ -46,12 +88,12 @@
                     android:id="@+id/customFontTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/sourcesanspro_regular"
                     android:text="@string/jobdetail"
                     android:textColor="@color/black"
                     android:textSize="16dp"
                     android:textStyle="bold"
-                    android:visibility="visible"
-                    android:fontFamily="@font/sourcesanspro_regular" />
+                    android:visibility="visible" />
 
             </LinearLayout>
 
@@ -87,11 +129,12 @@
                             android:textColor="#FFFFFF"
                             android:textSize="16dp"
                             android:textStyle="bold"
-                            android:visibility="gone"/>
+                            android:visibility="gone" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="10dp"></LinearLayout>
+
                         <Button
                             android:id="@+id/btn_new"
                             android:layout_width="@dimen/_200dp"
@@ -108,17 +151,18 @@
                             android:textColor="#FFFFFF"
                             android:textSize="16dp"
                             android:textStyle="bold" />
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="10dp"></LinearLayout>
 
                         <Button
-                            android:layout_marginTop="@dimen/_20dp"
                             android:id="@+id/btn_pause"
                             android:layout_width="@dimen/_200dp"
                             android:layout_height="45dp"
                             android:layout_gravity="center"
                             android:layout_marginLeft="20dp"
+                            android:layout_marginTop="@dimen/_20dp"
                             android:layout_marginRight="20dp"
                             android:background="@drawable/blue_button_background_with_radius"
                             android:elevation="1dp"
@@ -129,10 +173,6 @@
                             android:textColor="#FFFFFF"
                             android:textSize="16dp"
                             android:textStyle="bold" />
-
-
-
-
 
 
                     </LinearLayout>

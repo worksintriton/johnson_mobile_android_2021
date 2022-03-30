@@ -1,11 +1,4 @@
-package com.triton.johnsonapp.Forms;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+package com.triton.johnsonapp.activitybased.forms;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -29,10 +22,19 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
+import com.triton.johnsonapp.activity.CustomerDetailsActivity;
 import com.triton.johnsonapp.activity.GroupListActivity;
+import com.triton.johnsonapp.activitybased.ABCustomerDetailsActivity;
 import com.triton.johnsonapp.adapter.ImageBasedArrayListAdapter;
 import com.triton.johnsonapp.api.APIInterface;
 import com.triton.johnsonapp.api.RetrofitClient;
@@ -54,7 +56,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ImageBasedInputFormActivity extends AppCompatActivity {
+public class ABImageBasedInputFormActivity extends AppCompatActivity {
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.txt_toolbar_title)
@@ -96,7 +98,7 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
     @BindView(R.id.footerView)
     LinearLayout footerView;
 
-    private String TAG ="ImageBasedInputFormActivity";
+    private String TAG ="ABImageBasedInputFormActivity";
 
     String string_value,message,service_id,activity_id,job_id,group_id,subgroup_id,group_detail_name;
 
@@ -123,6 +125,7 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
     private String userid;
     private String status;
     private String fromactivity;
+    private String fromto;
     List<ImageBasedStroeDataRequest.DataBean> Data = new ArrayList<>();
     private String networkStatus = "";
 
@@ -154,12 +157,15 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
             subgroup_id= extras.getString("subgroup_id");
             status= extras.getString("status");
             fromactivity= extras.getString("fromactivity");
+            fromto= extras.getString("fromto");
 
             Log.w(TAG,"activity_id -->"+activity_id);
 
             Log.w(TAG,"group_id -->"+group_id);
 
             Log.w(TAG,"service_id" + service_id);
+            Log.w(TAG,"fromactivity " + fromactivity);
+            Log.w(TAG,"fromto " + fromto);
 
             if(group_detail_name != null){
                 txt_toolbar_title.setText(group_detail_name);
@@ -273,11 +279,12 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(ImageBasedInputFormActivity.this, GroupListActivity.class);
+                        Intent intent = new Intent(ABImageBasedInputFormActivity.this, ABCustomerDetailsActivity.class);
                         intent.putExtra("activity_id", activity_id);
                         intent.putExtra("job_id", job_id);
                         intent.putExtra("status", status);
                         intent.putExtra("fromactivity", fromactivity);
+                        intent.putExtra("fromto", fromto);
                         startActivity(intent);
                         overridePendingTransition(R.anim.new_right, R.anim.new_left);
                         finish();
@@ -292,7 +299,7 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
     private void showPopupInputForm(String value) {
 
         try {
-            alertdialog = new Dialog(ImageBasedInputFormActivity.this);
+            alertdialog = new Dialog(ABImageBasedInputFormActivity.this);
             alertdialog.setContentView(R.layout.imagebased_popup_layout);
 
             TextView txt_header_title = alertdialog.findViewById(R.id.txt_header_title);
@@ -348,7 +355,7 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
 
     @SuppressLint("LogNotTimber")
     private void imageBasedStroeDataRequestCall() {
-        dialog = new Dialog(ImageBasedInputFormActivity.this, R.style.NewProgressDialog);
+        dialog = new Dialog(ABImageBasedInputFormActivity.this, R.style.NewProgressDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progroess_popup);
         dialog.show();
@@ -368,7 +375,7 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
                     if (200 == response.body().getCode()) {
                         if (response.body().getData() != null) {
                             Toasty.success(getApplicationContext(), "" + message, Toasty.LENGTH_LONG).show();
-                            Intent intent = new Intent(ImageBasedInputFormActivity.this, GroupListActivity.class);
+                            Intent intent = new Intent(ABImageBasedInputFormActivity.this, GroupListActivity.class);
                             intent.putExtra("activity_id",activity_id);
                             intent.putExtra("job_id",job_id);
                             intent.putExtra("status",status);

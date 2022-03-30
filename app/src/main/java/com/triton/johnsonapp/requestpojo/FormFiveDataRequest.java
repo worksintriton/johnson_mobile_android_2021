@@ -2,20 +2,42 @@ package com.triton.johnsonapp.requestpojo;
 
 public class FormFiveDataRequest {
 
-    /**
-     * job_no : 111
-     * user_id : dddf
-     */
+    private String group_id;
+    private String sub_group_id;
+    private String job_id;
+    private String user_id ;
+    private int ST_MDH_SEQNO;
 
-    private String job_no;
-    private String user_id;
-
-    public String getJob_no() {
-        return job_no;
+    public int getST_MDH_SEQNO() {
+        return ST_MDH_SEQNO;
     }
 
-    public void setJob_no(String job_no) {
-        this.job_no = job_no;
+    public void setST_MDH_SEQNO(int ST_MDH_SEQNO) {
+        this.ST_MDH_SEQNO = ST_MDH_SEQNO;
+    }
+
+    public String getGroup_id() {
+        return group_id;
+    }
+
+    public void setGroup_id(String group_id) {
+        this.group_id = group_id;
+    }
+
+    public String getSub_group_id() {
+        return sub_group_id;
+    }
+
+    public void setSub_group_id(String sub_group_id) {
+        this.sub_group_id = sub_group_id;
+    }
+
+    public String getJob_id() {
+        return job_id;
+    }
+
+    public void setJob_id(String job_id) {
+        this.job_id = job_id;
     }
 
     public String getUser_id() {

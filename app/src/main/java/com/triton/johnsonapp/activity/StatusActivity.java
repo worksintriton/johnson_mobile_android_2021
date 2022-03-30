@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -45,6 +46,10 @@ public class StatusActivity extends AppCompatActivity {
     Button btn_new;
 
     @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.ll_logout)
+    LinearLayout ll_logout;
+
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.btn_pause)
     Button btn_pause;
     private Dialog dialog;
@@ -63,6 +68,13 @@ public class StatusActivity extends AppCompatActivity {
         SessionManager  session = new SessionManager(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
         userid = user.get(SessionManager.KEY_ID);
+
+        ll_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                session.logoutUser();
+            }
+        });
 
         btn_new.setOnClickListener(new View.OnClickListener() {
             @Override

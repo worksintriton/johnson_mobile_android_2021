@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
+import com.triton.johnsonapp.activitybased.ActivityBasedActivity;
+import com.triton.johnsonapp.activitybased.ActivityJobListActivity;
 import com.triton.johnsonapp.api.APIInterface;
 import com.triton.johnsonapp.api.RetrofitClient;
 import com.triton.johnsonapp.requestpojo.FetchRecordByUserIDRequest;
@@ -76,7 +78,7 @@ public class ActivityStatusActivity extends AppCompatActivity {
         btn_new.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ActivityStatusActivity.this, JobDetailActivity.class);
+                Intent intent = new Intent(ActivityStatusActivity.this, ActivityJobListActivity.class);
                 intent.putExtra("status","New");
                 intent.putExtra("activity_id",activity_id);
                 startActivity(intent);
@@ -88,7 +90,7 @@ public class ActivityStatusActivity extends AppCompatActivity {
         btn_pause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ActivityStatusActivity.this, JobDetailActivity.class);
+                Intent intent = new Intent(ActivityStatusActivity.this, ActivityJobListActivity.class);
                 intent.putExtra("status","Pause");
                 intent.putExtra("activity_id",activity_id);
                 startActivity(intent);
@@ -172,7 +174,7 @@ public class ActivityStatusActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(getApplicationContext(),ActivityBasedActivity.class));
+        startActivity(new Intent(getApplicationContext(), ActivityBasedActivity.class));
         finish();
     }
 }

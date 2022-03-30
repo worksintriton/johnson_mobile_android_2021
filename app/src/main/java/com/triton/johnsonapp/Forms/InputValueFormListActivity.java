@@ -302,7 +302,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
             public void onClick(View view) {
                 boolean flag = true;
 
-                rv_fieldlist.scrollToPosition(0);
+
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -360,11 +360,6 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                      startItem = currentPage * ITEMS_PER_PAGE;
                     Log.w(TAG, "currentPage flag : " + currentPage+" startItem : "+startItem+" ITEMS_PER_PAGE : "+ITEMS_PER_PAGE);
                 }
-
-
-
-
-
 
                 int condition = 0;
 
@@ -470,10 +465,6 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
             }
         });
-
-
-
-
         btn_prev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -677,7 +668,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
                                     if (dataBeanList != null && dataBeanList.size() > 0) {
                                         footerView.setVisibility(View.VISIBLE);
-                                        if(dataBeanList.size()<5){
+                                        if(dataBeanList.size()<6 || dataBeanList.size() == 6){
                                             btn_prev.setVisibility(View.INVISIBLE);
                                             btn_next.setVisibility(View.GONE);
                                             btn_success.setVisibility(View.VISIBLE);
@@ -699,7 +690,8 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                                         setView(dataBeanList, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS);
 
                                         txt_no_records.setVisibility(View.GONE);
-                                    } else {
+                                    }
+                                    else {
                                         footerView.setVisibility(View.GONE);
                                         txt_no_records.setVisibility(View.VISIBLE);
                                         txt_no_records.setText("No Input Fields Available");

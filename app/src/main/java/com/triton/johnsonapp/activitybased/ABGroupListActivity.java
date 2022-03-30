@@ -1,16 +1,4 @@
-package com.triton.johnsonapp.activity;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+package com.triton.johnsonapp.activitybased;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -42,6 +30,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -57,19 +56,19 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
+import com.triton.johnsonapp.activity.AllJobListActivity;
+import com.triton.johnsonapp.activity.CustomerDetailsActivity;
 import com.triton.johnsonapp.adapter.GroupListAdapter;
 import com.triton.johnsonapp.api.APIInterface;
 import com.triton.johnsonapp.api.RetrofitClient;
 import com.triton.johnsonapp.requestpojo.CheckDataStoreRequest;
 import com.triton.johnsonapp.requestpojo.CheckLocationRequest;
-import com.triton.johnsonapp.requestpojo.FormDataStoreRequest;
 import com.triton.johnsonapp.requestpojo.GroupDetailManagementRequest;
 import com.triton.johnsonapp.requestpojo.PauseJobRequest;
 import com.triton.johnsonapp.requestpojo.ResumeJobRequest;
 import com.triton.johnsonapp.requestpojo.StartWorkRequest;
 import com.triton.johnsonapp.requestpojo.StopJobRequest;
 import com.triton.johnsonapp.responsepojo.CheckDataStoreResponse;
-import com.triton.johnsonapp.responsepojo.FormDataStoreResponse;
 import com.triton.johnsonapp.responsepojo.GroupDetailManagementResponse;
 import com.triton.johnsonapp.responsepojo.SuccessResponse;
 import com.triton.johnsonapp.service.GPSTracker;
@@ -78,7 +77,6 @@ import com.triton.johnsonapp.utils.ConnectionDetector;
 import com.triton.johnsonapp.utils.RestUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -92,11 +90,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class GroupListActivity extends AppCompatActivity  implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
+public class ABGroupListActivity extends AppCompatActivity  implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
 
-    private String TAG ="GroupListActivity";
+    private String TAG ="ABGroupListActivity";
 
     String userid,username,userrole;
 
@@ -264,14 +262,24 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
     public void onBackPressed() {
         super.onBackPressed();
         if(fromactivity != null && fromactivity.equalsIgnoreCase("AllJobListActivity")){
-            Intent intent = new Intent(GroupListActivity.this, AllJobListActivity.class);
+            Intent intent = new Intent(ABGroupListActivity.this, AllJobListActivity.class);
             intent.putExtra("activity_id",activity_id);
             intent.putExtra("status",status);
             startActivity(intent);
             overridePendingTransition(R.anim.new_right, R.anim.new_left);
 
         }  else if(fromactivity != null && fromactivity.equalsIgnoreCase("CustomerDetailsActivity")){
-            Intent intent = new Intent(GroupListActivity.this, CustomerDetailsActivity.class);
+            Intent intent = new Intent(ABGroupListActivity.this, CustomerDetailsActivity.class);
+            intent.putExtra("activity_id",activity_id);
+            intent.putExtra("job_id",job_id);
+            intent.putExtra("status",status);
+            intent.putExtra("job_detail_no",job_detail_no);
+            intent.putExtra("fromto",fromto);
+            startActivity(intent);
+            overridePendingTransition(R.anim.new_right, R.anim.new_left);
+
+        } else if(fromactivity != null && fromactivity.equalsIgnoreCase("ABCustomerDetailsActivity")){
+            Intent intent = new Intent(ABGroupListActivity.this, ABCustomerDetailsActivity.class);
             intent.putExtra("activity_id",activity_id);
             intent.putExtra("job_id",job_id);
             intent.putExtra("status",status);
@@ -281,7 +289,7 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
             overridePendingTransition(R.anim.new_right, R.anim.new_left);
 
         }else{
-            Intent intent = new Intent(GroupListActivity.this, CustomerDetailsActivity.class);
+            Intent intent = new Intent(ABGroupListActivity.this, CustomerDetailsActivity.class);
             intent.putExtra("activity_id",activity_id);
             intent.putExtra("status",status);
             startActivity(intent);
@@ -295,7 +303,7 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
 
     @SuppressLint("LogNotTimber")
     private void groupdetailmanagmentResponseCall() {
-        dialog = new Dialog(GroupListActivity.this, R.style.NewProgressDialog);
+        dialog = new Dialog(ABGroupListActivity.this, R.style.NewProgressDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progroess_popup);
         dialog.show();
@@ -389,7 +397,7 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
     private void showPopupStartJoB() {
 
         try {
-            alertdialog = new Dialog(GroupListActivity.this);
+            alertdialog = new Dialog(ABGroupListActivity.this);
             alertdialog.setContentView(R.layout.startjob_popup_layout);
             TextView txt_jobstatus = alertdialog.findViewById(R.id.txt_jobstatus);
             TextView txt_job_content = alertdialog.findViewById(R.id.txt_job_content);
@@ -478,7 +486,7 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
                @Override
                public void onClick(View v) {
                    alertdialog.dismiss();
-                   Intent intent = new Intent(GroupListActivity.this, AllJobListActivity.class);
+                   Intent intent = new Intent(ABGroupListActivity.this, AllJobListActivity.class);
                    intent.putExtra("activity_id",activity_id);
                    intent.putExtra("status",status);
                    startActivity(intent);
@@ -499,7 +507,7 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
     }
 
     private void confirmStartJobDialog(){
-         alertDialogBuilder = new AlertDialog.Builder(GroupListActivity.this);
+         alertDialogBuilder = new AlertDialog.Builder(ABGroupListActivity.this);
         alertDialogBuilder.setMessage("Would you like to start job tracking ?");
         alertDialogBuilder.setPositiveButton("yes",
                 new DialogInterface.OnClickListener() {
@@ -540,7 +548,7 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
 
     }
     private void confirmPauseJobDialog(){
-         alertDialogBuilder = new AlertDialog.Builder(GroupListActivity.this);
+         alertDialogBuilder = new AlertDialog.Builder(ABGroupListActivity.this);
         alertDialogBuilder.setMessage("Would you like to Pause job tracking ?");
         alertDialogBuilder.setPositiveButton("yes",
                 new DialogInterface.OnClickListener() {
@@ -565,7 +573,7 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
 
     }
     private void confirmResumeJobDialog(){
-         alertDialogBuilder = new AlertDialog.Builder(GroupListActivity.this);
+         alertDialogBuilder = new AlertDialog.Builder(ABGroupListActivity.this);
         alertDialogBuilder.setMessage("Would you like to Resume job tracking ?");
         alertDialogBuilder.setPositiveButton("yes",
                 new DialogInterface.OnClickListener() {
@@ -590,7 +598,7 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
 
     }
     private void confirmStopJobDialog(){
-         alertDialogBuilder = new AlertDialog.Builder(GroupListActivity.this);
+         alertDialogBuilder = new AlertDialog.Builder(ABGroupListActivity.this);
         alertDialogBuilder.setMessage("Would you like to Stop job tracking ?");
         alertDialogBuilder.setPositiveButton("yes",
                 new DialogInterface.OnClickListener() {
@@ -618,7 +626,7 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
 
     @SuppressLint("LogNotTimber")
     private void startWorkRequestCall() {
-        dialog = new Dialog(GroupListActivity.this, R.style.NewProgressDialog);
+        dialog = new Dialog(ABGroupListActivity.this, R.style.NewProgressDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progroess_popup);
         dialog.show();
@@ -692,7 +700,7 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
 
     @SuppressLint("LogNotTimber")
     private void checkLocationRequestCall() {
-        dialog = new Dialog(GroupListActivity.this, R.style.NewProgressDialog);
+        dialog = new Dialog(ABGroupListActivity.this, R.style.NewProgressDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progroess_popup);
         dialog.show();
@@ -775,7 +783,7 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
 
     @SuppressLint("LogNotTimber")
     private void pausejobRequestCall() {
-        dialog = new Dialog(GroupListActivity.this, R.style.NewProgressDialog);
+        dialog = new Dialog(ABGroupListActivity.this, R.style.NewProgressDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progroess_popup);
         dialog.show();
@@ -848,7 +856,7 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
 
     @SuppressLint("LogNotTimber")
     private void pausejobRequestCall1() {
-        dialog = new Dialog(GroupListActivity.this, R.style.NewProgressDialog);
+        dialog = new Dialog(ABGroupListActivity.this, R.style.NewProgressDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progroess_popup);
         dialog.show();
@@ -898,7 +906,7 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
 
     @SuppressLint("LogNotTimber")
     private void resumejobRequestCall() {
-        dialog = new Dialog(GroupListActivity.this, R.style.NewProgressDialog);
+        dialog = new Dialog(ABGroupListActivity.this, R.style.NewProgressDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progroess_popup);
         dialog.show();
@@ -967,7 +975,7 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
 
     @SuppressLint("LogNotTimber")
     private void stopjobRequestCall() {
-        dialog = new Dialog(GroupListActivity.this, R.style.NewProgressDialog);
+        dialog = new Dialog(ABGroupListActivity.this, R.style.NewProgressDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progroess_popup);
         dialog.show();
@@ -1040,7 +1048,7 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
 
     @SuppressLint("LogNotTimber")
     private void checkDataStoreResponseCall() {
-        dialog = new Dialog(GroupListActivity.this, R.style.NewProgressDialog);
+        dialog = new Dialog(ABGroupListActivity.this, R.style.NewProgressDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progroess_popup);
         dialog.show();
@@ -1098,7 +1106,7 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
 
     }
     private void checkDataStoreResponseCall1() {
-        dialog = new Dialog(GroupListActivity.this, R.style.NewProgressDialog);
+        dialog = new Dialog(ABGroupListActivity.this, R.style.NewProgressDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progroess_popup);
         dialog.show();
@@ -1217,7 +1225,7 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
     private void getLatandLong() {
         try {
             if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(GroupListActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                ActivityCompat.requestPermissions(ABGroupListActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
             } else {
                 GPSTracker gps = new GPSTracker(getApplicationContext());
@@ -1319,7 +1327,7 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
             if (Build.VERSION.SDK_INT >= 23 && (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) &&
                     (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
 
-                ActivityCompat.requestPermissions(GroupListActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 5);
+                ActivityCompat.requestPermissions(ABGroupListActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 5);
 
             } else {
 
@@ -1376,7 +1384,7 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
                             break;
                         case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                             try {
-                                status.startResolutionForResult(GroupListActivity.this, REQUEST_CHECK_SETTINGS_GPS);
+                                status.startResolutionForResult(ABGroupListActivity.this, REQUEST_CHECK_SETTINGS_GPS);
                             } catch (IntentSender.SendIntentException e) {
                                 // Ignore the error.
                             }

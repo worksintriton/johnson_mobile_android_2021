@@ -27,11 +27,11 @@ import com.triton.johnsonapp.responsepojo.FormFiveDataResponse;
 import java.util.List;
 
 
-public class FormFiveListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class FormFiveListAdapterCopy extends  RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final String TAG = "FormFiveListAdapter";
-    private final List<FormFiveDataResponse.DataBean.MaterialDetailsBean> dataBeanList;
-    private final Context context;
+    private  String TAG = "FormFiveListAdapter";
+    private List<FormFiveDataResponse.DataBean.MaterialDetailsBean> dataBeanList;
+    private Context context;
 
     FormFiveDataResponse.DataBean.MaterialDetailsBean currentItem;
 
@@ -43,21 +43,14 @@ public class FormFiveListAdapter extends  RecyclerView.Adapter<RecyclerView.View
     GetShortListner getShortListner;
     GetExcessListner getExcessListner;
     GetRemarksListner getRemarksListner;
-    int ITEMS_PER_PAGE, TOTAL_NUM_ITEMS;
-    int currentPage;
 
-    private  boolean remarksIsVisible = false;
-
-    public FormFiveListAdapter(Context context, List<FormFiveDataResponse.DataBean.MaterialDetailsBean> dataBeanList,
-                               String activity_id, String job_id,
-                               GetAcceptQtyListner getAcceptQtyListener,
-                               GetDamageQtyListner getDamageQtyListner,
-                               GetShortListner getShortListner,
-                               GetExcessListner getExcessListner,
-                               GetRemarksListner getRemarksListner,
-                               int ITEMS_PER_PAGE,
-                               int TOTAL_NUM_ITEMS,
-                               int currentPage) {
+    public FormFiveListAdapterCopy(Context context, List<FormFiveDataResponse.DataBean.MaterialDetailsBean> dataBeanList,
+                                   String activity_id, String job_id,
+                                   GetAcceptQtyListner getAcceptQtyListener,
+                                   GetDamageQtyListner getDamageQtyListner,
+                                   GetShortListner getShortListner,
+                                   GetExcessListner getExcessListner,
+                                   GetRemarksListner getRemarksListner) {
         this.context = context;
         this.dataBeanList = dataBeanList;
         this.activity_id = activity_id;
@@ -67,9 +60,6 @@ public class FormFiveListAdapter extends  RecyclerView.Adapter<RecyclerView.View
         this.getShortListner = getShortListner;
         this.getExcessListner = getExcessListner;
         this.getRemarksListner = getRemarksListner;
-        this.ITEMS_PER_PAGE = ITEMS_PER_PAGE;
-        this.TOTAL_NUM_ITEMS = TOTAL_NUM_ITEMS;
-        this.currentPage=currentPage;
 
     }
 
@@ -90,25 +80,18 @@ public class FormFiveListAdapter extends  RecyclerView.Adapter<RecyclerView.View
     @SuppressLint({"SetTextI18n", "LogNotTimber"})
     private void initLayoutOne(ViewHolderOne holder, final int position) {
 
-
-        holder.edt_textarea_remarks.requestFocus(); // It will set a focus on your edittext whenever the child is getting created
+        if(position == dataBeanList.size()-1){
+            holder.ll_remarks.setVisibility(View.VISIBLE);
+        }
 
 
         currentItem = dataBeanList.get(position);
-
-        int startItem=currentPage*ITEMS_PER_PAGE+position;
       //  holder.txt_sno.setText( holder.getAdapterPosition()+1+"");
 
         if(dataBeanList.get(position).getPart_no() != null && !dataBeanList.get(position).getPart_no().isEmpty()){
             holder.txt_part_no.setText(" : "+dataBeanList.get(position).getPart_no());
         }else{
             holder.txt_part_no.setText("");
-
-        }
-        if(dataBeanList.get(position).getST_MDD_SLNO() != 0){
-            holder.txt_sl_no.setText(" : "+dataBeanList.get(position).getST_MDD_SLNO());
-        }else{
-            holder.txt_sl_no.setText("");
 
         }
         if(dataBeanList.get(position).getMaterial_desc() != null && !dataBeanList.get(position).getMaterial_desc().isEmpty()){
@@ -129,20 +112,8 @@ public class FormFiveListAdapter extends  RecyclerView.Adapter<RecyclerView.View
             holder.edt_accept_qty.setText("");
 
         }
-        if(dataBeanList.get(position).getShortage() != 0){
-            holder.edt_short.setText(dataBeanList.get(position).getShortage()+" ");
-        }else{
-            holder.edt_short.setText("");
-
-        }
 
         holder.edt_damageqty.setText(dataBeanList.get(position).getDemage()+" ");
-
-        if(dataBeanList.get(position).getST_MDD_RCREMARKS() != null && !dataBeanList.get(position).getST_MDD_RCREMARKS().isEmpty()){
-            holder.edt_textarea_remarks.setText(dataBeanList.get(position).getST_MDD_RCREMARKS());
-        }
-
-
 
 
         holder.edt_accept_qty.addTextChangedListener(new TextWatcher() {
@@ -163,7 +134,7 @@ public class FormFiveListAdapter extends  RecyclerView.Adapter<RecyclerView.View
 
 
                 try {
-                    acceptqty = Double.parseDouble(s.toString().trim());
+                    acceptqty = Integer.parseInt(s.toString().trim());
                     Log.w(TAG," descqty : "+descqty+" acceptqty : "+acceptqty);
                     if(descqty<acceptqty){
                         double qty = descqty - acceptqty;
@@ -186,7 +157,12 @@ public class FormFiveListAdapter extends  RecyclerView.Adapter<RecyclerView.View
                     System.out.println("Could not parse " + nfe);
                 }
 
-                getAcceptQtyListener.getAcceptQtyListner(holder.edt_accept_qty,s.toString(),startItem);
+
+
+
+
+
+                getAcceptQtyListener.getAcceptQtyListner(holder.edt_accept_qty,s.toString(),position);
 
             }
 
@@ -203,7 +179,7 @@ public class FormFiveListAdapter extends  RecyclerView.Adapter<RecyclerView.View
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                getDamageQtyListner.getDamageQtyListner(holder.edt_damageqty,s.toString(),startItem);
+                getDamageQtyListner.getDamageQtyListner(holder.edt_damageqty,s.toString(),position);
             }
 
             @Override
@@ -219,7 +195,7 @@ public class FormFiveListAdapter extends  RecyclerView.Adapter<RecyclerView.View
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                getShortListner.getShortListner(holder.edt_short,s.toString(),startItem);
+                getShortListner.getShortListner(holder.edt_short,s.toString(),position);
             }
 
             @Override
@@ -235,7 +211,7 @@ public class FormFiveListAdapter extends  RecyclerView.Adapter<RecyclerView.View
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                getExcessListner.getExcessListner(holder.edt_excess,s.toString(),startItem);
+                getExcessListner.getExcessListner(holder.edt_excess,s.toString(),position);
             }
 
             @Override
@@ -243,26 +219,6 @@ public class FormFiveListAdapter extends  RecyclerView.Adapter<RecyclerView.View
 
             }
         });
-
-        holder.txt_lbl_remarks.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(remarksIsVisible) {
-                   holder.edt_textarea_remarks.setVisibility(View.VISIBLE);
-                    holder.edt_textarea_remarks.requestFocus();
-                    holder.edt_textarea_remarks.setCursorVisible(true);
-                    remarksIsVisible = false;
-                } else {
-                    holder.edt_textarea_remarks.setVisibility(View.GONE);
-                    remarksIsVisible = true;
-                    holder.edt_textarea_remarks.setCursorVisible(false);
-
-
-                }
-            }
-        });
-
-
         holder.edt_textarea_remarks.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -271,13 +227,11 @@ public class FormFiveListAdapter extends  RecyclerView.Adapter<RecyclerView.View
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                dataBeanList.get(position).setST_MDD_RCREMARKS(s.toString());
-                // getRemarksListner.getRemarksListner(s.toString());
+                getRemarksListner.getRemarksListner(s.toString());
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                holder.edt_textarea_remarks.clearFocus();
 
             }
         });
@@ -290,8 +244,7 @@ public class FormFiveListAdapter extends  RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public int getItemCount() {
-        return Math.min(dataBeanList.size(), ITEMS_PER_PAGE);
-
+        return dataBeanList.size();
     }
 
 
@@ -301,7 +254,7 @@ public class FormFiveListAdapter extends  RecyclerView.Adapter<RecyclerView.View
     }
 
     static class ViewHolderOne extends RecyclerView.ViewHolder {
-        public TextView txt_part_no,txt_material_desc,txt_desp_qty,txt_lbl_remarks,txt_sl_no;
+        public TextView txt_part_no,txt_material_desc,txt_desp_qty;
         public EditText edt_accept_qty,edt_damageqty,edt_short,edt_excess,edt_textarea_remarks;
 
         CardView cv_root;
@@ -319,10 +272,8 @@ public class FormFiveListAdapter extends  RecyclerView.Adapter<RecyclerView.View
             edt_excess = itemView.findViewById(R.id.edt_excess);
             cv_root = itemView.findViewById(R.id.cv_root);
             ll_remarks = itemView.findViewById(R.id.ll_remarks);
+            ll_remarks.setVisibility(View.GONE);
             edt_textarea_remarks = itemView.findViewById(R.id.edt_textarea_remarks);
-            txt_lbl_remarks = itemView.findViewById(R.id.txt_lbl_remarks);
-            txt_sl_no = itemView.findViewById(R.id.txt_sl_no);
-            edt_textarea_remarks.setVisibility(View.GONE);
 
 
 

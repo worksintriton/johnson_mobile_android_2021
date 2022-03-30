@@ -1,7 +1,4 @@
-package com.triton.johnsonapp.activity;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+package com.triton.johnsonapp.activitybased;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -15,15 +12,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
-import com.triton.johnsonapp.activitybased.ActivityJobListActivity;
+
+import com.triton.johnsonapp.activitybased.forms.ABImageBasedInputFormActivity;
 import com.triton.johnsonapp.api.APIInterface;
 import com.triton.johnsonapp.api.RetrofitClient;
-import com.triton.johnsonapp.requestpojo.CheckLocationRequest;
 import com.triton.johnsonapp.requestpojo.JobFetchAddressRequest;
 import com.triton.johnsonapp.responsepojo.JobFetchAddressResponse;
-import com.triton.johnsonapp.responsepojo.SuccessResponse;
 import com.triton.johnsonapp.session.SessionManager;
 import com.triton.johnsonapp.utils.ConnectionDetector;
 import com.triton.johnsonapp.utils.RestUtils;
@@ -40,9 +39,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CustomerDetailsActivity extends AppCompatActivity {
+public class ABCustomerDetailsActivity extends AppCompatActivity {
 
-    private String TAG ="CustomerDetailsActivity";
+    private String TAG ="ABCustomerDetailsActivity";
 
     String userid,username;
 
@@ -140,7 +139,8 @@ public class CustomerDetailsActivity extends AppCompatActivity {
         btn_continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), GroupListActivity.class);
+               // Intent intent = new Intent(getApplicationContext(), ABGroupListActivity.class);
+                Intent intent = new Intent(getApplicationContext(), ABImageBasedInputFormActivity.class);
                 intent.putExtra("activity_id",activity_id);
                 intent.putExtra("job_id",job_id);
                 intent.putExtra("status",status);
@@ -159,40 +159,17 @@ public class CustomerDetailsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if(fromto != null && fromto.equalsIgnoreCase("ActivityJobListActivity")){
-            Intent intent = new Intent(CustomerDetailsActivity.this, ActivityJobListActivity.class);
-            intent.putExtra("activity_id",activity_id);
-            intent.putExtra("status",status);
-            startActivity(intent);
-            overridePendingTransition(R.anim.new_right, R.anim.new_left);
+        Intent intent = new Intent(ABCustomerDetailsActivity.this, ActivityJobListActivity.class);
+        intent.putExtra("activity_id",activity_id);
+        intent.putExtra("status",status);
+        startActivity(intent);
+        overridePendingTransition(R.anim.new_right, R.anim.new_left);
 
-        }
-        else if(fromactivity != null && fromactivity.equalsIgnoreCase("AllJobListActivity")){
-            Intent intent = new Intent(CustomerDetailsActivity.this, AllJobListActivity.class);
-            intent.putExtra("activity_id",activity_id);
-            intent.putExtra("status",status);
-            startActivity(intent);
-            overridePendingTransition(R.anim.new_right, R.anim.new_left);
-
-        }else if(fromactivity != null && fromactivity.equalsIgnoreCase("ActivityJobListActivity")){
-            Intent intent = new Intent(CustomerDetailsActivity.this, ActivityJobListActivity.class);
-            intent.putExtra("activity_id",activity_id);
-            intent.putExtra("status",status);
-            startActivity(intent);
-            overridePendingTransition(R.anim.new_right, R.anim.new_left);
-
-        }else{
-            Intent intent = new Intent(CustomerDetailsActivity.this, AllJobListActivity.class);
-            intent.putExtra("activity_id",activity_id);
-            intent.putExtra("status",status);
-            startActivity(intent);
-            overridePendingTransition(R.anim.new_right, R.anim.new_left);
-        }
     }
 
     @SuppressLint("LogNotTimber")
     private void JobFetchAddressRequestCall() {
-        dialog = new Dialog(CustomerDetailsActivity.this, R.style.NewProgressDialog);
+        dialog = new Dialog(ABCustomerDetailsActivity.this, R.style.NewProgressDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progroess_popup);
         dialog.show();

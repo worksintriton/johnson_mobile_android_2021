@@ -5,21 +5,26 @@ import java.util.List;
 public class FormFiveDataResponse {
 
 
-    /**
-     * Status : Success
-     * Message : field management
-     * Data : {"material_details":[{"part_no":"No1","material_desc":"this is the material for all data 01","desc_qty":10,"accepts":10,"demage":0,"shortage":0,"excess":0},{"part_no":"No2","material_desc":"this is the material for all data 02","desc_qty":10,"accepts":10,"demage":0,"shortage":0,"excess":0},{"part_no":"No3","material_desc":"this is the material for all data 03","desc_qty":10,"accepts":10,"demage":0,"shortage":0,"excess":0},{"part_no":"No4","material_desc":"this is the material for all data 04","desc_qty":10,"accepts":10,"demage":0,"shortage":0,"excess":0}],"remarks":""}
-     * Code : 200
-     */
+
 
     private String Status;
     private String Message;
-    /**
-     * material_details : [{"part_no":"No1","material_desc":"this is the material for all data 01","desc_qty":10,"accepts":10,"demage":0,"shortage":0,"excess":0},{"part_no":"No2","material_desc":"this is the material for all data 02","desc_qty":10,"accepts":10,"demage":0,"shortage":0,"excess":0},{"part_no":"No3","material_desc":"this is the material for all data 03","desc_qty":10,"accepts":10,"demage":0,"shortage":0,"excess":0},{"part_no":"No4","material_desc":"this is the material for all data 04","desc_qty":10,"accepts":10,"demage":0,"shortage":0,"excess":0}]
-     * remarks :
-     */
+
 
     private DataBean Data;
+    private int Code;
+
+    private String Submitted_status;
+
+    public String getSubmitted_status() {
+        return Submitted_status;
+    }
+
+    public void setSubmitted_status(String submitted_status) {
+        Submitted_status = submitted_status;
+    }
+
+
     private String user_id;
     private String activity_id ;
     private String job_id ;
@@ -147,8 +152,6 @@ public class FormFiveDataResponse {
         this.update_reason = update_reason;
     }
 
-    private int Code;
-
     public String getStatus() {
         return Status;
     }
@@ -184,13 +187,21 @@ public class FormFiveDataResponse {
     public static class DataBean {
         private String remarks;
         /**
-         * part_no : No1
-         * material_desc : this is the material for all data 01
-         * desc_qty : 10
-         * accepts : 10
+         * ST_MDD_SEQNO : 427867
+         * ST_MDD_SLNO : 351
+         * ST_MDD_MATLID : 1572
+         * part_no : 325 300 1004
+         * desc_qty : 1
+         * ST_MDD_UOM : NOS
+         * ST_MDD_STATUS : A
+         * ST_MDD_SSID :
+         * ST_MDD_BOMQTY : 0.5
+         * material_desc : BANIYAN WASTE
+         * accepts : 1
          * demage : 0
          * shortage : 0
          * excess : 0
+         * ST_MDD_RCREMARKS :
          */
 
         private List<MaterialDetailsBean> material_details;
@@ -212,13 +223,45 @@ public class FormFiveDataResponse {
         }
 
         public static class MaterialDetailsBean {
+            private int ST_MDD_SEQNO;
+            private int ST_MDD_SLNO;
+            private int ST_MDD_MATLID;
             private String part_no;
+            private double desc_qty;
+            private String ST_MDD_UOM;
+            private String ST_MDD_STATUS;
+            private String ST_MDD_SSID;
+            private double ST_MDD_BOMQTY;
             private String material_desc;
-            private int desc_qty;
-            private int accepts;
-            private int demage;
-            private int shortage;
-            private int excess;
+            private double accepts;
+            private double demage;
+            private double shortage;
+            private double excess;
+            private String ST_MDD_RCREMARKS;
+
+            public int getST_MDD_SEQNO() {
+                return ST_MDD_SEQNO;
+            }
+
+            public void setST_MDD_SEQNO(int ST_MDD_SEQNO) {
+                this.ST_MDD_SEQNO = ST_MDD_SEQNO;
+            }
+
+            public int getST_MDD_SLNO() {
+                return ST_MDD_SLNO;
+            }
+
+            public void setST_MDD_SLNO(int ST_MDD_SLNO) {
+                this.ST_MDD_SLNO = ST_MDD_SLNO;
+            }
+
+            public int getST_MDD_MATLID() {
+                return ST_MDD_MATLID;
+            }
+
+            public void setST_MDD_MATLID(int ST_MDD_MATLID) {
+                this.ST_MDD_MATLID = ST_MDD_MATLID;
+            }
 
             public String getPart_no() {
                 return part_no;
@@ -226,6 +269,46 @@ public class FormFiveDataResponse {
 
             public void setPart_no(String part_no) {
                 this.part_no = part_no;
+            }
+
+            public double getDesc_qty() {
+                return desc_qty;
+            }
+
+            public void setDesc_qty(int desc_qty) {
+                this.desc_qty = desc_qty;
+            }
+
+            public String getST_MDD_UOM() {
+                return ST_MDD_UOM;
+            }
+
+            public void setST_MDD_UOM(String ST_MDD_UOM) {
+                this.ST_MDD_UOM = ST_MDD_UOM;
+            }
+
+            public String getST_MDD_STATUS() {
+                return ST_MDD_STATUS;
+            }
+
+            public void setST_MDD_STATUS(String ST_MDD_STATUS) {
+                this.ST_MDD_STATUS = ST_MDD_STATUS;
+            }
+
+            public String getST_MDD_SSID() {
+                return ST_MDD_SSID;
+            }
+
+            public void setST_MDD_SSID(String ST_MDD_SSID) {
+                this.ST_MDD_SSID = ST_MDD_SSID;
+            }
+
+            public double getST_MDD_BOMQTY() {
+                return ST_MDD_BOMQTY;
+            }
+
+            public void setST_MDD_BOMQTY(double ST_MDD_BOMQTY) {
+                this.ST_MDD_BOMQTY = ST_MDD_BOMQTY;
             }
 
             public String getMaterial_desc() {
@@ -236,44 +319,44 @@ public class FormFiveDataResponse {
                 this.material_desc = material_desc;
             }
 
-            public int getDesc_qty() {
-                return desc_qty;
-            }
-
-            public void setDesc_qty(int desc_qty) {
-                this.desc_qty = desc_qty;
-            }
-
-            public int getAccepts() {
+            public double getAccepts() {
                 return accepts;
             }
 
-            public void setAccepts(int accepts) {
+            public void setAccepts(double accepts) {
                 this.accepts = accepts;
             }
 
-            public int getDemage() {
+            public double getDemage() {
                 return demage;
             }
 
-            public void setDemage(int demage) {
+            public void setDemage(double demage) {
                 this.demage = demage;
             }
 
-            public int getShortage() {
+            public double getShortage() {
                 return shortage;
             }
 
-            public void setShortage(int shortage) {
+            public void setShortage(double shortage) {
                 this.shortage = shortage;
             }
 
-            public int getExcess() {
+            public double getExcess() {
                 return excess;
             }
 
             public void setExcess(int excess) {
                 this.excess = excess;
+            }
+
+            public String getST_MDD_RCREMARKS() {
+                return ST_MDD_RCREMARKS;
+            }
+
+            public void setST_MDD_RCREMARKS(String ST_MDD_RCREMARKS) {
+                this.ST_MDD_RCREMARKS = ST_MDD_RCREMARKS;
             }
         }
     }

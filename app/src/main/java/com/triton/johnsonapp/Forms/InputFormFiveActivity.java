@@ -5,8 +5,10 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -21,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -39,14 +42,22 @@ import com.triton.johnsonapp.interfaces.GetExcessListner;
 import com.triton.johnsonapp.interfaces.GetRemarksListner;
 import com.triton.johnsonapp.interfaces.GetShortListner;
 import com.triton.johnsonapp.requestpojo.FormFiveDataRequest;
+import com.triton.johnsonapp.requestpojo.JobFetchAddressRequest;
 import com.triton.johnsonapp.responsepojo.FormFiveDataResponse;
 import com.triton.johnsonapp.responsepojo.SuccessResponse;
+import com.triton.johnsonapp.responsepojo.ViewInfoResponse;
 import com.triton.johnsonapp.session.SessionManager;
 import com.triton.johnsonapp.utils.ConnectionDetector;
 import com.triton.johnsonapp.utils.RestUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -89,11 +100,17 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
     LinearLayout footerView;
 
     @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.btn_prev)
+    Button btn_prev;
+
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.btn_next)
+    Button btn_next;
+
+
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.btn_submit)
     Button btn_submit;
-
-
-
 
 
     Dialog dialog;
@@ -115,6 +132,21 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.rl_viewinfo)
     RelativeLayout rl_viewinfo;
+
+
+
+    private int totalPages;
+    private int currentPage = 0;
+
+    public int TOTAL_NUM_ITEMS;
+    public int ITEMS_PER_PAGE = 6;
+    public int ITEMS_REMAINING;
+    private LinearLayoutManager linearlayout;
+    FormFiveListAdapter formFiveListAdapter;
+    private Dialog alertDialog;
+    private int ST_MDH_SEQNO;
+    private Dialog submittedSuccessfulalertdialog;
+    private int startItem = 0;
 
 
     @Override
@@ -183,12 +215,247 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
 
         }
         else {
-            formFiveDataResponseCall();
+            ViewInfoRequestCall();
+
         }
 
 
 
+        btn_next.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint({"ResourceAsColor", "SetTextI18n"})
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void onClick(View view) {
+                boolean flag = true;
+
+
+
+                Log.w(TAG, "btnnext currentPage : " + currentPage);
+                int currentpagesize = currentPage;
+                Log.w(TAG, "btnnext totalPages  : " + totalPages+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS+" currentpagesize : "+currentpagesize);
+
+
+                List<FormFiveDataResponse.DataBean.MaterialDetailsBean> dataBeanListS  = new ArrayList<>();
+                startItem = currentPage * ITEMS_PER_PAGE;
+                Log.w(TAG, "btnnext startItem : "  + startItem);
+/*
+                rv_formfive.scrollToPosition(startItem);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        int startItem = currentPage * ITEMS_PER_PAGE;
+                        rv_formfive.smoothScrollToPosition(startItem);
+                    }
+                }, 50);
+
+*/
+
+                if (currentPage == 0) {
+                    for (int i = 0; i <6; i++) {
+                        Log.w(TAG, "btnnext dataBeanList.get(i).getShortage(): "  + startItem);
+                        if(dataBeanList.get(i).getShortage() == 0 ){
+                            //flag = false;
+                            flag = true;
+                        }
+                    }
+
+                }
+                else {
+                    int enditem = (currentPage+1)*ITEMS_PER_PAGE;
+                    Log.w(TAG, "currentPage else currentPage : " + currentPage+" startItem : "+startItem+" enditem : "+enditem+" ITEMS_PER_PAGE : "+ITEMS_PER_PAGE);
+
+                    Log.w(TAG, "btnnext enditem : "  + enditem);
+                    for (int i = startItem; i <enditem; i++) {
+                        if(dataBeanList.get(i).getShortage() == 0 ){
+                            // flag = false;
+                            flag = true;
+                        }
+                        Log.w(TAG, "index : "  + i+" endvaleue "+ (enditem-1));
+
+
+                    }
+
+
+                }
+                Log.w(TAG, "btnnext flag : " + flag);
+
+                if(flag){
+                    currentPage += 1;
+                    startItem = currentPage * ITEMS_PER_PAGE;
+                    Log.w(TAG, "currentPage flag : " + currentPage+" startItem : "+startItem+" ITEMS_PER_PAGE : "+ITEMS_PER_PAGE);
+                }
+
+
+
+
+
+
+                int condition = 0;
+
+                ITEMS_REMAINING = ITEMS_REMAINING - ITEMS_PER_PAGE;
+
+                Log.w(TAG, "btnnext ITEMS_REMAINING : " + ITEMS_REMAINING);
+                Log.w(TAG, "btnnext TOTAL_NUM_ITEMS : " + TOTAL_NUM_ITEMS);
+
+                double LAST_PAGE = (( double) TOTAL_NUM_ITEMS / ITEMS_PER_PAGE);
+
+                Log.w(TAG, "btnnext LAST_PAGE : " + LAST_PAGE+" currentPage : "+currentPage);
+
+                if (currentPage == LAST_PAGE - 1) {
+                    Log.w(TAG, "btnnext if condition----->");
+                    Log.w(TAG, "btnnext if ITEMS_REMAINING----->"+ITEMS_REMAINING);
+
+                    if (ITEMS_REMAINING == 0) {
+                        condition = startItem + ITEMS_PER_PAGE;
+                        Log.w(TAG, "btnnext if condition----->"+condition);
+                    } else {
+                        condition = startItem + ITEMS_REMAINING;
+                        Log.w(TAG, "btnnext if else condition----->"+condition);
+
+                    }
+                    Log.w(TAG, "btnnext startItem----->"+startItem+" condition -->"+condition);
+
+
+
+                    for (int i = startItem; i < dataBeanList.size(); i++) {
+                        dataBeanListS.add(dataBeanList.get(i));
+
+
+
+                    }
+
+
+                    setView(dataBeanListS, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS);
+                    Log.w(TAG, "btnnext  setView  ITEMS_PER_PAGE : "+ITEMS_PER_PAGE+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS+" dataBeanListS : "+new Gson().toJson(dataBeanListS));
+
+
+
+                    // enableDisableButtons();
+                    // rv.setAdapter(new MyAdapter(MainActivity.this, p.generatePage(currentPage)));
+                    btn_next.setEnabled(false);
+
+                    btn_prev.setBackgroundResource(R.drawable.blue_button_background_with_radius);
+                    btn_prev.setTextColor(getResources().getColor(R.color.white));
+                    btn_prev.setEnabled(true);
+                    btn_next.setVisibility(View.GONE);
+                    btn_submit.setVisibility(View.VISIBLE);
+
+
+                }
+                else {
+                    if(flag) {
+                        Log.w(TAG, "btnnext else condition----->");
+                        condition = startItem + ITEMS_PER_PAGE;
+                        Log.w(TAG, "btnnext  else startItem : " + startItem + " condition : " + condition+"size : "+ dataBeanList.size());
+
+                        for (int i = startItem; i < dataBeanList.size(); i++) {
+                            Log.w(TAG,"dataBeanList.get(i) : "+dataBeanList.get(i));
+                            dataBeanListS.add(dataBeanList.get(i));
+
+                        }
+
+                        Log.w(TAG, "btnnext else dataBeanList" + new Gson().toJson(dataBeanListS));
+                        setView(dataBeanListS, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS);
+                        Log.w(TAG, "btnnext else setView " + " ITEMS_PER_PAGE : " + ITEMS_PER_PAGE + " TOTAL_NUM_ITEMS : " + TOTAL_NUM_ITEMS + " dataBeanListS :  " + new Gson().toJson(dataBeanListS));
+                        toggleButtons();
+                    }else{
+
+                        showErrorLoading();
+
+
+
+                    }
+
+                }
+
+
+
+
+
+
+            }
+        });
+        btn_prev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                rv_formfive.scrollToPosition(0);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        rv_formfive.smoothScrollToPosition(0);
+                    }
+                }, 50);
+                currentPage -= 1;
+                List<FormFiveDataResponse.DataBean.MaterialDetailsBean> dataBeanListS = new ArrayList<>();
+                 startItem = currentPage * ITEMS_PER_PAGE;
+                int condition;
+                int ITEMS_REMAINING = TOTAL_NUM_ITEMS % ITEMS_PER_PAGE;
+                int LAST_PAGE = TOTAL_NUM_ITEMS / ITEMS_PER_PAGE;
+                if (currentPage == 0 || (currentPage >= 1 && currentPage <= totalPages)) {
+                    condition = startItem + ITEMS_PER_PAGE;
+                } else {
+                    condition = startItem + ITEMS_REMAINING;
+                }
+                for (int i = startItem; i < condition; i++) {
+                    Log.w(TAG, "generatePage: dataBeanList" + new Gson().toJson(dataBeanList.get(i)));
+
+                    dataBeanListS.add(dataBeanList.get(i));
+
+                }
+
+
+                Log.w(TAG, "btnprev dataBeanList" + new Gson().toJson(dataBeanList));
+
+                Log.w(TAG, "btnprev  setView "+" ITEMS_PER_PAGE : "+ITEMS_PER_PAGE+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS+" dataBeanListS : "+ new Gson().toJson(dataBeanListS));
+
+                setView(dataBeanListS, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS);
+                // rv.setAdapter(new MyAdapter(MainActivity.this, p.generatePage(currentPage)));
+
+                toggleButtons();
+            }
+        });
         btn_submit.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint({"NewApi", "ResourceAsColor"})
+            @Override
+            public void onClick(View v) {
+                if (networkStatus.equalsIgnoreCase("Not connected to Internet")) {
+
+                    Toasty.warning(getApplicationContext(), "No Internet", Toasty.LENGTH_LONG).show();
+
+                } else {
+                    boolean flag = true;
+                    for (int i = 0; i <dataBeanList.size(); i++) {
+                        Log.w(TAG, "loop fieldvalue : "  + dataBeanList.get(i).getShortage()+" i : "+i);
+                        if(dataBeanList.get(i).getShortage() == 0){
+
+                           // flag = false;
+                            flag = true;
+                        }
+
+
+                    }
+
+                    Log.w(TAG, "flag " + flag);
+
+                    if(flag){
+                        Data.setMaterial_details(dataBeanList);
+                        formFiveStroeDataRequestCall();
+                    }else{
+                        Toast toast = Toast.makeText(getApplicationContext(), "please enter all required data", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.getView().setBackgroundTintList(ColorStateList.valueOf(R.color.warning));
+                        toast.show();
+                    }
+
+
+
+
+                }
+
+            }
+        });
+
+       /* btn_submit.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
@@ -206,7 +473,7 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
                 }
 
             }
-        });
+        });*/
 
 
 
@@ -231,13 +498,50 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
                 Log.w(TAG,"FormFiveDataResponse" + new Gson().toJson(response.body()));
                 if (response.body() != null) {
                     message = response.body().getMessage();
-                    if (200 == response.body().getCode()) {
-                        if(response.body().getData() != null){
+                    if(response.body().getSubmitted_status() != null){
+                        String Submitted_status = response.body().getSubmitted_status();
+                        if(Submitted_status != null && Submitted_status.equalsIgnoreCase("Not Submitted")){
+                            if (200 == response.body().getCode()) {
+                                if(response.body().getData() != null){
 
 
-                           dataBeanList = response.body().getData().getMaterial_details();
+                                    dataBeanList = response.body().getData().getMaterial_details();
 
-                           if(dataBeanList != null && dataBeanList.size()>0){
+
+                                    if (dataBeanList != null && dataBeanList.size() > 0) {
+                                        footerView.setVisibility(View.VISIBLE);
+                                        Log.w(TAG,"List size : "+dataBeanList.size());
+                                        if(dataBeanList.size()<6 || dataBeanList.size() == 6){
+                                            btn_prev.setVisibility(View.INVISIBLE);
+                                            btn_next.setVisibility(View.GONE);
+                                            btn_submit.setVisibility(View.VISIBLE);                                        Log.w(TAG,"List size : "+dataBeanList.size());
+                                            Log.w(TAG,"List size iff : "+dataBeanList.size());
+
+
+
+                                        }
+
+
+                                        totalPages = dataBeanList.size() / 6;
+                                        TOTAL_NUM_ITEMS = dataBeanList.size();
+                                        Log.w(TAG, "totalPages  : " + totalPages+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS);
+
+                                        ITEMS_REMAINING = TOTAL_NUM_ITEMS - ITEMS_PER_PAGE;
+                                        Log.w(TAG, " getfieldListResponseCall setView  ITEMS_PER_PAGE : "+ITEMS_PER_PAGE+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS+" dataBeanList : "+new Gson().toJson(dataBeanList));
+
+
+                                        setView(dataBeanList, ITEMS_PER_PAGE, TOTAL_NUM_ITEMS);
+
+                                        txt_no_records.setVisibility(View.GONE);
+                                    }
+                                    else {
+                                        footerView.setVisibility(View.GONE);
+                                        txt_no_records.setVisibility(View.VISIBLE);
+                                        txt_no_records.setText("No Input Fields Available");
+
+                                    }
+
+                       /*    if(dataBeanList != null && dataBeanList.size()>0){
                                footerView.setVisibility(View.VISIBLE);
                                 rv_formfive.setVisibility(View.VISIBLE);
                                 setView(dataBeanList);
@@ -248,16 +552,25 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
                                 rv_formfive.setVisibility(View.GONE);
                                 txt_no_records.setVisibility(View.VISIBLE);
                                 txt_no_records.setText("No Groups Available");
+                            }*/
+
+                                }
+
+
+                            } else {
+                                dialog.dismiss();
+                                Toasty.warning(getApplicationContext(),""+message,Toasty.LENGTH_LONG).show();
+
                             }
-
+                        }else{
+                            dialog.dismiss();
+                            Log.w(TAG, "Submitted_status else--> " +response.body().getSubmitted_status());
+                            showSubmittedSuccessful();
                         }
-
-
-                    } else {
-                        dialog.dismiss();
-                        Toasty.warning(getApplicationContext(),""+message,Toasty.LENGTH_LONG).show();
-
                     }
+
+
+
                 }
 
 
@@ -281,19 +594,32 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
 
         FormFiveDataRequest formFiveDataRequest = new FormFiveDataRequest();
         formFiveDataRequest.setUser_id(userid);
-        formFiveDataRequest.setJob_no(job_detail_id);
+        formFiveDataRequest.setJob_id(job_id);
+        formFiveDataRequest.setGroup_id(group_id);
+        formFiveDataRequest.setST_MDH_SEQNO(ST_MDH_SEQNO);
 
         Log.w(TAG,"formFiveDataRequest "+ new Gson().toJson(formFiveDataRequest));
         return formFiveDataRequest;
     }
 
     @SuppressLint("LogNotTimber")
-    private void setView(List<FormFiveDataResponse.DataBean.MaterialDetailsBean> dataBeanList) {
-        rv_formfive.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
+    private void setView(List<FormFiveDataResponse.DataBean.MaterialDetailsBean> dataBeanList,int ITEMS_PER_PAGE, int TOTAL_NUM_ITEMS) {
+        rv_formfive.setNestedScrollingEnabled(true);
+        linearlayout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+       // linearlayout.scrollToPosition(startItem);
+        rv_formfive.setLayoutManager(linearlayout);
         rv_formfive.setItemAnimator(new DefaultItemAnimator());
-        FormFiveListAdapter formFiveListAdapter = new FormFiveListAdapter(this, dataBeanList,activity_id,job_id,this,this,this,this,this);
+        formFiveListAdapter = new FormFiveListAdapter(this, dataBeanList,activity_id,job_id,this,this,this,this,this,ITEMS_PER_PAGE, TOTAL_NUM_ITEMS,currentPage);
         rv_formfive.setAdapter(formFiveListAdapter);
         dialog.dismiss();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                rv_formfive.scrollToPosition(startItem);
+            }
+        }, 200);
+
     }
 
     @SuppressLint("LogNotTimber")
@@ -312,10 +638,11 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
             @Override
             public void onResponse(@NonNull Call<SuccessResponse> call, @NonNull Response<SuccessResponse> response) {
 
-                Log.w(TAG, "formFiveStroeDataRequestCall" + new Gson().toJson(response.body()));
+                Log.w(TAG, "formFiveStroeDataRequestCall onResponse" + new Gson().toJson(response.body()));
                 if (response.body() != null) {
                     message = response.body().getMessage();
                     if (200 == response.body().getCode()) {
+                        dialog.dismiss();
                         if (response.body().getData() != null) {
                             Toasty.success(getApplicationContext(), "" + message, Toasty.LENGTH_LONG).show();
                             Intent intent = new Intent(InputFormFiveActivity.this, GroupListActivity.class);
@@ -325,7 +652,7 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
                             intent.putExtra("fromactivity",fromactivity);
                             startActivity(intent);
                             finish();
-                            dialog.dismiss();
+
 
                         }
 
@@ -382,18 +709,24 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
         formFiveDataResponse.setUpdated_by("");
         formFiveDataResponse.setUpdate_reason("");
 
+        Log.w(TAG, "data_store_management/create_Request form 5 userid " +userid);
+        Log.w(TAG, "data_store_management/create_Request form 5 activity_id " +activity_id);
+        Log.w(TAG, "data_store_management/create_Request form 5 job_id " +job_id);
+        Log.w(TAG, "data_store_management/create_Request form 5 group_id " +group_id);
+        Log.w(TAG, "data_store_management/create_Request form 5 Data " + new Gson().toJson(Data));
         Log.w(TAG, "data_store_management/create_Request form 5 " + new Gson().toJson(formFiveDataResponse));
         return formFiveDataResponse;
     }
 
     @Override
     public void getAcceptQtyListner(EditText edt_number, String s, int position) {
-        Log.w(TAG,"getAcceptQtyListner : "+edt_number+" s : "+s+" position : "+position);
-        int qty = 0;
+        Log.w(TAG,"getAcceptQtyListner : "+" s : "+s+" position : "+position);
+        double qty = 0;
 
         try {
-            qty = Integer.parseInt(s);
-        dataBeanList.get(position).setAccepts(qty);
+        qty = Double.parseDouble(s);
+       Log.w(TAG,"getAcceptQtyListner : "+" qty : "+qty);
+       dataBeanList.get(position).setAccepts(qty);
         Log.w(TAG,"getAcceptQtyListner : "+"dataBeanList : "+new Gson().toJson(dataBeanList));
         }catch(NumberFormatException nfe) {
             System.out.println("Could not parse " + nfe);
@@ -405,10 +738,11 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
     public void getDamageQtyListner(EditText edt_number, String s, int position) {
 
         Log.w(TAG,"getDamageQtyListner : "+edt_number+" s : "+s+" position : "+position);
-        int qty = 0;
+        double qty = 0;
 
         try {
-            qty = Integer.parseInt(s);
+            qty = Double.parseDouble(s);
+            Log.w(TAG,"getDamageQtyListner : "+" qty : "+qty);
             dataBeanList.get(position).setDemage(qty);
             Log.w(TAG,"getDamageQtyListner : "+"dataBeanList : "+new Gson().toJson(dataBeanList));
         }catch(NumberFormatException nfe) {
@@ -435,12 +769,12 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
     public void getShortListner(EditText edt_number, String s, int position) {
 
         Log.w(TAG,"getShortListner : "+edt_number+" s : "+s+" position : "+position);
-        int qty = 0;
+        double qty = 0;
 
         try {
-            qty = Integer.parseInt(s);
+            qty = Double.parseDouble(s);
         dataBeanList.get(position).setShortage(qty);
-        Log.w(TAG,"getShortListner : "+"dataBeanList : "+new Gson().toJson(dataBeanList));
+        Log.w(TAG,"getShortListner : qty "+qty+" dataBeanList : "+new Gson().toJson(dataBeanList));
         }catch(NumberFormatException nfe) {
             System.out.println("Could not parse " + nfe);
         }
@@ -456,4 +790,179 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
         super.onBackPressed();
         finish();
     }
+
+
+    @SuppressLint("SetTextI18n")
+    private void toggleButtons() {
+        if (currentPage == 0) {
+            btn_next.setBackgroundResource(R.drawable.blue_button_background_with_radius);
+            btn_next.setTextColor(getResources().getColor(R.color.white));
+            btn_submit.setVisibility(View.GONE);
+            btn_next.setVisibility(View.VISIBLE);
+            btn_next.setEnabled(true);
+            btn_prev.setEnabled(false);
+            btn_prev.setBackgroundResource(R.drawable.edit_background_with_border);
+            btn_prev.setTextColor(getResources().getColor(R.color.colorPrimary));
+        } else if (currentPage == totalPages) {
+            btn_prev.setBackgroundResource(R.drawable.blue_button_background_with_radius);
+            btn_prev.setTextColor(getResources().getColor(R.color.white));
+            btn_prev.setEnabled(true);
+            btn_next.setVisibility(View.GONE);
+            btn_submit.setVisibility(View.VISIBLE);
+
+
+        } else if (currentPage >= 1 && currentPage <= totalPages) {
+            btn_next.setBackgroundResource(R.drawable.blue_button_background_with_radius);
+            btn_next.setTextColor(getResources().getColor(R.color.white));
+            btn_prev.setEnabled(true);
+            btn_next.setEnabled(true);
+            btn_submit.setVisibility(View.GONE);
+            btn_next.setVisibility(View.VISIBLE);
+            btn_prev.setBackgroundResource(R.drawable.blue_button_background_with_radius);
+            btn_prev.setTextColor(getResources().getColor(R.color.white));
+        }
+    }
+
+    public void showErrorLoading(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("please enter all required data");
+        alertDialogBuilder.setPositiveButton("ok",
+                (arg0, arg1) -> hideLoading());
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+    public void hideLoading(){
+        try {
+            alertDialog.dismiss();
+        }catch (Exception ignored){
+
+        }
+    }
+
+    @SuppressLint("LogNotTimber")
+    private void ViewInfoRequestCall() {
+        dialog = new Dialog(InputFormFiveActivity.this, R.style.NewProgressDialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.progroess_popup);
+        dialog.show();
+
+        APIInterface apiInterface = RetrofitClient.getClient().create(APIInterface.class);
+        Call<ViewInfoResponse> call = apiInterface.ViewInfoRequestCall(RestUtils.getContentType(), jobFetchAddressRequest());
+        Log.w(TAG,"JobFetchAddressRequestCall url  :%s"+" "+ call.request().url().toString());
+
+        call.enqueue(new Callback<ViewInfoResponse>() {
+            @SuppressLint({"LogNotTimber", "SetTextI18n"})
+            @Override
+            public void onResponse(@NonNull Call<ViewInfoResponse> call, @NonNull Response<ViewInfoResponse> response) {
+
+                Log.w(TAG,"startWorkRequestCall" + new Gson().toJson(response.body()));
+                if (response.body() != null) {
+                    message = response.body().getMessage();
+                    if (200 == response.body().getCode()) {
+                        dialog.dismiss();
+
+                        ST_MDH_SEQNO =  response.body().getData().getST_MDH_SEQNO();
+                        formFiveDataResponseCall();
+
+                       /* if(response.body().getData().getST_MDH_SEQNO() != 0){
+                            txt_seqno.setText(" : "+response.body().getData().getST_MDH_SEQNO() );
+                        }
+                        if(response.body().getData().getST_MDH_DCNO() != null){
+                            txt_dcno.setText(" : "+response.body().getData().getST_MDH_DCNO() );
+                        }
+                        if(response.body().getData().getST_MDH_BILLTO() != null){
+                            txt_billdo.setText(" : "+response.body().getData().getST_MDH_BILLTO() );
+                        }
+                        if(response.body().getData().getST_MDH_VEHICLENO() != null){
+                            txt_vehicleno.setText(" : "+response.body().getData().getST_MDH_VEHICLENO() );
+                        }
+                        if(response.body().getData().getST_MDH_GPNO() != null){
+                            txt_gpno.setText(" : "+response.body().getData().getST_MDH_GPNO() );
+                        }
+                        if(response.body().getData().getST_MDH_GPDT() != null){
+                            @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                            @SuppressLint("SimpleDateFormat") SimpleDateFormat output = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                            Date d = null;
+                            try {
+                                d = sdf.parse(response.body().getData().getST_MDH_GPDT());
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            String formattedTime = output.format(d);
+                            txt_gpdate.setText(" : "+formattedTime );
+                        }
+*/
+
+
+
+                    } else {
+                        dialog.dismiss();
+
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ViewInfoResponse> call, @NonNull Throwable t) {
+                dialog.dismiss();
+                Log.e(TAG, "--->" + t.getMessage());
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+    private JobFetchAddressRequest jobFetchAddressRequest() {
+
+        /*
+         * job_no : 61f222396667ac391fc85c55
+
+         */
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm aa", Locale.getDefault());
+        String currentDateandTime = sdf.format(new Date());
+        JobFetchAddressRequest jobFetchAddressRequest = new JobFetchAddressRequest();
+        jobFetchAddressRequest.setJob_no(job_id);
+
+
+
+        Log.w(TAG,"checkLocationRequest "+ new Gson().toJson(jobFetchAddressRequest));
+        return jobFetchAddressRequest;
+    }
+
+    private void showSubmittedSuccessful() {
+        Log.w(TAG, "showSubmittedSuccessful -->+");
+        submittedSuccessfulalertdialog = new Dialog(InputFormFiveActivity.this);
+        submittedSuccessfulalertdialog.setCancelable(false);
+        submittedSuccessfulalertdialog.setContentView(R.layout.alert_sucess_clear);
+        Button btn_goback = submittedSuccessfulalertdialog.findViewById(R.id.btn_goback);
+        TextView txt_success_msg = submittedSuccessfulalertdialog.findViewById(R.id.txt_success_msg);
+        txt_success_msg.setText("All data submitted successfully.");
+        btn_goback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                submittedSuccessfulalertdialog.dismiss();
+                Intent intent = new Intent(InputFormFiveActivity.this, GroupListActivity.class);
+                intent.putExtra("activity_id", activity_id);
+                intent.putExtra("job_id", job_id);
+                intent.putExtra("group_id",group_id);
+                intent.putExtra("status", status);
+                intent.putExtra("fromactivity", fromactivity);
+                startActivity(intent);
+                overridePendingTransition(R.anim.new_right, R.anim.new_left);
+                finish();
+
+            }
+        });
+        Objects.requireNonNull(submittedSuccessfulalertdialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        submittedSuccessfulalertdialog.show();
+
+
+
+
+
+
+    }
+
+
 }

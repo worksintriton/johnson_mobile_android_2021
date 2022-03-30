@@ -2,27 +2,23 @@ package com.triton.johnsonapp.activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.triton.johnsonapp.R;
+import com.triton.johnsonapp.activitybased.ActivityBasedActivity;
 import com.triton.johnsonapp.session.SessionManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class MainActivity extends AppCompatActivity {
     private String TAG ="MainActivity";
@@ -64,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
         webView.setVisibility(View.GONE);
         btn_goback.setVisibility(View.GONE);
         btn_webview.setVisibility(View.GONE);
-        btn_activity.setVisibility(View.INVISIBLE);
 
         btn_goback.setOnClickListener(new View.OnClickListener() {
             @Override

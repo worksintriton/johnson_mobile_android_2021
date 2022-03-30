@@ -3,7 +3,6 @@ package com.triton.johnsonapp.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,27 +13,31 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.triton.johnsonapp.R;
-import com.triton.johnsonapp.activity.ActivityStatusActivity;
-import com.triton.johnsonapp.responsepojo.ActivityListManagementResponse;
+import com.triton.johnsonapp.activity.CustomerDetailsActivity;
+import com.triton.johnsonapp.activitybased.ABCustomerDetailsActivity;
+import com.triton.johnsonapp.responsepojo.JobNoManagementResponse;
 
 import java.util.List;
 
 
-public class ActivityBasedListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ABJobDetailListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private  String TAG = "ActivityBasedListAdapter";
-    private List<ActivityListManagementResponse.DataBean> dataBeanList;
+    private  String TAG = "ABJobDetailListAdapter";
+    private List<JobNoManagementResponse.DataBean> dataBeanList;
     private Context context;
 
-    ActivityListManagementResponse.DataBean currentItem;
+    JobNoManagementResponse.DataBean currentItem;
 
     private int size;
+    String status;
+    String fromactivity;
 
-    public ActivityBasedListAdapter(Context context, List<ActivityListManagementResponse.DataBean> dataBeanList) {
+    public ABJobDetailListAdapter(Context context, List<JobNoManagementResponse.DataBean> dataBeanList, String status, String fromactivity) {
         this.context = context;
         this.dataBeanList = dataBeanList;
+        this.fromactivity = fromactivity ;
+        this.status = status ;
 
 
     }
@@ -42,7 +45,7 @@ public class ActivityBasedListAdapter extends  RecyclerView.Adapter<RecyclerView
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_activitybased_list, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_staticdatalist, parent, false);
         return new ViewHolderOne(view);
     }
 
@@ -58,8 +61,8 @@ public class ActivityBasedListAdapter extends  RecyclerView.Adapter<RecyclerView
 
         currentItem = dataBeanList.get(position);
 
-        if(dataBeanList.get(position).getActivedetail_name()!= null && !dataBeanList.get(position).getActivedetail_name().isEmpty()){
-            holder.txt_serv_title.setText(dataBeanList.get(position).getActivedetail_name());
+        if(dataBeanList.get(position).getJob_detail_no() != null && !dataBeanList.get(position).getJob_detail_no().equals("")){
+            holder.txt_serv_title.setText(dataBeanList.get(position).getJob_detail_no());
         }else{
             holder.txt_serv_title.setText("");
 
@@ -79,17 +82,14 @@ public class ActivityBasedListAdapter extends  RecyclerView.Adapter<RecyclerView
 
         }*/
 
-
-
         holder.cv_root.setOnClickListener(v -> {
-
-            Intent intent = new Intent(context, ActivityStatusActivity.class);
-          //  Intent intent = new Intent(context, ActivityJobListActivity.class);
-
-            intent.putExtra("activity_id",dataBeanList.get(position).get_id());
-            intent.putExtra("status","New");
-
-            Log.w(TAG,"id -->"+dataBeanList.get(position).get_id());
+            //Intent intent = new Intent(context, GroupListActivity.class);
+            Intent intent = new Intent(context, ABCustomerDetailsActivity.class);
+            intent.putExtra("activity_id",dataBeanList.get(position).getActivedetail__id());
+            intent.putExtra("job_id",dataBeanList.get(position).get_id());
+            intent.putExtra("status",status);
+            intent.putExtra("fromactivity",fromactivity);
+            intent.putExtra("job_detail_no",dataBeanList.get(position).getJob_detail_no());
 
             context.startActivity(intent);
 

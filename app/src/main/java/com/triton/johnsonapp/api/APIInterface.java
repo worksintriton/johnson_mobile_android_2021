@@ -150,7 +150,7 @@ public interface APIInterface {
     Call<SuccessResponse> stopjobRequestCall(@Header("Content-Type") String type, @Body StopJobRequest stopJobRequest);
 
     /*Stop job request*/
-    @POST("field_management/getlist_datas")
+    @POST("field_management/getlist_datas_test")
     Call<FormFiveDataResponse> formFiveDataResponseCall(@Header("Content-Type") String type, @Body FormFiveDataRequest formFiveDataRequest);
 
 
