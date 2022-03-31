@@ -16,9 +16,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
+import com.triton.johnsonapp.Forms.ImageBasedInputFormActivity;
+import com.triton.johnsonapp.Forms.InputFormFiveActivity;
+import com.triton.johnsonapp.Forms.InputValueFormListActivity;
+import com.triton.johnsonapp.Forms.JointInspectorInputFormActivity;
+import com.triton.johnsonapp.Forms.RowBasedInputFormActivity;
 import com.triton.johnsonapp.R;
 
-import com.triton.johnsonapp.activitybased.forms.ABImageBasedInputFormActivity;
 import com.triton.johnsonapp.api.APIInterface;
 import com.triton.johnsonapp.api.RetrofitClient;
 import com.triton.johnsonapp.requestpojo.JobFetchAddressRequest;
@@ -45,7 +49,7 @@ public class ABCustomerDetailsActivity extends AppCompatActivity {
 
     String userid,username;
 
-    String networkStatus = "",message,activity_id,job_id;
+    String networkStatus = "",message,activity_id,job_id,group_id;
     private String status;
     private String fromactivity;
     private String fromto;
@@ -80,8 +84,15 @@ public class ABCustomerDetailsActivity extends AppCompatActivity {
     Button btn_continue;
     private Dialog dialog;
     public static String Customeraddress;
+    private String UKEY;
+    private String UKEY_DESC;
+    private int form_type = 0;
+
+    private int new_count;
+    private int pause_count;
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,16 +123,27 @@ public class ABCustomerDetailsActivity extends AppCompatActivity {
         if (extras != null) {
             activity_id = extras.getString("activity_id");
             job_id = extras.getString("job_id");
+            group_id = extras.getString("group_id");
+
             status = extras.getString("status");
             fromactivity = extras.getString("fromactivity");
             fromto = extras.getString("fromto");
             job_detail_no = extras.getString("job_detail_no");
-            Log.w(TAG,"activity_id -->"+activity_id+"job_id : "+job_id+" status : "+status+" fromactivity : "+fromactivity+" job_detail_no : "+job_detail_no+" fromto : "+fromto);
+            UKEY = extras.getString("UKEY");
+            UKEY_DESC = extras.getString("UKEY_DESC");
+            form_type = extras.getInt("form_type");
+            Log.w(TAG,"form_type -->"+form_type);
+            new_count = extras.getInt("new_count");
+            pause_count = extras.getInt("pause_count");
+            Log.w(TAG,"activity_id -->"+activity_id+"job_id : "+job_id+" group_id : "+group_id+" status : "+status+" fromactivity : "+fromactivity+" job_detail_no : "+job_detail_no+" fromto : "+fromto);
+
+
+
 
         }
 
         if(job_id != null){
-            txt_job_no.setText("Job No : "+job_id);
+            txt_job_no.setText("Job No : "+job_detail_no);
         }
 
         networkStatus = ConnectionDetector.getConnectivityStatusString(getApplicationContext());
@@ -139,16 +161,91 @@ public class ABCustomerDetailsActivity extends AppCompatActivity {
         btn_continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // Intent intent = new Intent(getApplicationContext(), ABGroupListActivity.class);
-                Intent intent = new Intent(getApplicationContext(), ABImageBasedInputFormActivity.class);
-                intent.putExtra("activity_id",activity_id);
-                intent.putExtra("job_id",job_id);
-                intent.putExtra("status",status);
-                intent.putExtra("fromactivity",TAG);
-                intent.putExtra("job_detail_no",job_detail_no);
-                intent.putExtra("fromto",fromactivity);
+                if(form_type == 1){
+                    Intent intent = new Intent(getApplicationContext(), InputValueFormListActivity.class);
+                    intent.putExtra("activity_id",activity_id);
+                    intent.putExtra("job_id",job_id);
+                    intent.putExtra("group_id",group_id);
+                    intent.putExtra("group_detail_name","");
+                    intent.putExtra("subgroup_id","");
+                    intent.putExtra("status",status);
+                    intent.putExtra("fromactivity",TAG);
+                    intent.putExtra("UKEY",UKEY);
+                    intent.putExtra("UKEY_DESC",UKEY_DESC);
+                    intent.putExtra("job_detail_no",job_detail_no);
+                    intent.putExtra("new_count",new_count);
+                    intent.putExtra("pause_count",pause_count);
+                    startActivity(intent);
+                }
+                else if(form_type == 2){
+                    Intent intent = new Intent(getApplicationContext(), ImageBasedInputFormActivity.class);
+                    intent.putExtra("activity_id",activity_id);
+                    intent.putExtra("job_id",job_id);
+                    intent.putExtra("group_id",group_id);
+                    intent.putExtra("group_detail_name","");
+                    intent.putExtra("subgroup_id","");
+                    intent.putExtra("status",status);
+                    intent.putExtra("fromactivity",TAG);
+                    intent.putExtra("UKEY",UKEY);
+                    intent.putExtra("UKEY_DESC",UKEY_DESC);
+                    intent.putExtra("job_detail_no",job_detail_no);
+                    intent.putExtra("new_count",new_count);
+                    intent.putExtra("pause_count",pause_count);
+                    startActivity(intent);
+                }
+                else if(form_type == 3){
+                    Intent intent = new Intent(getApplicationContext(), RowBasedInputFormActivity.class);
+                    intent.putExtra("activity_id",activity_id);
+                    intent.putExtra("job_id",job_id);
+                    intent.putExtra("group_id",group_id);
+                    intent.putExtra("group_detail_name","");
+                    intent.putExtra("subgroup_id","");
+                    intent.putExtra("status",status);
+                    intent.putExtra("fromactivity",TAG);
+                    intent.putExtra("UKEY",UKEY);
+                    intent.putExtra("UKEY_DESC",UKEY_DESC);
+                    intent.putExtra("job_detail_no",job_detail_no);
+                    intent.putExtra("new_count",new_count);
+                    intent.putExtra("pause_count",pause_count);
+                    startActivity(intent);
+                }
+                else if(form_type == 4){
+                    Intent intent = new Intent(getApplicationContext(), JointInspectorInputFormActivity.class);
+                    intent.putExtra("activity_id",activity_id);
+                    intent.putExtra("job_id",job_id);
+                    intent.putExtra("group_id",group_id);
+                    intent.putExtra("group_detail_name","");
+                    intent.putExtra("subgroup_id","");
+                    intent.putExtra("status",status);
+                    intent.putExtra("fromactivity",TAG);
+                    intent.putExtra("UKEY",UKEY);
+                    intent.putExtra("UKEY_DESC",UKEY_DESC);
+                    intent.putExtra("job_detail_no",job_detail_no);
+                    intent.putExtra("new_count",new_count);
+                    intent.putExtra("pause_count",pause_count);
+                   startActivity(intent);
+                }
+                else if(form_type == 5){
+                    Intent intent = new Intent(getApplicationContext(), InputFormFiveActivity.class);
+                    intent.putExtra("activity_id",activity_id);
+                    intent.putExtra("job_id",job_id);
+                    intent.putExtra("group_id",group_id);
+                    intent.putExtra("group_detail_name","");
+                    intent.putExtra("subgroup_id","");
+                    intent.putExtra("status",status);
+                    intent.putExtra("fromactivity",TAG);
+                    intent.putExtra("UKEY",UKEY);
+                    intent.putExtra("UKEY_DESC",UKEY_DESC);
+                    intent.putExtra("job_detail_no",job_detail_no);
+                    intent.putExtra("new_count",new_count);
+                    intent.putExtra("pause_count",pause_count);
+                    startActivity(intent);
+                }
 
-                startActivity(intent);
+
+
+
+
             }
         });
 
@@ -162,6 +259,9 @@ public class ABCustomerDetailsActivity extends AppCompatActivity {
         Intent intent = new Intent(ABCustomerDetailsActivity.this, ActivityJobListActivity.class);
         intent.putExtra("activity_id",activity_id);
         intent.putExtra("status",status);
+        intent.putExtra("UKEY",UKEY);
+        intent.putExtra("new_count",new_count);
+        intent.putExtra("pause_count",pause_count);
         startActivity(intent);
         overridePendingTransition(R.anim.new_right, R.anim.new_left);
 
@@ -227,7 +327,7 @@ public class ABCustomerDetailsActivity extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm aa", Locale.getDefault());
         String currentDateandTime = sdf.format(new Date());
         JobFetchAddressRequest jobFetchAddressRequest = new JobFetchAddressRequest();
-        jobFetchAddressRequest.setJob_no(job_id);
+        jobFetchAddressRequest.setJob_no(job_detail_no);
 
 
 

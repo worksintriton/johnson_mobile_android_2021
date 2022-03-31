@@ -148,6 +148,12 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
     private Dialog submittedSuccessfulalertdialog;
     private int startItem = 0;
 
+    private String UKEY;
+    private int new_count;
+    private int pause_count;
+    private String UKEY_DESC;
+    private String job_detail_no;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,6 +175,15 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
             job_id = extras.getString("job_id");
             status = extras.getString("status");
             fromactivity = extras.getString("fromactivity");
+
+            UKEY = extras.getString("UKEY");
+            new_count = extras.getInt("new_count");
+            pause_count = extras.getInt("pause_count");
+
+            job_detail_no = extras.getString("job_detail_no");
+            UKEY_DESC = extras.getString("UKEY_DESC");
+
+
             Log.w(TAG,"_id -->"+_id);
             Log.w(TAG,"activity_id -->"+activity_id);
             Log.w(TAG,"job_detail_id " + job_detail_id+" group_id : "+group_id+" group_detail_name : "+group_detail_name+" job_id : "+job_id);
@@ -181,6 +196,15 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
         }
         if(job_id != null){
             txt_job_no.setText("Job No : "+job_id);
+        }
+
+        if(fromactivity != null && fromactivity.equalsIgnoreCase("ABCustomerDetailsActivity")){
+            if(UKEY_DESC != null){
+                txt_toolbar_title.setText(UKEY_DESC);
+            }
+            if(job_detail_no != null){
+                txt_job_no.setText("Job No : "+job_detail_no);
+            }
         }
 
 
@@ -650,6 +674,9 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
                             intent.putExtra("job_id",job_id);
                             intent.putExtra("status",status);
                             intent.putExtra("fromactivity",fromactivity);
+                            intent.putExtra("UKEY",UKEY);
+                            intent.putExtra("new_count",new_count);
+                            intent.putExtra("pause_count",pause_count);
                             startActivity(intent);
                             finish();
 

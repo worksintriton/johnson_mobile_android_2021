@@ -33,6 +33,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.activity.GroupListActivity;
+import com.triton.johnsonapp.activitybased.ActivityJobListActivity;
 import com.triton.johnsonapp.adapter.ImageBasedArrayListAdapter;
 import com.triton.johnsonapp.api.APIInterface;
 import com.triton.johnsonapp.api.RetrofitClient;
@@ -98,7 +99,7 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
 
     private String TAG ="ImageBasedInputFormActivity";
 
-    String string_value,message,service_id,activity_id,job_id,group_id,subgroup_id,group_detail_name;
+    String string_value,message,service_id,activity_id,job_id,group_id,subgroup_id,group_detail_name,job_detail_no;
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.txt_exit)
@@ -125,6 +126,11 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
     private String fromactivity;
     List<ImageBasedStroeDataRequest.DataBean> Data = new ArrayList<>();
     private String networkStatus = "";
+    private String fromto;
+    private String UKEY;
+    private String UKEY_DESC;
+    private int new_count;
+    private int pause_count;
 
 
     @Override
@@ -150,12 +156,24 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
             activity_id = extras.getString("activity_id");
 
             job_id = extras.getString("job_id");
+            job_detail_no = extras.getString("job_detail_no");
+            UKEY = extras.getString("UKEY");
+            UKEY_DESC = extras.getString("UKEY_DESC");
 
             subgroup_id= extras.getString("subgroup_id");
             status= extras.getString("status");
-            fromactivity= extras.getString("fromactivity");
+            fromactivity = extras.getString("fromactivity");
+            fromto = extras.getString("fromto");
 
-            Log.w(TAG,"activity_id -->"+activity_id);
+            new_count = extras.getInt("new_count");
+            pause_count = extras.getInt("pause_count");
+
+
+
+            Log.w(TAG,"UKEY -->"+UKEY);
+            Log.w(TAG,"job_id -->"+job_id);
+            Log.w(TAG,"fromactivity -->"+fromactivity);
+            Log.w(TAG,"fromto -->"+fromto);
 
             Log.w(TAG,"group_id -->"+group_id);
 
@@ -168,6 +186,15 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
         }
         if(job_id != null){
             txt_job_no.setText("Job No : "+job_id);
+        }
+
+        if(fromactivity != null && fromactivity.equalsIgnoreCase("ABCustomerDetailsActivity")){
+            if(UKEY_DESC != null){
+                txt_toolbar_title.setText(UKEY_DESC);
+            }
+            if(job_detail_no != null){
+                txt_job_no.setText("Job No : "+job_detail_no);
+            }
         }
 
         tl_header.setVisibility(View.GONE);
@@ -273,14 +300,32 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(ImageBasedInputFormActivity.this, GroupListActivity.class);
-                        intent.putExtra("activity_id", activity_id);
-                        intent.putExtra("job_id", job_id);
-                        intent.putExtra("status", status);
-                        intent.putExtra("fromactivity", fromactivity);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.new_right, R.anim.new_left);
-                        finish();
+
+                        if(fromactivity != null && fromactivity.equalsIgnoreCase("ABCustomerDetailsActivity")){
+                            Intent intent = new Intent(ImageBasedInputFormActivity.this, ActivityJobListActivity.class);
+                            intent.putExtra("activity_id", activity_id);
+                            intent.putExtra("job_id", job_id);
+                            intent.putExtra("status", status);
+                            intent.putExtra("UKEY", UKEY);
+                            intent.putExtra("new_count", new_count);
+                            intent.putExtra("pause_count", pause_count);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.new_right, R.anim.new_left);
+                            finish();
+                        }else{
+                            Intent intent = new Intent(ImageBasedInputFormActivity.this, GroupListActivity.class);
+                            intent.putExtra("activity_id", activity_id);
+                            intent.putExtra("job_id", job_id);
+                            intent.putExtra("status", status);
+                            intent.putExtra("fromactivity", fromactivity);
+                            intent.putExtra("UKEY", UKEY);
+                            intent.putExtra("new_count", new_count);
+                            intent.putExtra("pause_count", pause_count);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.new_right, R.anim.new_left);
+                            finish();
+                        }
+
                     }
                 })
                 .setNegativeButton("No", null)
@@ -368,14 +413,35 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
                     if (200 == response.body().getCode()) {
                         if (response.body().getData() != null) {
                             Toasty.success(getApplicationContext(), "" + message, Toasty.LENGTH_LONG).show();
-                            Intent intent = new Intent(ImageBasedInputFormActivity.this, GroupListActivity.class);
-                            intent.putExtra("activity_id",activity_id);
-                            intent.putExtra("job_id",job_id);
-                            intent.putExtra("status",status);
-                            intent.putExtra("fromactivity",fromactivity);
-                            startActivity(intent);
-                            finish();
                             dialog.dismiss();
+
+                            if(fromactivity != null && fromactivity.equalsIgnoreCase("ABCustomerDetailsActivity")){
+                                Intent intent = new Intent(ImageBasedInputFormActivity.this, ActivityJobListActivity.class);
+                                intent.putExtra("activity_id", activity_id);
+                                intent.putExtra("job_id", job_id);
+                                intent.putExtra("status", status);
+                                intent.putExtra("UKEY", UKEY);
+                                intent.putExtra("new_count", new_count);
+                                intent.putExtra("pause_count", pause_count);
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.new_right, R.anim.new_left);
+                                finish();
+                            }else{
+                                Intent intent = new Intent(ImageBasedInputFormActivity.this, GroupListActivity.class);
+                                intent.putExtra("activity_id", activity_id);
+                                intent.putExtra("job_id", job_id);
+                                intent.putExtra("status", status);
+                                intent.putExtra("fromactivity", fromactivity);
+                                intent.putExtra("UKEY", UKEY);
+                                intent.putExtra("new_count", new_count);
+                                intent.putExtra("pause_count", pause_count);
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.new_right, R.anim.new_left);
+                                finish();
+                            }
+
+
+
                         }
 
 

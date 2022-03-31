@@ -51,6 +51,7 @@ import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.activity.GroupListActivity;
 import com.triton.johnsonapp.activity.SubGroupListActivity;
+import com.triton.johnsonapp.activitybased.ActivityJobListActivity;
 import com.triton.johnsonapp.adapter.FieldListAdapter;
 import com.triton.johnsonapp.adapter.LiftInputTypeListAdapter;
 import com.triton.johnsonapp.api.APIInterface;
@@ -199,7 +200,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
     public String digitalSignatureServerUrlImagePath;
 
-    String string_value, message, service_id, activity_id, job_id, group_id,status;
+    String string_value, message, service_id, activity_id, job_id, group_id,status,job_detail_no;
     String subgroup_id = "";
 
     int string_value_pos;
@@ -217,6 +218,11 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
     public static String responsemessage;
     private Dialog alertDialog;
 
+    private String UKEY;
+    private String UKEY_DESC;
+    private int new_count;
+    private int pause_count;
+
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -232,9 +238,17 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
             group_id = extras.getString("group_id");
             activity_id = extras.getString("activity_id");
             job_id = extras.getString("job_id");
+            job_detail_no = extras.getString("job_detail_no");
             status = extras.getString("status");
             subgroup_id = extras.getString("subgroup_id");
             fromactivity = extras.getString("fromactivity");
+            UKEY = extras.getString("UKEY");
+            UKEY_DESC = extras.getString("UKEY_DESC");
+            new_count = extras.getInt("new_count");
+            pause_count = extras.getInt("pause_count");
+
+
+
             String group_detail_name = extras.getString("group_detail_name");
             String  sub_group_detail_name = extras.getString("sub_group_detail_name");
 
@@ -256,6 +270,15 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                 txt_job_no.setText("Job No : "+job_id);
             }
 
+        }
+
+        if(fromactivity != null && fromactivity.equalsIgnoreCase("ABCustomerDetailsActivity")){
+            if(UKEY_DESC != null){
+                txt_toolbar_title.setText(UKEY_DESC);
+            }
+            if(job_detail_no != null){
+                txt_job_no.setText("Job No : "+job_detail_no);
+            }
         }
 
         SessionManager session = new SessionManager(getApplicationContext());
@@ -1464,14 +1487,34 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                     if (200 == response.body().getCode()) {
                         if (response.body().getData() != null) {
                             Toasty.success(getApplicationContext(), "" + message, Toasty.LENGTH_LONG).show();
-                            Intent intent = new Intent(InputValueFormListActivity.this, GroupListActivity.class);
-                            intent.putExtra("activity_id",activity_id);
-                            intent.putExtra("job_id",job_id);
-                            intent.putExtra("status",status);
-                            intent.putExtra("fromactivity",fromactivity);
-                            startActivity(intent);
-                            finish();
-                            dialog.dismiss();
+
+                            if(fromactivity != null && fromactivity.equalsIgnoreCase("ABCustomerDetailsActivity")){
+                                Intent intent = new Intent(InputValueFormListActivity.this, ActivityJobListActivity.class);
+                                intent.putExtra("activity_id", activity_id);
+                                intent.putExtra("job_id", job_id);
+                                intent.putExtra("status", status);
+                                intent.putExtra("UKEY", UKEY);
+                                intent.putExtra("UKEY_DESC", UKEY_DESC);
+                                intent.putExtra("new_count", new_count);
+                                intent.putExtra("pause_count", pause_count);
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.new_right, R.anim.new_left);
+                                finish();
+                                dialog.dismiss();
+                            }else {
+                                Intent intent = new Intent(InputValueFormListActivity.this, GroupListActivity.class);
+                                intent.putExtra("fromactivity", fromactivity);
+                                intent.putExtra("activity_id", activity_id);
+                                intent.putExtra("job_id", job_id);
+                                intent.putExtra("status", status);
+                                intent.putExtra("UKEY", UKEY);
+                                intent.putExtra("UKEY_DESC", UKEY_DESC);
+                                intent.putExtra("new_count", new_count);
+                                intent.putExtra("pause_count", pause_count);
+                                startActivity(intent);
+                                finish();
+                                dialog.dismiss();
+                            }
                         }
 
 
@@ -1519,11 +1562,13 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                         if (response.body().getData() != null) {
                             Toasty.success(getApplicationContext(), "" + message, Toasty.LENGTH_LONG).show();
                             Intent intent = new Intent(InputValueFormListActivity.this, SubGroupListActivity.class);
-                            intent.putExtra("activity_id",activity_id);
-                            intent.putExtra("job_id",job_id);
-                            intent.putExtra("group_id",group_id);
+                            intent.putExtra("activity_id", activity_id);
+                            intent.putExtra("job_id", job_id);
                             intent.putExtra("status", status);
-                            intent.putExtra("fromactivity", fromactivity);
+                            intent.putExtra("UKEY", UKEY);
+                            intent.putExtra("UKEY_DESC", UKEY_DESC);
+                            intent.putExtra("new_count", new_count);
+                            intent.putExtra("pause_count", pause_count);;
                             startActivity(intent);
                             overridePendingTransition(R.anim.new_right, R.anim.new_left);
                             finish();
@@ -1636,6 +1681,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
+
                         Intent intent = new Intent(InputValueFormListActivity.this, GroupListActivity.class);
                         intent.putExtra("activity_id", activity_id);
                         intent.putExtra("job_id", job_id);
@@ -1665,13 +1711,32 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if(fromactivity != null && fromactivity.equalsIgnoreCase("SubGroupListActivity")){
+                        if(fromactivity != null && fromactivity.equalsIgnoreCase("ABCustomerDetailsActivity")){
+                            Intent intent = new Intent(InputValueFormListActivity.this, ActivityJobListActivity.class);
+                            intent.putExtra("activity_id", activity_id);
+                            intent.putExtra("job_id", job_id);
+                            intent.putExtra("job_detail_no", job_detail_no);
+                            intent.putExtra("status", status);
+                            intent.putExtra("UKEY", UKEY);
+                            intent.putExtra("UKEY_DESC", UKEY_DESC);
+                            intent.putExtra("new_count", new_count);
+                            intent.putExtra("pause_count", pause_count);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.new_right, R.anim.new_left);
+                            finish();
+                        }
+                        else if(fromactivity != null && fromactivity.equalsIgnoreCase("SubGroupListActivity")){
                             Intent intent = new Intent(InputValueFormListActivity.this, SubGroupListActivity.class);
                             intent.putExtra("activity_id",activity_id);
                             intent.putExtra("job_id",job_id);
+                            intent.putExtra("job_detail_no",job_detail_no);
                             intent.putExtra("group_id",group_id);
                             intent.putExtra("status", status);
                             intent.putExtra("fromactivity", fromactivity);
+                            intent.putExtra("UKEY", UKEY);
+                            intent.putExtra("UKEY_DESC", UKEY_DESC);
+                            intent.putExtra("new_count", new_count);
+                            intent.putExtra("pause_count", pause_count);
                             startActivity(intent);
                             overridePendingTransition(R.anim.new_right, R.anim.new_left);
                             finish();
@@ -1682,6 +1747,9 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                             intent.putExtra("group_id",group_id);
                             intent.putExtra("status", status);
                             intent.putExtra("fromactivity", fromactivity);
+                            intent.putExtra("UKEY", UKEY);
+                            intent.putExtra("new_count", new_count);
+                            intent.putExtra("pause_count", pause_count);
                             startActivity(intent);
                             overridePendingTransition(R.anim.new_right, R.anim.new_left);
                             finish();
@@ -1731,6 +1799,9 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                     intent.putExtra("group_id",group_id);
                     intent.putExtra("status", status);
                     intent.putExtra("fromactivity", fromactivity);
+                    intent.putExtra("UKEY",UKEY);
+                    intent.putExtra("new_count",new_count);
+                    intent.putExtra("pause_count",pause_count);
                     startActivity(intent);
                     overridePendingTransition(R.anim.new_right, R.anim.new_left);
                     finish();
@@ -1764,6 +1835,9 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                     intent.putExtra("group_id",group_id);
                     intent.putExtra("status", status);
                     intent.putExtra("fromactivity", fromactivity);
+                    intent.putExtra("UKEY",UKEY);
+                    intent.putExtra("new_count",new_count);
+                    intent.putExtra("pause_count",pause_count);
                     startActivity(intent);
                     overridePendingTransition(R.anim.new_right, R.anim.new_left);
                     finish();

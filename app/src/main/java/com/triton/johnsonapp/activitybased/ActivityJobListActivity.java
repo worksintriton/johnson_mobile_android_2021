@@ -56,6 +56,8 @@ import com.triton.johnsonapp.api.APIInterface;
 import com.triton.johnsonapp.api.RetrofitClient;
 import com.triton.johnsonapp.requestpojo.ActivityListManagementRequest;
 import com.triton.johnsonapp.requestpojo.AttendanceLogoutRequest;
+import com.triton.johnsonapp.requestpojo.GetJobDetailByActivityRequest;
+import com.triton.johnsonapp.responsepojo.GetJobDetailByActivityResponse;
 import com.triton.johnsonapp.responsepojo.JobNoManagementResponse;
 import com.triton.johnsonapp.responsepojo.SuccessResponse;
 import com.triton.johnsonapp.service.GPSTracker;
@@ -100,7 +102,7 @@ public class ActivityJobListActivity extends AppCompatActivity implements OnMapR
 
     Dialog dialog;
 
-    String networkStatus = "",message,activity_id;
+    String networkStatus = "",message;
 
     int number=0;
 
@@ -114,7 +116,7 @@ public class ActivityJobListActivity extends AppCompatActivity implements OnMapR
 
     private String search_string ="";
     SessionManager session;
-    private String status ="";
+
 
     private static final int REQUEST_CHECK_SETTINGS_GPS = 0x1;
     private GoogleApiClient googleApiClient;
@@ -122,6 +124,17 @@ public class ActivityJobListActivity extends AppCompatActivity implements OnMapR
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private double latitude;
     private double longitude;
+
+    private String activity_id;
+    private String UKEY;
+    private String UKEY_DESC;
+    private int form_type;
+    private String status ="";
+
+    private String SMU_DWNFLAG = "";
+    private int  new_count;
+    private int  pause_count;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +147,7 @@ public class ActivityJobListActivity extends AppCompatActivity implements OnMapR
 
         session = new SessionManager(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
-        userid = user.get(SessionManager.KEY_ID);
+        userid = user.get(SessionManager.KEY_USERID);
 
         username = user.get(SessionManager.KEY_USERNAME);
 
@@ -142,7 +155,19 @@ public class ActivityJobListActivity extends AppCompatActivity implements OnMapR
         if (extras != null) {
             activity_id = extras.getString("activity_id");
             status = extras.getString("status");
+            UKEY = extras.getString("UKEY");
+            UKEY_DESC = extras.getString("UKEY_DESC");
+            form_type = extras.getInt("form_type");
+            new_count = extras.getInt("new_count");
+            pause_count = extras.getInt("pause_count");
+
             Log.w(TAG,"activity_id -->"+activity_id+" status : "+status);
+
+            if(status != null && status.equalsIgnoreCase("New")){
+                SMU_DWNFLAG = "N";
+            }else if(status != null && status.equalsIgnoreCase("Pause")){
+                SMU_DWNFLAG = "Y";
+            }
 
 
         }
@@ -152,7 +177,7 @@ public class ActivityJobListActivity extends AppCompatActivity implements OnMapR
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     search_string = textView.getText().toString();
-                    jobnomanagmentgetlistallResponseCall();
+                    getJobDetailByActivityResponseCall();
                     return true;
                 }
                 return false;
@@ -177,7 +202,7 @@ public class ActivityJobListActivity extends AppCompatActivity implements OnMapR
         }
         else {
 
-            jobnomanagmentgetlistallResponseCall();
+            getJobDetailByActivityResponseCall();
 
            /* List<GetServiceListResponse.DataBean> dataBeanList = new ArrayList<>();
 
@@ -211,6 +236,11 @@ public class ActivityJobListActivity extends AppCompatActivity implements OnMapR
         Intent intent = new Intent(ActivityJobListActivity.this, ActivityStatusActivity.class);
         intent.putExtra("status",status);
         intent.putExtra("activity_id",activity_id);
+        intent.putExtra("form_type",form_type);
+        intent.putExtra("UKEY",UKEY);
+        intent.putExtra("UKEY_DESC",UKEY_DESC);
+        intent.putExtra("new_count",new_count);
+        intent.putExtra("pause_count",pause_count);
         startActivity(intent);
         overridePendingTransition(R.anim.new_right, R.anim.new_left);
 
@@ -219,20 +249,20 @@ public class ActivityJobListActivity extends AppCompatActivity implements OnMapR
 
 
     @SuppressLint("LogNotTimber")
-    private void jobnomanagmentgetlistallResponseCall() {
+    private void getJobDetailByActivityResponseCall() {
         dialog = new Dialog(ActivityJobListActivity.this, R.style.NewProgressDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progroess_popup);
         dialog.show();
 
         APIInterface apiInterface = RetrofitClient.getClient().create(APIInterface.class);
-        Call<JobNoManagementResponse> call = apiInterface.jobnomanagmentgetlistallResponseCall(RestUtils.getContentType(), ActivityListManagementRequest());
+        Call<GetJobDetailByActivityResponse> call = apiInterface.getJobDetailByActivityResponseCall(RestUtils.getContentType(), getJobDetailByActivityRequest());
         Log.w(TAG,"JobNoManagementResponse url  :%s"+" "+ call.request().url().toString());
 
-        call.enqueue(new Callback<JobNoManagementResponse>() {
+        call.enqueue(new Callback<GetJobDetailByActivityResponse>() {
             @SuppressLint("LogNotTimber")
             @Override
-            public void onResponse(@NonNull Call<JobNoManagementResponse> call, @NonNull Response<JobNoManagementResponse> response) {
+            public void onResponse(@NonNull Call<GetJobDetailByActivityResponse> call, @NonNull Response<GetJobDetailByActivityResponse> response) {
 
                 Log.w(TAG,"JobNoManagementResponse" + new Gson().toJson(response.body()));
                 if (response.body() != null) {
@@ -241,7 +271,7 @@ public class ActivityJobListActivity extends AppCompatActivity implements OnMapR
                         if(response.body().getData() != null){
 
                             dialog.dismiss();
-                            List<JobNoManagementResponse.DataBean> dataBeanList = response.body().getData();
+                            List<GetJobDetailByActivityResponse.DataBean> dataBeanList = response.body().getData();
 
 
                             if(dataBeanList != null && dataBeanList.size()>0){
@@ -274,7 +304,7 @@ public class ActivityJobListActivity extends AppCompatActivity implements OnMapR
 
             @SuppressLint("LongLogTag")
             @Override
-            public void onFailure(@NonNull Call<JobNoManagementResponse> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<GetJobDetailByActivityResponse> call, @NonNull Throwable t) {
                 dialog.dismiss();
                 Log.e("JobNoManagementResponse", "--->" + t.getMessage());
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
@@ -282,29 +312,30 @@ public class ActivityJobListActivity extends AppCompatActivity implements OnMapR
         });
 
     }
-    private ActivityListManagementRequest ActivityListManagementRequest() {
+    private GetJobDetailByActivityRequest getJobDetailByActivityRequest() {
         /*
-         * user_id : 1234456789
-         * search_string:""
-         * request_type
+         * SMU_TECHMOBNO : 9043456963
+         * SMU_DWNFLAG : Y
+         * SMU_UKEY : ESPD-ACT1
          */
 
 
-        ActivityListManagementRequest ActivityListManagementRequest = new ActivityListManagementRequest();
-        ActivityListManagementRequest.setUser_id(userid);
-        ActivityListManagementRequest.setSearch_string(search_string);
-        ActivityListManagementRequest.setRequest_type(status);
+        GetJobDetailByActivityRequest getJobDetailByActivityRequest = new GetJobDetailByActivityRequest();
+        getJobDetailByActivityRequest.setSMU_TECHMOBNO(userid);
+        getJobDetailByActivityRequest.setSMU_DWNFLAG(SMU_DWNFLAG);
+        getJobDetailByActivityRequest.setSMU_UKEY(UKEY);
 
-        Log.w(TAG,"ActivityListManagementRequest "+ new Gson().toJson(ActivityListManagementRequest));
-        return ActivityListManagementRequest;
+        Log.w(TAG,"getJobDetailByActivityRequest "+ new Gson().toJson(getJobDetailByActivityRequest));
+        return getJobDetailByActivityRequest;
     }
 
     @SuppressLint("LogNotTimber")
-    private void setView(List<JobNoManagementResponse.DataBean> dataBeanList) {
+    private void setView(List<GetJobDetailByActivityResponse.DataBean> dataBeanList) {
         rv_jobdetaillist.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
         rv_jobdetaillist.setItemAnimator(new DefaultItemAnimator());
-        ABJobDetailListAdapter abJobDetailListAdapter = new ABJobDetailListAdapter(this, dataBeanList,status,TAG);
+        ABJobDetailListAdapter abJobDetailListAdapter = new ABJobDetailListAdapter(this, dataBeanList,status,TAG,form_type,activity_id,UKEY,new_count,pause_count,UKEY_DESC);
         rv_jobdetaillist.setAdapter(abJobDetailListAdapter);
+
     }
 
     public void logOutUser(View view) {

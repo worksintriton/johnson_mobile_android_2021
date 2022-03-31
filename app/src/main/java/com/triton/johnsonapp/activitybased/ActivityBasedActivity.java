@@ -53,8 +53,10 @@ import com.triton.johnsonapp.activity.MainActivity;
 import com.triton.johnsonapp.adapter.ActivityBasedListAdapter;
 import com.triton.johnsonapp.api.APIInterface;
 import com.triton.johnsonapp.api.RetrofitClient;
+import com.triton.johnsonapp.requestpojo.ActivityGetListNumberRequest;
 import com.triton.johnsonapp.requestpojo.ActivityListManagementRequest;
 import com.triton.johnsonapp.requestpojo.AttendanceLogoutRequest;
+import com.triton.johnsonapp.responsepojo.ActivityGetListNumberResponse;
 import com.triton.johnsonapp.responsepojo.ActivityListManagementResponse;
 import com.triton.johnsonapp.responsepojo.SuccessResponse;
 import com.triton.johnsonapp.service.GPSTracker;
@@ -134,7 +136,7 @@ public class ActivityBasedActivity extends AppCompatActivity  implements OnMapRe
 
         session = new SessionManager(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
-        userid = user.get(SessionManager.KEY_ID);
+        userid = user.get(SessionManager.KEY_USERID);
 
 
         username = user.get(SessionManager.KEY_USERNAME);
@@ -156,7 +158,7 @@ public class ActivityBasedActivity extends AppCompatActivity  implements OnMapRe
 
         }
         else {
-            activityListResponseCall();
+            activityGetListNumberResponseCall();
 
 
         }
@@ -167,7 +169,7 @@ public class ActivityBasedActivity extends AppCompatActivity  implements OnMapRe
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                    search_string = textView.getText().toString();
-                    activityListResponseCall();
+                    activityGetListNumberResponseCall();
                     return true;
                 }
                 return false;
@@ -194,20 +196,20 @@ public class ActivityBasedActivity extends AppCompatActivity  implements OnMapRe
 
 
     @SuppressLint("LogNotTimber")
-    private void activityListResponseCall() {
+    private void activityGetListNumberResponseCall() {
         dialog = new Dialog(ActivityBasedActivity.this, R.style.NewProgressDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progroess_popup);
         dialog.show();
 
         APIInterface apiInterface = RetrofitClient.getClient().create(APIInterface.class);
-        Call<ActivityListManagementResponse> call = apiInterface.activedetailmanagementResponseCall(RestUtils.getContentType(), ActivityListManagementRequest());
+        Call<ActivityGetListNumberResponse> call = apiInterface.activityGetListNumberResponseCall(RestUtils.getContentType(), activityGetListNumberRequest());
         Log.w(TAG,"ActivityListManagementResponse url  :%s"+" "+ call.request().url().toString());
 
-        call.enqueue(new Callback<ActivityListManagementResponse>() {
+        call.enqueue(new Callback<ActivityGetListNumberResponse>() {
             @SuppressLint("LogNotTimber")
             @Override
-            public void onResponse(@NonNull Call<ActivityListManagementResponse> call, @NonNull Response<ActivityListManagementResponse> response) {
+            public void onResponse(@NonNull Call<ActivityGetListNumberResponse> call, @NonNull Response<ActivityGetListNumberResponse> response) {
 
                 Log.w(TAG,"ActivityListManagementResponse" + new Gson().toJson(response.body()));
                 if (response.body() != null) {
@@ -217,7 +219,7 @@ public class ActivityBasedActivity extends AppCompatActivity  implements OnMapRe
 
                             dialog.dismiss();
 
-                            List<ActivityListManagementResponse.DataBean> dataBeanList = response.body().getData();
+                            List<ActivityGetListNumberResponse.DataBean> dataBeanList = response.body().getData();
 
                             if(dataBeanList != null && dataBeanList.size()>0){
                                 rv_activitybasedlist.setVisibility(View.VISIBLE);
@@ -247,7 +249,7 @@ public class ActivityBasedActivity extends AppCompatActivity  implements OnMapRe
 
             @SuppressLint("LongLogTag")
             @Override
-            public void onFailure(@NonNull Call<ActivityListManagementResponse> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<ActivityGetListNumberResponse> call, @NonNull Throwable t) {
                 dialog.dismiss();
                 Log.e("ActivityListManagementResponse", "--->" + t.getMessage());
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
@@ -255,22 +257,21 @@ public class ActivityBasedActivity extends AppCompatActivity  implements OnMapRe
         });
 
     }
-    private ActivityListManagementRequest ActivityListManagementRequest() {
+    private ActivityGetListNumberRequest activityGetListNumberRequest() {
         /*
          * User_id : 1234456789
          * search_string:""
          */
 
 
-        ActivityListManagementRequest ActivityListManagementRequest = new ActivityListManagementRequest();
-        ActivityListManagementRequest.setUser_id(userid);
-        ActivityListManagementRequest.setSearch_string(search_string);
+        ActivityGetListNumberRequest activityGetListNumberRequest = new ActivityGetListNumberRequest();
+        activityGetListNumberRequest.setPhone_number(userid);
 
-        Log.w(TAG,"ActivityListManagementRequest "+ new Gson().toJson(ActivityListManagementRequest));
-        return ActivityListManagementRequest;
+        Log.w(TAG,"activityGetListNumberRequest "+ new Gson().toJson(activityGetListNumberRequest));
+        return activityGetListNumberRequest;
     }
     @SuppressLint("LogNotTimber")
-    private void setView(List<ActivityListManagementResponse.DataBean> dataBeanList) {
+    private void setView(List<ActivityGetListNumberResponse.DataBean> dataBeanList) {
 
 
         rv_activitybasedlist.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));

@@ -51,8 +51,14 @@ public class ActivityStatusActivity extends AppCompatActivity {
     private String networkStatus = "";
     private String activity_id;
     private String status;
+    private int  new_count;
+    private int  pause_count;
+    private String UKEY;
+    private String UKEY_DESC;
+    private int form_type;
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,11 +74,22 @@ public class ActivityStatusActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            status = extras.getString("status");
+            UKEY = extras.getString("UKEY");
+            UKEY_DESC = extras.getString("UKEY_DESC");
+            form_type = extras.getInt("form_type");
             activity_id = extras.getString("activity_id");
+            new_count = extras.getInt("new_count");
+            pause_count = extras.getInt("pause_count");
             Log.w(TAG,"activity_id -->"+activity_id+" status : "+status);
 
 
+        }
+
+        if(new_count != 0){
+            btn_new.setText("New  ( "+new_count+" ) ");
+        }
+        if(pause_count != 0){
+            btn_pause.setText("Pause  ( "+pause_count+" ) ");
         }
 
         btn_new.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +98,11 @@ public class ActivityStatusActivity extends AppCompatActivity {
                 Intent intent = new Intent(ActivityStatusActivity.this, ActivityJobListActivity.class);
                 intent.putExtra("status","New");
                 intent.putExtra("activity_id",activity_id);
+                intent.putExtra("form_type",form_type);
+                intent.putExtra("UKEY",UKEY);
+                intent.putExtra("UKEY_DESC",UKEY_DESC);
+                intent.putExtra("new_count",new_count);
+                intent.putExtra("pause_count",pause_count);
                 startActivity(intent);
                 overridePendingTransition(R.anim.new_right, R.anim.new_left);
 
@@ -93,6 +115,11 @@ public class ActivityStatusActivity extends AppCompatActivity {
                 Intent intent = new Intent(ActivityStatusActivity.this, ActivityJobListActivity.class);
                 intent.putExtra("status","Pause");
                 intent.putExtra("activity_id",activity_id);
+                intent.putExtra("form_type",form_type);
+                intent.putExtra("UKEY",UKEY);
+                intent.putExtra("UKEY_DESC",UKEY_DESC);
+                intent.putExtra("new_count",new_count);
+                intent.putExtra("pause_count",pause_count);
                 startActivity(intent);
                 overridePendingTransition(R.anim.new_right, R.anim.new_left);
 
@@ -111,7 +138,7 @@ public class ActivityStatusActivity extends AppCompatActivity {
 
         }
         else {
-            fetch_record_byuseridResponseCall();
+            //fetch_record_byuseridResponseCall();
         }
     }
 

@@ -1,5 +1,6 @@
 package com.triton.johnsonapp.api;
 
+import com.triton.johnsonapp.requestpojo.ActivityGetListNumberRequest;
 import com.triton.johnsonapp.requestpojo.ActivityListManagementRequest;
 import com.triton.johnsonapp.requestpojo.AttendanceCreateRequest;
 import com.triton.johnsonapp.requestpojo.AttendanceLogoutRequest;
@@ -10,6 +11,7 @@ import com.triton.johnsonapp.requestpojo.FormDataStoreRequest;
 import com.triton.johnsonapp.requestpojo.FormFiveBasedStroeDataRequest;
 import com.triton.johnsonapp.requestpojo.FormFiveDataRequest;
 import com.triton.johnsonapp.requestpojo.GetFieldListRequest;
+import com.triton.johnsonapp.requestpojo.GetJobDetailByActivityRequest;
 import com.triton.johnsonapp.requestpojo.GroupDetailManagementRequest;
 import com.triton.johnsonapp.requestpojo.ImageBasedStroeDataRequest;
 import com.triton.johnsonapp.requestpojo.JobFetchAddressRequest;
@@ -21,6 +23,7 @@ import com.triton.johnsonapp.requestpojo.RowBasedStroeDataRequest;
 import com.triton.johnsonapp.requestpojo.StartWorkRequest;
 import com.triton.johnsonapp.requestpojo.StopJobRequest;
 import com.triton.johnsonapp.requestpojo.SubGroupDetailManagementRequest;
+import com.triton.johnsonapp.responsepojo.ActivityGetListNumberResponse;
 import com.triton.johnsonapp.responsepojo.ActivityListManagementResponse;
 import com.triton.johnsonapp.responsepojo.CheckDataStoreResponse;
 import com.triton.johnsonapp.responsepojo.FetchRecordByUserIDResponse;
@@ -28,6 +31,7 @@ import com.triton.johnsonapp.responsepojo.FileUploadResponse;
 import com.triton.johnsonapp.responsepojo.FormDataStoreResponse;
 import com.triton.johnsonapp.responsepojo.FormFiveDataResponse;
 import com.triton.johnsonapp.responsepojo.GetFieldListResponse;
+import com.triton.johnsonapp.responsepojo.GetJobDetailByActivityResponse;
 import com.triton.johnsonapp.responsepojo.GetServiceListResponse;
 import com.triton.johnsonapp.responsepojo.GroupDetailManagementResponse;
 import com.triton.johnsonapp.responsepojo.JobFetchAddressResponse;
@@ -48,6 +52,10 @@ import retrofit2.http.Part;
 
 
 public interface APIInterface {
+
+    /*login*/
+    @POST("activity/getlist_number")
+    Call<ActivityGetListNumberResponse> activityGetListNumberResponseCall(@Header("Content-Type") String type, @Body ActivityGetListNumberRequest activityGetListNumberRequest);
 
     /*login*/
     @POST("user_management/mobile/login_page")
@@ -181,6 +189,9 @@ public interface APIInterface {
     @POST("job_no_managment/fetch_rm_info")
     Call<ViewInfoResponse> ViewInfoRequestCall(@Header("Content-Type") String type, @Body JobFetchAddressRequest jobFetchAddressRequest);
 
+    /*job_no_managmentt get list all*/
+    @POST("job_no_managment/get_jobdetail_by_activtiy")
+    Call<GetJobDetailByActivityResponse> getJobDetailByActivityResponseCall(@Header("Content-Type") String type, @Body GetJobDetailByActivityRequest getJobDetailByActivityRequest);
 
 
 

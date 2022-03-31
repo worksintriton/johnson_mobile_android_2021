@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.activity.ActivityStatusActivity;
+import com.triton.johnsonapp.responsepojo.ActivityGetListNumberResponse;
 import com.triton.johnsonapp.responsepojo.ActivityListManagementResponse;
 
 import java.util.List;
@@ -25,14 +26,14 @@ import java.util.List;
 public class ActivityBasedListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private  String TAG = "ActivityBasedListAdapter";
-    private List<ActivityListManagementResponse.DataBean> dataBeanList;
+    private List<ActivityGetListNumberResponse.DataBean> dataBeanList;
     private Context context;
 
-    ActivityListManagementResponse.DataBean currentItem;
+    ActivityGetListNumberResponse.DataBean currentItem;
 
     private int size;
 
-    public ActivityBasedListAdapter(Context context, List<ActivityListManagementResponse.DataBean> dataBeanList) {
+    public ActivityBasedListAdapter(Context context, List<ActivityGetListNumberResponse.DataBean> dataBeanList) {
         this.context = context;
         this.dataBeanList = dataBeanList;
 
@@ -58,10 +59,22 @@ public class ActivityBasedListAdapter extends  RecyclerView.Adapter<RecyclerView
 
         currentItem = dataBeanList.get(position);
 
-        if(dataBeanList.get(position).getActivedetail_name()!= null && !dataBeanList.get(position).getActivedetail_name().isEmpty()){
-            holder.txt_serv_title.setText(dataBeanList.get(position).getActivedetail_name());
+        if(dataBeanList.get(position).getUKEY_DESC()!= null && !dataBeanList.get(position).getUKEY_DESC().isEmpty()){
+            holder.txt_serv_title.setText(dataBeanList.get(position).getUKEY_DESC());
         }else{
             holder.txt_serv_title.setText("");
+
+        }
+        if(dataBeanList.get(position).getNEW_ACTIVITY()!= 0 ){
+            holder.txt_noofnew.setText(": "+dataBeanList.get(position).getNEW_ACTIVITY());
+        }else{
+            holder.txt_noofnew.setText(": 0");
+
+        }
+        if(dataBeanList.get(position).getWIP_ACTIVITY()!= 0 ){
+            holder.txt_noofpending.setText(": "+dataBeanList.get(position).getWIP_ACTIVITY());
+        }else{
+            holder.txt_noofpending.setText(": 0");
 
         }
 
@@ -86,11 +99,12 @@ public class ActivityBasedListAdapter extends  RecyclerView.Adapter<RecyclerView
             Intent intent = new Intent(context, ActivityStatusActivity.class);
           //  Intent intent = new Intent(context, ActivityJobListActivity.class);
 
+            intent.putExtra("new_count",dataBeanList.get(position).getNEW_ACTIVITY());
+            intent.putExtra("pause_count",dataBeanList.get(position).getWIP_ACTIVITY());
             intent.putExtra("activity_id",dataBeanList.get(position).get_id());
-            intent.putExtra("status","New");
-
-            Log.w(TAG,"id -->"+dataBeanList.get(position).get_id());
-
+            intent.putExtra("UKEY",dataBeanList.get(position).getUKEY());
+            intent.putExtra("UKEY_DESC",dataBeanList.get(position).getUKEY_DESC());
+            intent.putExtra("form_type",dataBeanList.get(position).getForm_type());
             context.startActivity(intent);
 
 
@@ -110,7 +124,7 @@ public class ActivityBasedListAdapter extends  RecyclerView.Adapter<RecyclerView
     }
 
     static class ViewHolderOne extends RecyclerView.ViewHolder {
-        public TextView txt_serv_title,txt_serv_updatedat,txt_serv_createdat;
+        public TextView txt_serv_title,txt_serv_updatedat,txt_serv_createdat,txt_noofpending,txt_noofnew;
         ImageView img_next;
         CardView cv_root;
 
@@ -121,6 +135,8 @@ public class ActivityBasedListAdapter extends  RecyclerView.Adapter<RecyclerView
             txt_serv_createdat = itemView.findViewById(R.id.txt_serv_createdat);
             img_next = itemView.findViewById(R.id.img_next);
             cv_root = itemView.findViewById(R.id.cv_root);
+            txt_noofpending = itemView.findViewById(R.id.txt_noofpending);
+            txt_noofnew = itemView.findViewById(R.id.txt_noofnew);
 
 
         }
