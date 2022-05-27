@@ -31,6 +31,7 @@ import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,6 +59,7 @@ import com.triton.johnsonapp.requestpojo.ActivityListManagementRequest;
 import com.triton.johnsonapp.requestpojo.AttendanceLogoutRequest;
 import com.triton.johnsonapp.responsepojo.ActivityGetListNumberResponse;
 import com.triton.johnsonapp.responsepojo.ActivityListManagementResponse;
+import com.triton.johnsonapp.responsepojo.FormFiveDataResponse;
 import com.triton.johnsonapp.responsepojo.SuccessResponse;
 import com.triton.johnsonapp.service.GPSTracker;
 import com.triton.johnsonapp.session.SessionManager;
@@ -65,6 +67,7 @@ import com.triton.johnsonapp.utils.ConnectionDetector;
 import com.triton.johnsonapp.utils.RestUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -92,6 +95,9 @@ public class ActivityBasedActivity extends AppCompatActivity  implements OnMapRe
     @BindView(R.id.txt_logout)
     TextView txt_logout;
 
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.ll_logout)
+    LinearLayout ll_logout;
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.rv_activitybasedlist)
@@ -104,6 +110,10 @@ public class ActivityBasedActivity extends AppCompatActivity  implements OnMapRe
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.edt_search)
     EditText edt_search;
+
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.img_clearsearch)
+    ImageView img_clearsearch;
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.img_back)
@@ -124,7 +134,8 @@ public class ActivityBasedActivity extends AppCompatActivity  implements OnMapRe
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private double latitude;
     private double longitude;
-
+    List<ActivityGetListNumberResponse.DataBean> dataBeanList;
+    ActivityBasedListAdapter activityBasedListAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,7 +158,12 @@ public class ActivityBasedActivity extends AppCompatActivity  implements OnMapRe
                 onBackPressed();
             }
         });
-
+        ll_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                session.logoutUser();
+            }
+        });
 
 
 
@@ -167,18 +183,54 @@ public class ActivityBasedActivity extends AppCompatActivity  implements OnMapRe
         edt_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                   search_string = textView.getText().toString();
-                    activityGetListNumberResponseCall();
-                    return true;
-                }
+//                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+//                   search_string = textView.getText().toString();
+//                    activityGetListNumberResponseCall();
+//                    return true;
+//                }
+//                return false;
+                img_clearsearch.setVisibility(View.VISIBLE);
+                String Searchvalue = edt_search.getText().toString();
+                Log.w(TAG,"Search Value---"+Searchvalue);
+                filter(Searchvalue);
                 return false;
+            }
+        });
+
+        img_clearsearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                edt_search.setText("");
+                rv_activitybasedlist.setVisibility(View.VISIBLE);
+                activityGetListNumberResponseCall();
+                img_clearsearch.setVisibility(View.INVISIBLE);
             }
         });
 
 
 
+    }
 
+    private void filter(String s) {
+        List<ActivityGetListNumberResponse.DataBean> filteredlist = new ArrayList<>();
+        for(ActivityGetListNumberResponse.DataBean item : dataBeanList)
+        {
+            if(item.getUKEY_DESC().toLowerCase().contains(s.toLowerCase()))
+            {
+                Log.w(TAG,"filter----"+item.getUKEY_DESC().toLowerCase().contains(s.toLowerCase()));
+                filteredlist.add(item);
+            }
+        }
+        if(filteredlist.isEmpty())
+        {
+            Toast.makeText(this,"No Data Found ... ",Toast.LENGTH_SHORT).show();
+            rv_activitybasedlist.setVisibility(View.GONE);
+            txt_no_records.setVisibility(View.VISIBLE);
+            txt_no_records.setText("No Parts Available");
+        }else
+        {
+            activityBasedListAdapter.filterList(filteredlist);
+        }
 
     }
 
@@ -219,7 +271,7 @@ public class ActivityBasedActivity extends AppCompatActivity  implements OnMapRe
 
                             dialog.dismiss();
 
-                            List<ActivityGetListNumberResponse.DataBean> dataBeanList = response.body().getData();
+                            dataBeanList = response.body().getData();
 
                             if(dataBeanList != null && dataBeanList.size()>0){
                                 rv_activitybasedlist.setVisibility(View.VISIBLE);
@@ -276,7 +328,7 @@ public class ActivityBasedActivity extends AppCompatActivity  implements OnMapRe
 
         rv_activitybasedlist.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
         rv_activitybasedlist.setItemAnimator(new DefaultItemAnimator());
-        ActivityBasedListAdapter activityBasedListAdapter = new ActivityBasedListAdapter(this, dataBeanList);
+        activityBasedListAdapter = new ActivityBasedListAdapter(this, dataBeanList);
         rv_activitybasedlist.setAdapter(activityBasedListAdapter);
     }
 

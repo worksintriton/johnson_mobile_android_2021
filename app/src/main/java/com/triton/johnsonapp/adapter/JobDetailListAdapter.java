@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.activity.CustomerDetailsActivity;
 import com.triton.johnsonapp.activity.GroupListActivity;
+import com.triton.johnsonapp.responsepojo.FormFiveDataResponse;
 import com.triton.johnsonapp.responsepojo.JobNoManagementResponse;
 
 import java.util.List;
@@ -40,6 +41,12 @@ public class JobDetailListAdapter extends  RecyclerView.Adapter<RecyclerView.Vie
         this.status = status ;
 
 
+    }
+
+    public void filterList(List<JobNoManagementResponse.DataBean> filterllist)
+    {
+        dataBeanList = filterllist;
+        notifyDataSetChanged();
     }
 
     @NonNull

@@ -1,6 +1,6 @@
 <resources>
-    <string name="version">Version 30.03.22.1</string>
-    <string name="app_name">Johnson App</string>
+    <string name="version">23.04.2022</string>
+    <string name="app_name">JLsmart</string>
     <string name="app_name_with">Johnson App Login</string>
     <string name="app_name_with_login">Johnson App Login</string>
     <string name="lifts">Lifts</string>
@@ -11,7 +11,7 @@
     <string name="err_msg_type_of_stationname">Select the station name</string>
     <string name="err_msg_type_of_jobno">Select the job no</string>
     <string name="err_msg_type_of_faulttype">Select the fault type</string>
-
+    <string name="drp_value">Drop Down</string>
 
     <string name="font_name_fontawesome">fontawesome</string>
     <string name="font_name_source_sans_pro">SourceSansPro</string>
@@ -87,6 +87,7 @@
     <string name="row_dimension">Dimension in MM</string>
     <string name="activitybased">Activity Based</string>
     <string name="jobdetail">Job Details</string>
+    <string name="generaldetail">General Details</string>
     <string name="group">Group List</string>
     <string name="activity_list">Activity List</string>
     <string name="info">i</string>
@@ -106,6 +107,22 @@
     <string name="search">Search</string>
     <string name="noofpedning">No of Pending </string>
     <string name="noofnew">No of New  </string>
+    <string name="leaveappln">Leave Application</string>
+    <string name="subordattendance">Subordinate Attendance</string>
+    <string name="collectedcheque">Collected Cheque Details</string>
+    <string name="lvapno_text">Lvapno</string>
+    <string name="empno_text">EMP NO</string>
+    <string name="appr_mgr_text">Appr Mgr</string>
+    <string name="leave_appl_date_text">Leave Application Date </string>
+    <string name="leave_code_text">Leave Code</string>
+    <string name="no_of_days_text">No.Of.Days</string>
+    <string name="frmdt_text">From Date</string>
+    <string name="todat">To Date</string>
+    <string name="reason_text">Reason</string>
+    <string name="generaldetail_leaveappln">Leave Application</string>
+    <string name="generaldetail_subord">Subordinate Attendance</string>
+    <string name="crntdate">08-04-2022</string>
+    <string name="phone_number">Phone Number</string>
 
 
     <style name="table_header" parent="@android:style/TextAppearance.Small">
@@ -128,5 +145,9 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">@dimen/_45dp</item>
     </style>
+
+    <string name="title_activity_full_screen_image">FullScreenImageActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>

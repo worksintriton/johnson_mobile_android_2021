@@ -40,7 +40,36 @@
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup"
         tools:targetApi="m">
-
+        <activity
+            android:name=".activity.FullScreenImageActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="LockedOrientationActivity"/>
+        <activity
+            android:name=".DownloadapkfileActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".Forms.SubordActivityForm"
+            android:exported="false"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".Forms.GeneralActivityForm"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".activity.GeneralActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".activity.CustomerDetailsActivity"
             android:exported="false"
@@ -80,7 +109,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
-
         <activity
             android:name=".Forms.JointInspectorInputFormActivity"
             android:screenOrientation="portrait"
@@ -125,15 +153,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
-
         <activity
             android:name=".activity.ViewInfoDetailsActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            tools:ignore="LockedOrientationActivity" />
-
-        <!--Activity Based-->
+            tools:ignore="LockedOrientationActivity" /> <!-- Activity Based -->
         <activity
             android:name=".activitybased.ActivityBasedActivity"
             android:screenOrientation="portrait"

@@ -118,7 +118,17 @@
                 android:textCursorDrawable="@null"
                 android:textSize="16sp"
                 tools:ignore="Autofill,LabelFor,TextFields" />
-
+            <ImageView
+                android:id="@+id/img_clearsearch"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:contentDescription="@string/image"
+                android:src="@drawable/ic_delete"
+                android:visibility="gone"/>
 
         </RelativeLayout>
 

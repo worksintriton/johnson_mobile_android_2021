@@ -2,7 +2,8 @@ package com.triton.johnsonapp.api;
 /**
  * Created by Iddinesh.
  */
-public class ApiCall {
+public class
+    ApiCall {
 
     // base url for the  project
     /*dev*/

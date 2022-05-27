@@ -3,6 +3,7 @@ package com.triton.johnsonapp.api;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
@@ -25,7 +26,9 @@ public class RetrofitClient {
 
 
     /*live*/
-    public static String BASE_URL = "http://smart.johnsonliftsltd.com:3000/api/";
+//    public static String BASE_URL = "http://smart.johnsonliftsltd.com:3000/api/";
+    public static String BASE_URL = "http://14.97.126.44:3000/api/";
+
     public static String IMAGE_BASE_URL = "http://smart.johnsonliftsltd.com:3000/";
 
     /*Banner Image*/
@@ -51,9 +54,13 @@ public class RetrofitClient {
 
         return retrofit;
     }
+
     public static Retrofit getImageClient() {
         client = new OkHttpClient();
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         client = new OkHttpClient.Builder()
+                .addInterceptor(httpLoggingInterceptor)
                 .readTimeout(3, TimeUnit.MINUTES)
                 .connectTimeout(3, TimeUnit.MINUTES)
                 .writeTimeout(3, TimeUnit.MINUTES )

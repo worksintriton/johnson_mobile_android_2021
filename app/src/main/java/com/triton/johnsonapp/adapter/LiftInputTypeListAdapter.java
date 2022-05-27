@@ -18,10 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.interfaces.EditTextValueChangedListener;
-import com.triton.johnsonapp.model.EditModel;
 import com.triton.johnsonapp.responsepojo.GetFieldListResponse;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -31,19 +29,21 @@ public class LiftInputTypeListAdapter extends  RecyclerView.Adapter<RecyclerView
 
     private Context context;
 
-    private int size;int startItem;
+    private String size;
+    int startItem;
 
     EditTextValueChangedListener editTextValueChangedListener;
 
     public List<GetFieldListResponse.DataBean.LiftListBean> list;
 
-    public LiftInputTypeListAdapter(Context context, int size, int startItem, EditTextValueChangedListener editTextValueChangedListene, List<GetFieldListResponse.DataBean.LiftListBean> list) {
+    public LiftInputTypeListAdapter(Context context, String size, int startItem, EditTextValueChangedListener editTextValueChangedListene, List<GetFieldListResponse.DataBean.LiftListBean> list) {
         this.context = context;
         this.size = size;
         this.startItem=startItem;
         this.editTextValueChangedListener=editTextValueChangedListene;
         this.list=list;
 
+        Log.w(TAG,"sIZEEEE---"+list.size());
     }
 
     @NonNull
@@ -56,23 +56,24 @@ public class LiftInputTypeListAdapter extends  RecyclerView.Adapter<RecyclerView
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         initLayoutOne((ViewHolderOne) holder, position);
-
+        Log.w(TAG,"INS---");
 
     }
 
     @SuppressLint({"SetTextI18n", "LogNotTimber"})
     private void initLayoutOne(ViewHolderOne holder, final int position) {
+        Log.w(TAG,"INS---");
 
+        Log.w(TAG,"sizeeeeeee -->"+size);
 
-        Log.w(TAG,"id -->"+size);
-
-        if(list.get(position).getLeft()!=null &&!list.get(position).getLeft().equals("")){
-
-           // holder.edt_inputValue.setText(list.get(position).getLeft());
-
-
-        }
+       if(list.get(position).getLeft()!=null &&!list.get(position).getLeft().equals("")){
+//
+//            //holder.edt_inputValue.setText(list.get(position).getLeft());
+//
+//
+       }
         if(list.get(position).getTitle() != null && !list.get(position).getTitle().isEmpty()){
+            Log.w(TAG,"INS---");
             holder.txt_title.setVisibility(View.VISIBLE);
             holder.txt_title.setText(list.get(position).getTitle());
         }else{
@@ -108,16 +109,25 @@ public class LiftInputTypeListAdapter extends  RecyclerView.Adapter<RecyclerView
 
     }
 
-    @Override
-    public int getItemCount() {
-        return size;
-    }
+
+
+//    @Override
+//    public int getItemCount(int size) {
+//        return size;
+//    }
 
 
     @Override
     public int getItemViewType(int position) {
         return position;
     }
+
+    @Override
+    public int getItemCount() {
+        return list.size();
+    }
+
+
 
     static class ViewHolderOne extends RecyclerView.ViewHolder {
 

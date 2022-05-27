@@ -185,7 +185,6 @@
                     android:focusable="false"
                     android:hint="User ID"
                     android:inputType="numberPassword"
-                    android:maxLength="10"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textSize="12sp"

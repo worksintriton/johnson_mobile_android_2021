@@ -21,16 +21,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="end">
+
             <ImageView
                 android:id="@+id/img_logout"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/_10dp"
                 android:contentDescription="@string/image"
                 android:gravity="end|center_vertical"
-                app:srcCompat="@drawable/logout_color"
-                android:layout_marginEnd="@dimen/_10dp"
-                />
+                app:srcCompat="@drawable/logout_color" />
         </RelativeLayout>
 
 

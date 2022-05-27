@@ -23,6 +23,7 @@ import com.triton.johnsonapp.Forms.JointInspectorInputFormActivity;
 import com.triton.johnsonapp.Forms.RowBasedInputFormActivity;
 import com.triton.johnsonapp.R;
 
+import com.triton.johnsonapp.activity.SubGroupListActivity;
 import com.triton.johnsonapp.api.APIInterface;
 import com.triton.johnsonapp.api.RetrofitClient;
 import com.triton.johnsonapp.requestpojo.JobFetchAddressRequest;
@@ -161,11 +162,13 @@ public class ABCustomerDetailsActivity extends AppCompatActivity {
         btn_continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.w(TAG,"FormType---"+form_type);
                 if(form_type == 1){
                     Intent intent = new Intent(getApplicationContext(), InputValueFormListActivity.class);
                     intent.putExtra("activity_id",activity_id);
                     intent.putExtra("job_id",job_id);
                     intent.putExtra("group_id",group_id);
+                    Log.w(TAG,"gROUP ID---"+group_id);
                     intent.putExtra("group_detail_name","");
                     intent.putExtra("subgroup_id","");
                     intent.putExtra("status",status);
@@ -175,6 +178,7 @@ public class ABCustomerDetailsActivity extends AppCompatActivity {
                     intent.putExtra("job_detail_no",job_detail_no);
                     intent.putExtra("new_count",new_count);
                     intent.putExtra("pause_count",pause_count);
+                    intent.putExtra("form_type",form_type);
                     startActivity(intent);
                 }
                 else if(form_type == 2){
@@ -207,10 +211,12 @@ public class ABCustomerDetailsActivity extends AppCompatActivity {
                     intent.putExtra("job_detail_no",job_detail_no);
                     intent.putExtra("new_count",new_count);
                     intent.putExtra("pause_count",pause_count);
+                    intent.putExtra("form_type",form_type);
                     startActivity(intent);
                 }
                 else if(form_type == 4){
-                    Intent intent = new Intent(getApplicationContext(), JointInspectorInputFormActivity.class);
+                    //Intent intent = new Intent(getApplicationContext(), JointInspectorInputFormActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), SubGroupListActivity.class);
                     intent.putExtra("activity_id",activity_id);
                     intent.putExtra("job_id",job_id);
                     intent.putExtra("group_id",group_id);

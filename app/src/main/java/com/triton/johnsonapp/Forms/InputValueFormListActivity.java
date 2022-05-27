@@ -31,7 +31,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -72,11 +71,10 @@ import com.triton.johnsonapp.requestpojo.GetFieldListRequest;
 import com.triton.johnsonapp.responsepojo.FileUploadResponse;
 import com.triton.johnsonapp.responsepojo.FormDataStoreResponse;
 import com.triton.johnsonapp.responsepojo.GetFieldListResponse;
+import com.triton.johnsonapp.responsepojo.GroupDetailManagementResponse;
 import com.triton.johnsonapp.session.SessionManager;
 import com.triton.johnsonapp.utils.ConnectionDetector;
 import com.triton.johnsonapp.utils.RestUtils;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -200,12 +198,21 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
     public String digitalSignatureServerUrlImagePath;
 
-    String string_value, message, service_id, activity_id, job_id, group_id,status,job_detail_no;
+    String string_value;
+    String message;
+    String service_id;
+    String activity_id;
+    String job_id;
+    String group_id;
+    String status;
+    String job_detail_no;
+
     String subgroup_id = "";
 
     int string_value_pos;
 
     List<GetFieldListResponse.DataBean.LiftListBean> list = new ArrayList<>();
+    //private List<GroupDetailManagementResponse.DataBean> dataBeanList;
 
     GetFieldListResponse getFieldListResponse = new GetFieldListResponse();
     private AlertDialog.Builder alertDialogBuilder;
@@ -219,10 +226,10 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
     private Dialog alertDialog;
 
     private String UKEY;
-    private String UKEY_DESC;
+    private String UKEY_DESC,ukey;
     private int new_count;
     private int pause_count;
-
+    private int form_type,form_type1;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -236,24 +243,29 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         if (extras != null) {
             service_id = extras.getString("service_id");
             group_id = extras.getString("group_id");
+            Log.w(TAG,"Group"+group_id);
             activity_id = extras.getString("activity_id");
             job_id = extras.getString("job_id");
+            Log.w(TAG,"job_id---"+job_id);
             job_detail_no = extras.getString("job_detail_no");
             status = extras.getString("status");
             subgroup_id = extras.getString("subgroup_id");
+            Log.w(TAG,"subgroup_id"+subgroup_id);
             fromactivity = extras.getString("fromactivity");
             UKEY = extras.getString("UKEY");
+            Log.w(TAG,"UKSEY----"+UKEY);
             UKEY_DESC = extras.getString("UKEY_DESC");
             new_count = extras.getInt("new_count");
             pause_count = extras.getInt("pause_count");
-
-
+            form_type = extras.getInt("form_type");
+            form_type1 = extras.getInt("from_typee");
+            ukey = extras.getString("ukey");
+            Log.w(TAG,"form_type----"+form_type);
 
             String group_detail_name = extras.getString("group_detail_name");
             String  sub_group_detail_name = extras.getString("sub_group_detail_name");
-
-
-            Log.w(TAG, "activity_id -->" + activity_id+ "status : "+status+" fromactivity : "+fromactivity);
+            Log.w(TAG, "Formmmm_type -->" + activity_id+ "status : "+status+" fromactivity : "+fromactivity);
+            Log.w(TAG, "activity_id11111 -->" + activity_id+ "status : "+status+" fromactivity : "+fromactivity);
 
             Log.w(TAG, "group_id -->" + group_id);
 
@@ -333,12 +345,12 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                     }
                 }, 50);
 
-                Log.w(TAG, "btnnext currentPage : " + currentPage);
+                //Log.w(TAG, "btnnext currentPage : " + currentPage);
                 int currentpagesize = currentPage;
-                Log.w(TAG, "btnnext totalPages  : " + totalPages+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS+" currentpagesize : "+currentpagesize);
+                //Log.w(TAG, "btnnext totalPages  : " + totalPages+" TOTAL_NUM_ITEMS : "+TOTAL_NUM_ITEMS+" currentpagesize : "+currentpagesize);
                 List<GetFieldListResponse.DataBean> dataBeanListS = new ArrayList<>();
                 int startItem = currentPage * ITEMS_PER_PAGE;
-                Log.w(TAG, "btnnext startItem : "  + startItem);
+                //Log.w(TAG, "btnnext startItem : "  + startItem);
 
 
                 if (currentPage == 0) {
@@ -356,13 +368,14 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                 }
                 else {
                     int enditem = (currentPage+1)*ITEMS_PER_PAGE;
-                   Log.w(TAG, "currentPage else currentPage : " + currentPage+" startItem : "+startItem+" enditem : "+enditem+" ITEMS_PER_PAGE : "+ITEMS_PER_PAGE);
+                    Log.w(TAG, "currentPage else currentPage : " + currentPage+" startItem : "+startItem+" enditem : "+enditem+" ITEMS_PER_PAGE : "+ITEMS_PER_PAGE);
 
                     Log.w(TAG, "btnnext enditem : "  + enditem);
                     for (int i = startItem; i <enditem; i++) {
                         Log.w(TAG, "loop fieldvalue : "  + dataBeanList.get(i).getField_value()+" i : "+i);
                         if(dataBeanList.get(i).getField_value().isEmpty() || dataBeanList.get(i).getField_value().equalsIgnoreCase("Select Value")){
                             if(dataBeanList.get(i).getField_type() !=  null && dataBeanList.get(i).getField_type().equalsIgnoreCase("Lift")){
+                                Log.w(TAG, "index---- : "  + i+" endvaleue "+ (enditem-1));
                                 dataBeanList.get(i).setField_value("LIFT");
                             }/*else if(dataBeanList.get(i).getField_type() !=  null && dataBeanList.get(i).getField_type().equalsIgnoreCase("File upload")){
                                 dataBeanList.get(i).setField_value("File upload");
@@ -376,17 +389,17 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
 
                 }
-                Log.w(TAG, "btnnext flag : " + flag);
+                //Log.w(TAG, "btnnext flag : " + flag);
 
                 if(flag){
                     currentPage += 1;
-                     startItem = currentPage * ITEMS_PER_PAGE;
+                    startItem = currentPage * ITEMS_PER_PAGE;
                     Log.w(TAG, "currentPage flag : " + currentPage+" startItem : "+startItem+" ITEMS_PER_PAGE : "+ITEMS_PER_PAGE);
                 }
 
                 int condition = 0;
 
-               ITEMS_REMAINING = ITEMS_REMAINING - ITEMS_PER_PAGE;
+                ITEMS_REMAINING = ITEMS_REMAINING - ITEMS_PER_PAGE;
 
                 Log.w(TAG, "btnnext ITEMS_REMAINING : " + ITEMS_REMAINING);
                 Log.w(TAG, "btnnext TOTAL_NUM_ITEMS : " + TOTAL_NUM_ITEMS);
@@ -447,7 +460,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                         btn_clear.setVisibility(View.GONE);
                     }
 
-                    }
+                }
                 else {
                     if(flag) {
                         Log.w(TAG, "btnnext else condition----->");
@@ -480,11 +493,6 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                     }
 
                 }
-
-
-
-
-
 
             }
         });
@@ -528,57 +536,60 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
             }
         });
         btn_success.setOnClickListener(new View.OnClickListener() {
+
             @SuppressLint({"NewApi", "ResourceAsColor"})
             @Override
             public void onClick(View v) {
+                Log.w(TAG,"inside");
                 if (networkStatus.equalsIgnoreCase("Not connected to Internet")) {
 
                     Toasty.warning(getApplicationContext(), "No Internet", Toasty.LENGTH_LONG).show();
 
                 } else {
-                    boolean flag = true;
-                    for (int i = 0; i <dataBeanList.size(); i++) {
-                        Log.w(TAG, "loop fieldvalue : "  + dataBeanList.get(i).getField_value()+" i : "+i);
-                        if(dataBeanList.get(i).getField_value().isEmpty() || dataBeanList.get(i).getField_value().equalsIgnoreCase("Select Value")){
-                            if(dataBeanList.get(i).getField_type() !=  null && dataBeanList.get(i).getField_type().equalsIgnoreCase("Lift")){
-                                dataBeanList.get(i).setField_value("LIFT");
-                            }/*else if(dataBeanList.get(i).getField_type() !=  null && dataBeanList.get(i).getField_type().equalsIgnoreCase("File upload")){
-                                dataBeanList.get(i).setField_value("File upload");
-                            }*/
-                            flag = false;
-                        }
+
+//                    boolean flag = true;
+//                    for (int i = 0; i <dataBeanList.size(); i++) {
+//                        Log.w(TAG, "loop fieldvalue : "  + dataBeanList.get(i).getField_value()+" i : "+i);
+//                        if(dataBeanList.get(i).getField_value().isEmpty() || dataBeanList.get(i).getField_value().equalsIgnoreCase("Select Value")){
+//                            if(dataBeanList.get(i).getField_type() !=  null && dataBeanList.get(i).getField_type().equalsIgnoreCase("Lift")){
+//                                dataBeanList.get(i).setField_value("LIFT");
+//                            }/*else if(dataBeanList.get(i).getField_type() !=  null && dataBeanList.get(i).getField_type().equalsIgnoreCase("File upload")){
+//                                dataBeanList.get(i).setField_value("File upload");
+//                            }*/
+//                            flag = false;
+//                        }
+//
+//
+//                    }
+//
+//                    Log.w(TAG, "flag " + flag);
+//
+//                    if(flag){
+//                        if(fromactivity != null && fromactivity.equalsIgnoreCase("SubGroupListActivity")){
+//                            if(userrole != null && userrole.equalsIgnoreCase("ESP")){
+//                                work_status = "Pending";
+//                            }else{
+//                                work_status = "Submitted";
+//                            }
+//
+//
+//                            Log.w(TAG,"Workstatus -->"+ work_status);
+//                            joinInspectionCreateRequestCall();
+//
+//                        }else{
+//                            getformdataListResponseCall();
+//
+//                        }
+//                    }else{
+//                        Toast toast = Toast.makeText(getApplicationContext(), "please enter all required data", Toast.LENGTH_SHORT);
+//                        toast.setGravity(Gravity.CENTER, 0, 0);
+//                        //toast.getView().setBackgroundTintList(somefab,ColorStateList.valueOf(R.color.warning));
+//                        toast.show();
+//                    }
 
 
-                    }
-
-                    Log.w(TAG, "flag " + flag);
-
-                    if(flag){
-                        if(fromactivity != null && fromactivity.equalsIgnoreCase("SubGroupListActivity")){
-                            if(userrole != null && userrole.equalsIgnoreCase("ESP")){
-                                work_status = "Pending";
-                            }else{
-                                work_status = "Submitted";
-                            }
-
-
-                            Log.w(TAG,"Workstatus -->"+ work_status);
-                            joinInspectionCreateRequestCall();
-
-                        }else{
-                            getformdataListResponseCall();
-
-                        }
-                    }else{
-                        Toast toast = Toast.makeText(getApplicationContext(), "please enter all required data", Toast.LENGTH_SHORT);
-                        toast.setGravity(Gravity.CENTER, 0, 0);
-                        toast.getView().setBackgroundTintList(ColorStateList.valueOf(R.color.warning));
-                        toast.show();
-                    }
-
-
-
-
+                  //  Toasty.warning(getApplicationContext(), "Internet", Toasty.LENGTH_LONG).show();
+                    Toasty.warning(getApplicationContext(), "Formmmm_type -->"+ form_type1 + "\n" + ukey, Toasty.LENGTH_LONG).show();
                 }
 
             }
@@ -758,7 +769,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         //Creating an object of our api interface
         APIInterface apiInterface = RetrofitClient.getClient().create(APIInterface.class);
         Call<GetFieldListResponse> call = apiInterface.joinInspectionGetFieldListResponseCall(RestUtils.getContentType(), getFieldListRequest());
-        Log.w(TAG, "url  :%s" + call.request().url().toString());
+        Log.w(TAG, "url join :%s" + call.request().url().toString());
 
         call.enqueue(new Callback<GetFieldListResponse>() {
             @SuppressLint({"LogNotTimber", "SetTextI18n"})
@@ -771,14 +782,14 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
                         dialog.dismiss();
 
-                       responsemessage =  response.body().getMessage();
+                        responsemessage =  response.body().getMessage();
 
-                       resWorkStatus = response.body().getWork_status();
+                        resWorkStatus = response.body().getWork_status();
                         Log.w(TAG, "resWorkStatus -->" + resWorkStatus);
 
-                       if(resWorkStatus != null && resWorkStatus.equalsIgnoreCase("Clear")){
-                           showWarningWorkStatusClear();
-                       }
+                        if(resWorkStatus != null && resWorkStatus.equalsIgnoreCase("Clear")){
+                            showWarningWorkStatusClear();
+                        }
 
                         Log.w(TAG, "joinInspectionGetFieldListResponseCall" + new Gson().toJson(response.body()));
 
@@ -1026,9 +1037,9 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
     }
 
     @Override
-    public void getInputFieldListener(RecyclerView rv_liftinputlist, int startItem, int size, List<GetFieldListResponse.DataBean.LiftListBean> lift_list) {
+    public void getInputFieldListener(RecyclerView rv_liftinputlist, int startItem, String size, List<GetFieldListResponse.DataBean.LiftListBean> lift_list) {
 
-        Log.w(TAG, "getInputFieldListener size " + size + " startItem : " + startItem + " lift_list : " + new Gson().toJson(lift_list));
+        //Log.w(TAG, "getInputFieldListener size----- " + size + " startItem : " + startItem + " lift_list : " + new Gson().toJson(lift_list));
         rv_liftinputlist.setNestedScrollingEnabled(true);
         LinearLayoutManager linearlayout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rv_liftinputlist.setLayoutManager(linearlayout);
@@ -1036,17 +1047,17 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         LiftInputTypeListAdapter liftInputTypeListAdapter = new LiftInputTypeListAdapter(getApplicationContext(), size, startItem, this, lift_list);
         rv_liftinputlist.setAdapter(liftInputTypeListAdapter);
 
-        Log.w(TAG, "getInputFieldListener size " + size + " startItem : " + startItem + " list : " + new Gson().toJson(list));
+        Log.w(TAG, "getInputFieldListener size " + size + " startItem : " + startItem + " list : " + new Gson().toJson(lift_list));
 
 
     }
 
     @Override
-    public void editTextValueListener(int startItem, String s, int size, int position,List<GetFieldListResponse.DataBean.LiftListBean> listBean) {
+    public void editTextValueListener(int startItem, String s, String size, int position, List<GetFieldListResponse.DataBean.LiftListBean> listBean) {
         Log.w(TAG, "editTextValueListener POS startItem : "+startItem+" s : "+s+" size : "+size+" position : "+position+" list ->"+new Gson().toJson(listBean));
         Log.w(TAG, "editTextValueListener POS startItem : "+"Liftlist : "+new Gson().toJson(list));
         listBean.get(position).setLeft(s);
-       // list.get(position).setLeft(s);
+        // list.get(position).setLeft(s);
         dataBeanList.get(startItem).setLift_list(listBean);
         Log.w(TAG, "editTextValueListener "+" listBean : "+new Gson().toJson(listBean));
         Log.w(TAG, "editTextValueListener "+" dataBeanList : "+new Gson().toJson(dataBeanList));
@@ -1422,17 +1433,24 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                         digitalSignatureServerUrlImagePath = response.body().getData();
                         Log.w(TAG, "digitalSignatureServerUrlImagePath " + digitalSignatureServerUrlImagePath);
                         ivdigitalsignature.setVisibility(View.VISIBLE);
+                        //ivdigitalsignature.setImageDrawable(null);
                         if (digitalSignatureServerUrlImagePath != null && !digitalSignatureServerUrlImagePath.isEmpty()) {
                             dataBeanList.get(position).setField_value(digitalSignatureServerUrlImagePath);
                             Log.w(TAG, "digitalSignatureServerUrlImagePath pos--->" + position);
 
                             Log.w(TAG, "digitalSignatureServerUrlImagePath--->" + digitalSignatureServerUrlImagePath);
 
-                            Glide
+                           /* Glide
                                     .with(getApplicationContext())
                                     .load(digitalSignatureServerUrlImagePath)
                                     .apply(new RequestOptions().override(600, 200))
                                     .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                    .into(ivdigitalsignature);*/
+                            Glide.with(getApplicationContext())
+                                    .load(digitalSignatureServerUrlImagePath)
+                                    .override(600, 200)
+                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                    .skipMemoryCache(true)
                                     .into(ivdigitalsignature);
 
 
@@ -1540,6 +1558,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
     }
     private void joinInspectionCreateRequestCall() {
+        Log.w(TAG, "joinInspectionCreateRequestCall url111111111111111111  :%s");
         dialog = new Dialog(InputValueFormListActivity.this, R.style.NewProgressDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.progroess_popup);
@@ -1712,20 +1731,25 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if(fromactivity != null && fromactivity.equalsIgnoreCase("ABCustomerDetailsActivity")){
+                            Log.w(TAG,"Formtype--"+fromactivity);
                             Intent intent = new Intent(InputValueFormListActivity.this, ActivityJobListActivity.class);
-                            intent.putExtra("activity_id", activity_id);
+                            //intent.putExtra("activity_id", activity_id);
                             intent.putExtra("job_id", job_id);
                             intent.putExtra("job_detail_no", job_detail_no);
+                            intent.putExtra("activity_id",group_id);
                             intent.putExtra("status", status);
+                            intent.putExtra("fromactivity", fromactivity);
                             intent.putExtra("UKEY", UKEY);
                             intent.putExtra("UKEY_DESC", UKEY_DESC);
                             intent.putExtra("new_count", new_count);
                             intent.putExtra("pause_count", pause_count);
+                            intent.putExtra("form_type",form_type);
                             startActivity(intent);
                             overridePendingTransition(R.anim.new_right, R.anim.new_left);
                             finish();
                         }
                         else if(fromactivity != null && fromactivity.equalsIgnoreCase("SubGroupListActivity")){
+                            Log.w(TAG,"Formtype--"+fromactivity);
                             Intent intent = new Intent(InputValueFormListActivity.this, SubGroupListActivity.class);
                             intent.putExtra("activity_id",activity_id);
                             intent.putExtra("job_id",job_id);
@@ -1741,6 +1765,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                             overridePendingTransition(R.anim.new_right, R.anim.new_left);
                             finish();
                         }else {
+                            Log.w(TAG,"Formtype--"+fromactivity);
                             Intent intent = new Intent(InputValueFormListActivity.this, GroupListActivity.class);
                             intent.putExtra("activity_id", activity_id);
                             intent.putExtra("job_id", job_id);
@@ -1784,34 +1809,34 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
 
     private void showWarningWorkStatusClear() {
-           Log.w(TAG, "showWarningWorkStatusClear -->" + resWorkStatus);
+        Log.w(TAG, "showWarningWorkStatusClear -->" + resWorkStatus);
         alertdialog = new Dialog(InputValueFormListActivity.this);
         alertdialog.setCancelable(false);
         alertdialog.setContentView(R.layout.alert_sucess_clear);
-            Button btn_goback = alertdialog.findViewById(R.id.btn_goback);
-            btn_goback.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    alertdialog.dismiss();
-                    Intent intent = new Intent(InputValueFormListActivity.this, SubGroupListActivity.class);
-                    intent.putExtra("activity_id",activity_id);
-                    intent.putExtra("job_id",job_id);
-                    intent.putExtra("group_id",group_id);
-                    intent.putExtra("status", status);
-                    intent.putExtra("fromactivity", fromactivity);
-                    intent.putExtra("UKEY",UKEY);
-                    intent.putExtra("new_count",new_count);
-                    intent.putExtra("pause_count",pause_count);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.new_right, R.anim.new_left);
-                    finish();
+        Button btn_goback = alertdialog.findViewById(R.id.btn_goback);
+        btn_goback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertdialog.dismiss();
+                Intent intent = new Intent(InputValueFormListActivity.this, SubGroupListActivity.class);
+                intent.putExtra("activity_id",activity_id);
+                intent.putExtra("job_id",job_id);
+                intent.putExtra("group_id",group_id);
+                intent.putExtra("status", status);
+                intent.putExtra("fromactivity", fromactivity);
+                intent.putExtra("UKEY",UKEY);
+                intent.putExtra("new_count",new_count);
+                intent.putExtra("pause_count",pause_count);
+                startActivity(intent);
+                overridePendingTransition(R.anim.new_right, R.anim.new_left);
+                finish();
 
-                }
-            });
-            Objects.requireNonNull(alertdialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            }
+        });
+        Objects.requireNonNull(alertdialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         alertdialog.show();
 
-      
+
 
 
 
@@ -1822,29 +1847,29 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         submittedSuccessfulalertdialog = new Dialog(InputValueFormListActivity.this);
         submittedSuccessfulalertdialog.setCancelable(false);
         submittedSuccessfulalertdialog.setContentView(R.layout.alert_sucess_clear);
-            Button btn_goback = submittedSuccessfulalertdialog.findViewById(R.id.btn_goback);
-            TextView txt_success_msg = submittedSuccessfulalertdialog.findViewById(R.id.txt_success_msg);
+        Button btn_goback = submittedSuccessfulalertdialog.findViewById(R.id.btn_goback);
+        TextView txt_success_msg = submittedSuccessfulalertdialog.findViewById(R.id.txt_success_msg);
         txt_success_msg.setText("All data submitted successfully.");
-            btn_goback.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    submittedSuccessfulalertdialog.dismiss();
-                    Intent intent = new Intent(InputValueFormListActivity.this, GroupListActivity.class);
-                    intent.putExtra("activity_id", activity_id);
-                    intent.putExtra("job_id", job_id);
-                    intent.putExtra("group_id",group_id);
-                    intent.putExtra("status", status);
-                    intent.putExtra("fromactivity", fromactivity);
-                    intent.putExtra("UKEY",UKEY);
-                    intent.putExtra("new_count",new_count);
-                    intent.putExtra("pause_count",pause_count);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.new_right, R.anim.new_left);
-                    finish();
+        btn_goback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                submittedSuccessfulalertdialog.dismiss();
+                Intent intent = new Intent(InputValueFormListActivity.this, GroupListActivity.class);
+                intent.putExtra("activity_id", activity_id);
+                intent.putExtra("job_id", job_id);
+                intent.putExtra("group_id",group_id);
+                intent.putExtra("status", status);
+                intent.putExtra("fromactivity", fromactivity);
+                intent.putExtra("UKEY",UKEY);
+                intent.putExtra("new_count",new_count);
+                intent.putExtra("pause_count",pause_count);
+                startActivity(intent);
+                overridePendingTransition(R.anim.new_right, R.anim.new_left);
+                finish();
 
-                }
-            });
-            Objects.requireNonNull(submittedSuccessfulalertdialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            }
+        });
+        Objects.requireNonNull(submittedSuccessfulalertdialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         submittedSuccessfulalertdialog.show();
 
 
@@ -1869,6 +1894,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 
         }
     }
+
 
 
 }

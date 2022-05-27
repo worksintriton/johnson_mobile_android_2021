@@ -29,11 +29,11 @@
                 android:textColor="@color/black"/>
 
             <EditText
-                android:layout_marginTop="@dimen/_5dp"
-                android:layout_below="@+id/txt_title"
                 android:id="@+id/edt_inputValue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_title"
+                android:layout_marginTop="@dimen/_5dp"
                 android:background="@drawable/child_back_ground"
                 android:hint="@string/input_value"
                 android:inputType="number"

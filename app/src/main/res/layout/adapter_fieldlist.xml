@@ -82,7 +82,7 @@
                 android:background="@drawable/child_back_ground"
                 android:gravity="start"
                 android:hint="@string/textarea"
-                android:inputType="text"
+                android:inputType="textMultiLine"
                 android:padding="15dp"
                 android:visibility="gone" />
 

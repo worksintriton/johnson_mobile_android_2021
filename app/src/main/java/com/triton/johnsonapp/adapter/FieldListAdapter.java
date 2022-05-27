@@ -124,16 +124,18 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
     @SuppressLint({"SetTextI18n", "LogNotTimber"})
     private void initLayoutOne(ViewHolderOne holder, final int position) {
 
+
         currentItem = dataBeanList.get(position);
+        Log.w(TAG,"CURRENTITEM-----"+currentItem.getField_length());
 
         int startItem=currentPage*ITEMS_PER_PAGE+position;
 
-        Log.w(TAG,"currentItem startItem "+startItem);
-
-        Log.w(TAG,"currentItem POS "+position);
-        Log.w(TAG,"currentItem Field_name "+position+" "+currentItem.getField_name());
-
-        Log.w(TAG,"currentItem.getField_value() ---->"+currentItem.getField_value());
+//        Log.w(TAG,"currentItem startItem "+startItem);
+//
+//        Log.w(TAG,"currentItem POS "+position);
+//        Log.w(TAG,"currentItem Field_name "+position+" "+currentItem.getField_name());
+//
+//        Log.w(TAG,"currentItem.getField_value() ---->"+currentItem.getField_value());
 
 
         if(currentItem.getField_name() != null && !currentItem.getField_name().equals("")){
@@ -251,13 +253,13 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
             else if(currentItem.getField_type().equals("Dropdown")){
 
-                Log.w(TAG,"responsemessage : "+InputValueFormListActivity.responsemessage );
+                //Log.w(TAG,"responsemessage : "+InputValueFormListActivity.responsemessage );
 
                 if(InputValueFormListActivity.responsemessage != null && InputValueFormListActivity.responsemessage.equalsIgnoreCase("Joininspection")){
                     if(userrole != null && userrole.equalsIgnoreCase("USER")){
                         if(currentItem.getField_value() != null && !currentItem.getField_value().equalsIgnoreCase("OK")){
                             arrayListdropdown =  currentItem.getDrop_down();
-                            Log.w(TAG,"currentItem.getDrop_down() : "+new Gson().toJson(currentItem.getDrop_down()));
+                            //Log.w(TAG,"currentItem.getDrop_down() : "+new Gson().toJson(currentItem.getDrop_down()));
 
                             holder.ll_dropdown.setVisibility(View.VISIBLE);
 
@@ -275,7 +277,7 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                             ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, arrayList);
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-                            Log.w(TAG,"currentItem.getDrop_down() Field_comments : "+currentItem.getField_comments()+" Field_value : "+currentItem.getField_value());
+                            //Log.w(TAG,"currentItem.getDrop_down() Field_comments : "+currentItem.getField_comments()+" Field_value : "+currentItem.getField_value());
 
                             if(currentItem.getField_value() != null && !currentItem.getField_value().isEmpty()){
                                 //if(currentItem.getField_comments()!=null && !currentItem.getField_comments().isEmpty()){
@@ -293,9 +295,9 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
                                         if(++check > 1) {
 
-                                            Log.w(TAG,"currentItem POS "+startItem);
+                                            //Log.w(TAG,"currentItem POS "+startItem);
 
-                                            Log.w(TAG,"currentItem POS "+parent.getItemAtPosition(pos));
+                                            //Log.w(TAG,"currentItem POS "+parent.getItemAtPosition(pos));
 
                                             getSpinnerListener.getSpinnerListener(holder.spr_dropdown,startItem,parent.getItemAtPosition(pos).toString(),currentItem.getField_length());
 
@@ -316,9 +318,9 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                                     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                                         if(++check > 1) {
 
-                                            Log.w(TAG,"currentItem POS "+startItem);
+                                            //Log.w(TAG,"currentItem POS "+startItem);
 
-                                            Log.w(TAG,"currentItem POS "+parent.getItemAtPosition(pos));
+                                            //Log.w(TAG,"currentItem POS "+parent.getItemAtPosition(pos));
 
                                             getSpinnerListener.getSpinnerListener(holder.spr_dropdown,startItem,parent.getItemAtPosition(pos).toString(),currentItem.getField_length());
 
@@ -393,15 +395,15 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
                         }
                         else {
-                            Log.w(TAG,"Dropdown else--->");
+                            //Log.w(TAG,"Dropdown else--->");
                             holder.spr_dropdown.setAdapter(adapter);
                             holder.spr_dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                                     if(++check > 1) {
 
-                                        Log.w(TAG,"currentItem POS "+startItem);
+                                        //Log.w(TAG,"currentItem POS "+startItem);
 
-                                        Log.w(TAG,"currentItem POS "+parent.getItemAtPosition(pos));
+                                        //Log.w(TAG,"currentItem POS "+parent.getItemAtPosition(pos));
 
                                         getSpinnerListener.getSpinnerListener(holder.spr_dropdown,startItem,parent.getItemAtPosition(pos).toString(),currentItem.getField_length());
 
@@ -495,12 +497,7 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
                     }
                 }
-
-
-
-
             }
-
 
             else if(currentItem.getField_type().equals("Date&time")){
 
@@ -596,7 +593,7 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
                     digitalSignatureServerUrlImagePath = currentItem.getField_value();
 
-                    Log.w(TAG, "digitalSignatureServerUrlImagePath " + digitalSignatureServerUrlImagePath);
+                    Log.w(TAG, "digitalSignatureServerUrlImagePath---- " + digitalSignatureServerUrlImagePath);
 
                     holder.ivdigitalsignature.setVisibility(View.VISIBLE);
                     if (digitalSignatureServerUrlImagePath != null && !digitalSignatureServerUrlImagePath.isEmpty()) {
@@ -643,7 +640,7 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                     @Override
                     public void onClick(View v) {
 
-                        Log.w(TAG,"currentItem POS DS"+startItem);
+                        Log.w(TAG,"currentItem POS DS1"+startItem);
 
 
                         getDigitalSignUploadAddListener.getDigitalSignUploadAddListener(holder.llheaderdigitalsignature,holder.ivdigitalsignature,holder.mSignaturePad,holder.mSaveButton,holder.mClearButton,startItem,currentItem.getField_length());
@@ -669,15 +666,15 @@ public class FieldListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
 
                 if(currentItem.getField_length() != null && !currentItem.getField_length().equals("")){
 
-                    Log.w(TAG,"currentItem POS Lift"+startItem);
-                    Log.w(TAG,"currentItem POS Lift"+currentItem.getField_name()+" "+currentItem.get_id());
-
-                    int size = Integer.parseInt(currentItem.getField_length());
-
+                    //Log.w(TAG,"currentItem POS Lift"+startItem);
+                    //Log.w(TAG,"currentItem POS Lift"+currentItem.getField_name()+" "+currentItem.get_id());
+                    //String s = new String(currentItem.getField_length());
+                    //int size = Integer.parseInt(s);
+                    //Log.w(TAG,"size"+size);
                     holder.rv_liftinputlist.setVisibility(View.VISIBLE);
 
 
-                    getInputFieldListener.getInputFieldListener(holder.rv_liftinputlist,startItem,size,currentItem.getLift_list());
+                    getInputFieldListener.getInputFieldListener(holder.rv_liftinputlist,startItem,currentItem.getField_length(),currentItem.getLift_list());
                 }
             }
         }

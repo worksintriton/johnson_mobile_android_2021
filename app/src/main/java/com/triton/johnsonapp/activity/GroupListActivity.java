@@ -68,6 +68,7 @@ import com.triton.johnsonapp.requestpojo.PauseJobRequest;
 import com.triton.johnsonapp.requestpojo.ResumeJobRequest;
 import com.triton.johnsonapp.requestpojo.StartWorkRequest;
 import com.triton.johnsonapp.requestpojo.StopJobRequest;
+import com.triton.johnsonapp.responsepojo.ActivityGetListNumberResponse;
 import com.triton.johnsonapp.responsepojo.CheckDataStoreResponse;
 import com.triton.johnsonapp.responsepojo.FormDataStoreResponse;
 import com.triton.johnsonapp.responsepojo.GroupDetailManagementResponse;
@@ -126,6 +127,10 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
     TextView txt_toolbar_title;
 
     @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.img_clearsearch)
+    ImageView img_clearsearch;
+
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.rl_menu)
     RelativeLayout rl_menu;
 
@@ -140,7 +145,7 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.edt_search)
     EditText edt_search;
-
+    GroupListAdapter groupListAdapter;
 
     private String group_id = "";
     private String subgroup_id = "";
@@ -154,7 +159,7 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
     private String fromto;
     private String job_detail_no;
 
-
+    List<GroupDetailManagementResponse.DataBean> dataBeanList;
     private static final int REQUEST_CHECK_SETTINGS_GPS = 0x1;
     private GoogleApiClient googleApiClient;
     Location mLastLocation;
@@ -205,8 +210,6 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
             job_detail_no = extras.getString("job_detail_no");
             Log.w(TAG,"activity_id -->"+activity_id+"job_id : "+job_id+" status : "+status+" fromactivity : "+fromactivity+" job_detail_no : "+job_detail_no+" fromto : "+fromto);
 
-
-
         }
 
         if(job_id != null){
@@ -245,18 +248,54 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
         edt_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    search_string = textView.getText().toString();
-                    groupdetailmanagmentResponseCall();
-                    return true;
-                }
+//                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+//                    img_clearsearch.setVisibility(View.VISIBLE);
+//                    search_string = textView.getText().toString();
+//                    groupdetailmanagmentResponseCall();
+//                    return true;
+//                }
+                img_clearsearch.setVisibility(View.VISIBLE);
+                String Searchvalue = edt_search.getText().toString();
+                Log.w(TAG,"Search Value---"+Searchvalue);
+                filter(Searchvalue);
                 return false;
+
+            }
+        });
+
+        img_clearsearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                edt_search.setText("");
+                rv_grouplist.setVisibility(View.VISIBLE);
+                groupdetailmanagmentResponseCall();
+                img_clearsearch.setVisibility(View.INVISIBLE);
             }
         });
 
 
+    }
 
-
+    private void filter(String s) {
+        List<GroupDetailManagementResponse.DataBean> filteredlist = new ArrayList<>();
+        for(GroupDetailManagementResponse.DataBean item : dataBeanList)
+        {
+            if(item.getGroup_detail_name().toLowerCase().contains(s.toLowerCase()))
+            {
+                Log.w(TAG,"filter----"+item.getGroup_detail_name().toLowerCase().contains(s.toLowerCase()));
+                filteredlist.add(item);
+            }
+        }
+        if(filteredlist.isEmpty())
+        {
+            Toast.makeText(this,"No Data Found ... ",Toast.LENGTH_SHORT).show();
+            rv_grouplist.setVisibility(View.GONE);
+            txt_no_records.setVisibility(View.VISIBLE);
+            txt_no_records.setText("No Parts Available");
+        }else
+        {
+            groupListAdapter.filterList(filteredlist);
+        }
     }
 
 
@@ -316,7 +355,7 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
                         if(response.body().getData() != null){
 
                             dialog.dismiss();
-                            List<GroupDetailManagementResponse.DataBean> dataBeanList = response.body().getData();
+                            dataBeanList = response.body().getData();
 
 
                             if(dataBeanList != null && dataBeanList.size()>0){
@@ -381,7 +420,7 @@ public class GroupListActivity extends AppCompatActivity  implements OnMapReadyC
 
         rv_grouplist.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
         rv_grouplist.setItemAnimator(new DefaultItemAnimator());
-        GroupListAdapter groupListAdapter = new GroupListAdapter(this, dataBeanList,activity_id,job_id,status,fromactivity);
+        groupListAdapter = new GroupListAdapter(this, dataBeanList,activity_id,job_id,status,fromactivity);
         rv_grouplist.setAdapter(groupListAdapter);
 
     }

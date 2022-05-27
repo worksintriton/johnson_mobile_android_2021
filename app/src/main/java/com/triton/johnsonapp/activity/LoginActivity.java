@@ -535,12 +535,6 @@ public class LoginActivity extends AppCompatActivity implements OnMapReadyCallba
         latitude = mLastLocation.getLatitude();
         longitude = mLastLocation.getLongitude();
 
-
-
-
-
-
-
     }
     @Override
     public void onConnected(@Nullable Bundle bundle) {

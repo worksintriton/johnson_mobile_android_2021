@@ -19,6 +19,7 @@ import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.activity.ActivityStatusActivity;
 import com.triton.johnsonapp.responsepojo.ActivityGetListNumberResponse;
 import com.triton.johnsonapp.responsepojo.ActivityListManagementResponse;
+import com.triton.johnsonapp.responsepojo.JobNoManagementResponse;
 
 import java.util.List;
 
@@ -38,6 +39,12 @@ public class ActivityBasedListAdapter extends  RecyclerView.Adapter<RecyclerView
         this.dataBeanList = dataBeanList;
 
 
+    }
+
+    public void filterList(List<ActivityGetListNumberResponse.DataBean> filterllist)
+    {
+        dataBeanList = filterllist;
+        notifyDataSetChanged();
     }
 
     @NonNull

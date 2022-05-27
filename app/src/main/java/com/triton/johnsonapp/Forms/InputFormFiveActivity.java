@@ -9,8 +9,14 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -18,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +36,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.activity.GroupListActivity;
@@ -50,7 +58,6 @@ import com.triton.johnsonapp.session.SessionManager;
 import com.triton.johnsonapp.utils.ConnectionDetector;
 import com.triton.johnsonapp.utils.RestUtils;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -112,6 +119,17 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
     @BindView(R.id.btn_submit)
     Button btn_submit;
 
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.edt_search)
+    EditText edt_search;
+
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.img_clearsearch)
+    ImageView img_clearsearch;
+
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.btn_floatsubmit)
+    FloatingActionButton btn_floatsubmit;
 
     Dialog dialog;
     Dialog alertdialog;
@@ -153,6 +171,7 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
     private int pause_count;
     private String UKEY_DESC;
     private String job_detail_no;
+
 
 
     @Override
@@ -479,6 +498,40 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
             }
         });
 
+        btn_floatsubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (networkStatus.equalsIgnoreCase("Not connected to Internet")) {
+
+                    Toasty.warning(getApplicationContext(), "No Internet", Toasty.LENGTH_LONG).show();
+
+                }else
+                {
+                    boolean flag = true;
+                    for (int i = 0; i <dataBeanList.size(); i++) {
+                        Log.w(TAG, "loop fieldvalue : "  + dataBeanList.get(i).getShortage()+" i : "+i);
+                        if(dataBeanList.get(i).getShortage() == 0){
+
+                            // flag = false;
+                            flag = true;
+                        }
+
+
+                    }
+                    Log.w(TAG, "flag " + flag);
+                    if(flag){
+                        Data.setMaterial_details(dataBeanList);
+                        formFiveStroeDataRequestCall();
+                    }else{
+                        Toast toast = Toast.makeText(getApplicationContext(), "please enter all required data", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        //toast.getView().setBackgroundTintList(ColorStateList.valueOf(R.color.warning));
+                        toast.show();
+                    }
+                }
+            }
+        });
+
        /* btn_submit.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -498,10 +551,54 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
 
             }
         });*/
+        edt_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                img_clearsearch.setVisibility(View.VISIBLE);
+                String Searchvalue = edt_search.getText().toString();
+                Log.w(TAG,"Search Value---"+Searchvalue);
+                filter(Searchvalue);
+                return false;
+            }
+        });
+        img_clearsearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                edt_search.setText("");
+                rv_formfive.setVisibility(View.VISIBLE);
+                ViewInfoRequestCall();
+                img_clearsearch.setVisibility(View.INVISIBLE);
+            }
+        });
+
+
 
 
 
     }
+
+    private void filter(String s) {
+        List<FormFiveDataResponse.DataBean.MaterialDetailsBean> filteredlist = new ArrayList<>();
+        for(FormFiveDataResponse.DataBean.MaterialDetailsBean item : dataBeanList)
+        {
+            if(item.getPart_no().toLowerCase().contains(s.toLowerCase()))
+            {
+                Log.w(TAG,"filter----"+item.getPart_no().toLowerCase().contains(s.toLowerCase()));
+                filteredlist.add(item);
+            }
+        }
+        if(filteredlist.isEmpty())
+        {
+            Toast.makeText(this,"No Data Found ... ",Toast.LENGTH_SHORT).show();
+            rv_formfive.setVisibility(View.GONE);
+            txt_no_records.setVisibility(View.VISIBLE);
+            txt_no_records.setText("No Parts Available");
+        }else
+        {
+            formFiveListAdapter.filterList(filteredlist);
+        }
+    }
+
 
     @SuppressLint("LogNotTimber")
     private void formFiveDataResponseCall() {
@@ -764,14 +861,14 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
     @Override
     public void getDamageQtyListner(EditText edt_number, String s, int position) {
 
-        Log.w(TAG,"getDamageQtyListner : "+edt_number+" s : "+s+" position : "+position);
+        //Log.w(TAG,"getDamageQtyListner : "+edt_number+" s : "+s+" position : "+position);
         double qty = 0;
 
         try {
             qty = Double.parseDouble(s);
             Log.w(TAG,"getDamageQtyListner : "+" qty : "+qty);
             dataBeanList.get(position).setDemage(qty);
-            Log.w(TAG,"getDamageQtyListner : "+"dataBeanList : "+new Gson().toJson(dataBeanList));
+            //Log.w(TAG,"getDamageQtyListner : "+"dataBeanList : "+new Gson().toJson(dataBeanList));
         }catch(NumberFormatException nfe) {
             System.out.println("Could not parse " + nfe);
         }
@@ -795,13 +892,13 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
     @Override
     public void getShortListner(EditText edt_number, String s, int position) {
 
-        Log.w(TAG,"getShortListner : "+edt_number+" s : "+s+" position : "+position);
+        //Log.w(TAG,"getShortListner : "+edt_number+" s : "+s+" position : "+position);
         double qty = 0;
 
         try {
             qty = Double.parseDouble(s);
         dataBeanList.get(position).setShortage(qty);
-        Log.w(TAG,"getShortListner : qty "+qty+" dataBeanList : "+new Gson().toJson(dataBeanList));
+        //Log.w(TAG,"getShortListner : qty "+qty+" dataBeanList : "+new Gson().toJson(dataBeanList));
         }catch(NumberFormatException nfe) {
             System.out.println("Could not parse " + nfe);
         }

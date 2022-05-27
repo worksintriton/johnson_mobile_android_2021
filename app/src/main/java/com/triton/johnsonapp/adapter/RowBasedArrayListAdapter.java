@@ -3,6 +3,7 @@ package com.triton.johnsonapp.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.activity.GroupListActivity;
 import com.triton.johnsonapp.model.RowDataFormModel;
+import com.triton.johnsonapp.requestpojo.RowBasedStroeDataRequest;
 import com.triton.johnsonapp.responsepojo.GetServiceListResponse;
 
 import java.util.ArrayList;
@@ -30,12 +33,14 @@ public class RowBasedArrayListAdapter extends  RecyclerView.Adapter<RecyclerView
     private Context context;
 
     ArrayList<RowDataFormModel> dataBeanLists;
+    List<RowBasedStroeDataRequest.DataBean> Data;
 
     private int size;
 
-    public RowBasedArrayListAdapter(Context context, ArrayList<RowDataFormModel> dataBeanList) {
+    public RowBasedArrayListAdapter(Context context, ArrayList<RowDataFormModel> dataBeanList, List<RowBasedStroeDataRequest.DataBean> Data) {
         this.context = context;
         this.dataBeanLists = dataBeanList;
+        this.Data = Data;
 
 
     }
@@ -154,7 +159,11 @@ public class RowBasedArrayListAdapter extends  RecyclerView.Adapter<RecyclerView
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onClick(View view) {
+                Log.w(TAG,"rowdatalist" + new Gson().toJson(Data));
                 dataBeanLists.remove(holder.getAdapterPosition());
+                Data.remove(holder.getAdapterPosition());
+                Log.w(TAG,"Adapterposition---"+ holder.getAdapterPosition());
+                Log.w(TAG,"rowdatalist---1" + new Gson().toJson(Data));
                 notifyDataSetChanged();
             }
         });

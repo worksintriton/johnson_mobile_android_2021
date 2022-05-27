@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -21,9 +22,12 @@ import com.triton.johnsonapp.Forms.JointInspectorInputFormActivity;
 import com.triton.johnsonapp.Forms.RowBasedInputFormActivity;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.activity.SubGroupListActivity;
+import com.triton.johnsonapp.responsepojo.ActivityGetListNumberResponse;
 import com.triton.johnsonapp.responsepojo.GroupDetailManagementResponse;
 
 import java.util.List;
+
+import es.dmoral.toasty.Toasty;
 
 
 public class GroupListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -49,6 +53,12 @@ public class GroupListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
         this.status = status;
         this.fromactivity = fromactivity;
 
+    }
+
+    public void filterList(List<GroupDetailManagementResponse.DataBean> filterllist)
+    {
+        dataBeanList = filterllist;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -119,6 +129,8 @@ public class GroupListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                         intent.putExtra("subgroup_id","");
                         intent.putExtra("status",status);
                         intent.putExtra("fromactivity",fromactivity);
+                        intent.putExtra("from_typee","1");
+                        intent.putExtra("ukey",dataBeanList.get(position).getActivity_ukey());
                         context.startActivity(intent);
                     }
                     else if(dataBeanList.get(position).getForm_type().equals("2")){
@@ -144,7 +156,8 @@ public class GroupListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                         context.startActivity(intent);
                     }
                     else if(dataBeanList.get(position).getForm_type().equals("4")){
-                        Intent intent = new Intent(context, JointInspectorInputFormActivity.class);
+                        //Intent intent = new Intent(context, JointInspectorInputFormActivity.class);
+                        Intent intent = new Intent(context, SubGroupListActivity.class);
                         intent.putExtra("_id",dataBeanList.get(position).get_id());
                         intent.putExtra("activity_id",dataBeanList.get(position).getActivity_id());
                         intent.putExtra("job_detail_id",dataBeanList.get(position).getJob_detail_id());

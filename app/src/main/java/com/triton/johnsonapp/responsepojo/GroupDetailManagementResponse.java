@@ -75,6 +75,7 @@ public class GroupDetailManagementResponse {
             this.job_detail_id = job_detail_id;
         }
 
+        private String activity_ukey;
         private String sub_group_status;
         private String group_detail_name;
         private String group_detail_created_at;
@@ -98,6 +99,14 @@ public class GroupDetailManagementResponse {
 
         public void setActivity_id(String activity_id) {
             this.activity_id = activity_id;
+        }
+
+        public String getActivity_ukey() {
+            return activity_ukey;
+        }
+
+        public void setActivity_ukey(String activity_ukey) {
+            this.activity_ukey = activity_ukey;
         }
 
         public String getSub_group_status() {

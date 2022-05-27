@@ -24,13 +24,14 @@ import com.triton.johnsonapp.interfaces.GetRemarksListner;
 import com.triton.johnsonapp.interfaces.GetShortListner;
 import com.triton.johnsonapp.responsepojo.FormFiveDataResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class FormFiveListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final String TAG = "FormFiveListAdapter";
-    private final List<FormFiveDataResponse.DataBean.MaterialDetailsBean> dataBeanList;
+    private List<FormFiveDataResponse.DataBean.MaterialDetailsBean> dataBeanList;
     private final Context context;
 
     FormFiveDataResponse.DataBean.MaterialDetailsBean currentItem;
@@ -71,6 +72,12 @@ public class FormFiveListAdapter extends  RecyclerView.Adapter<RecyclerView.View
         this.TOTAL_NUM_ITEMS = TOTAL_NUM_ITEMS;
         this.currentPage=currentPage;
 
+    }
+
+    public void filterList(List<FormFiveDataResponse.DataBean.MaterialDetailsBean> filterllist)
+    {
+        dataBeanList = filterllist;
+        notifyDataSetChanged();
     }
 
     @NonNull

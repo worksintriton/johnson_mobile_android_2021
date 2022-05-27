@@ -3,6 +3,7 @@ package com.triton.johnsonapp.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,12 @@ public class ABJobDetailListAdapter extends  RecyclerView.Adapter<RecyclerView.V
 
     }
 
+    public void filterList(List<GetJobDetailByActivityResponse.DataBean> filterllist)
+    {
+        dataBeanList = filterllist;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -101,8 +108,10 @@ public class ABJobDetailListAdapter extends  RecyclerView.Adapter<RecyclerView.V
             //Intent intent = new Intent(context, GroupListActivity.class);
             Intent intent = new Intent(context, ABCustomerDetailsActivity.class);
             intent.putExtra("activity_id",dataBeanList.get(position).getActivedetail__id());
+            //intent.putExtra("group_id",dataBeanList.get(position).getActivedetail__id());
             intent.putExtra("group_id",activity_id);
-            intent.putExtra("job_id",dataBeanList.get(position).get_id());
+            Log.w(TAG,"group_id---"+activity_id);
+            intent.putExtra("job_id",dataBeanList.get(position).getJob_detail_no());
             intent.putExtra("status",status);
             intent.putExtra("fromactivity",fromactivity);
             intent.putExtra("job_detail_no",dataBeanList.get(position).getJob_detail_no());

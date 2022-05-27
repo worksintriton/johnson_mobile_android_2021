@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/login_main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -26,14 +27,14 @@
 
     </Button>
 
+
     <WebView
+        android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/webView"
         android:layout_marginTop="@dimen/_10dp"
 
         />
-
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -50,7 +51,45 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white">
+            <LinearLayout
+                android:id="@+id/ll_logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:ignore="RtlHardcoded"
+                android:gravity="end"
+                android:layout_marginEnd="@dimen/_20dp"
+                android:layout_marginTop="@dimen/_20dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end">
+                    <ImageView
+                        android:id="@+id/img_logout"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical"
+                        android:contentDescription="@string/image"
+                        android:gravity="end|center_vertical"
+                        app:srcCompat="@drawable/logout_color"
+                        android:layout_marginEnd="@dimen/_10dp"
+                        />
+                </RelativeLayout>
 
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sourcesanspro_regular"
+                    android:text="@string/logout"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:visibility="visible"
+                    />
+
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/logo_layout"
                 android:layout_width="match_parent"
@@ -134,27 +173,29 @@
                             android:textAllCaps="false"
                             android:textColor="#FFFFFF"
                             android:textSize="16dp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                             />
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="10dp"></LinearLayout>
-                        <Button
-                            android:id="@+id/btn_webview"
-                            android:layout_width="match_parent"
-                            android:layout_height="45dp"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp"
-                            android:background="@drawable/johnson_login_background"
-                            android:elevation="1dp"
-                            android:stateListAnimator="@animator/button_elevation"
-                            android:text="Go Website"
-                            android:textAlignment="center"
-                            android:textAllCaps="false"
-                            android:textColor="#FFFFFF"
-                            android:textSize="16dp"
-                            android:textStyle="bold" />
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="10dp"></LinearLayout>-->
+<!--                        <Button-->
+<!--                            android:id="@+id/btn_webview"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="45dp"-->
+<!--                            android:layout_gravity="center"-->
+<!--                            android:layout_marginLeft="20dp"-->
+<!--                            android:layout_marginRight="20dp"-->
+<!--                            android:background="@drawable/johnson_login_background"-->
+<!--                            android:elevation="1dp"-->
+<!--                            android:stateListAnimator="@animator/button_elevation"-->
+<!--                            android:text="Go Website"-->
+<!--                            android:textAlignment="center"-->
+<!--                            android:textAllCaps="false"-->
+<!--                            android:textColor="#FFFFFF"-->
+<!--                            android:textSize="16dp"-->
+<!--                            android:textStyle="bold"-->
+<!--                            />-->
 
 
                         <LinearLayout
@@ -178,7 +219,26 @@
                             android:textSize="16dp"
                             android:textStyle="bold" />
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp"></LinearLayout>
 
+                        <Button
+                            android:id="@+id/btn_general"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:background="@drawable/general_login_background"
+                            android:elevation="1dp"
+                            android:stateListAnimator="@animator/button_elevation"
+                            android:text="General"
+                            android:textAlignment="center"
+                            android:textAllCaps="false"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
 
 
 
