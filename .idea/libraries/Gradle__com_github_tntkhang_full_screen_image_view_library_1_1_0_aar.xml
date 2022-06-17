@@ -1,15 +1,15 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.tntkhang:full-screen-image-view-library:1.1.0@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../../johnsonapp_2022-main-5.4.22/johnsonapp_2022-main/caches/transforms-3/fb898ccb575c4a653b710051b6236675/transformed/jetified-full-screen-image-view-library-1.1.0/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../../../johnsonapp_2022-main-5.4.22/johnsonapp_2022-main/caches/transforms-3/fb898ccb575c4a653b710051b6236675/transformed/jetified-full-screen-image-view-library-1.1.0/res" />
-      <root url="file://$PROJECT_DIR$/../../../johnsonapp_2022-main-5.4.22/johnsonapp_2022-main/caches/transforms-3/fb898ccb575c4a653b710051b6236675/transformed/jetified-full-screen-image-view-library-1.1.0/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../../../../../johnsonapp_2022-main-5.4.22/johnsonapp_2022-main/caches/transforms-3/1cdbcf44dc20e279601e2eb29712c913/transformed/jetified-full-screen-image-view-library-1.1.0/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../../../../johnsonapp_2022-main-5.4.22/johnsonapp_2022-main/caches/transforms-3/1cdbcf44dc20e279601e2eb29712c913/transformed/jetified-full-screen-image-view-library-1.1.0/res" />
+      <root url="file://$PROJECT_DIR$/../../../../../johnsonapp_2022-main-5.4.22/johnsonapp_2022-main/caches/transforms-3/1cdbcf44dc20e279601e2eb29712c913/transformed/jetified-full-screen-image-view-library-1.1.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$PROJECT_DIR$/../../../johnsonapp_2022-main-5.4.22/johnsonapp_2022-main/caches/modules-2/files-2.1/com.github.tntkhang/full-screen-image-view-library/1.1.0/52e4fec1a2635d299a546182651e67d35bab8ac5/full-screen-image-view-library-1.1.0-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../../johnsonapp_2022-main-5.4.22/johnsonapp_2022-main/caches/modules-2/files-2.1/com.github.tntkhang/full-screen-image-view-library/1.1.0/52e4fec1a2635d299a546182651e67d35bab8ac5/full-screen-image-view-library-1.1.0-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/../../../johnsonapp_2022-main-5.4.22/johnsonapp_2022-main/caches/modules-2/files-2.1/com.github.tntkhang/full-screen-image-view-library/1.1.0/b1f16a1a55c7d74a14678919b2aba44cb6323f23/full-screen-image-view-library-1.1.0-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../../johnsonapp_2022-main-5.4.22/johnsonapp_2022-main/caches/modules-2/files-2.1/com.github.tntkhang/full-screen-image-view-library/1.1.0/b1f16a1a55c7d74a14678919b2aba44cb6323f23/full-screen-image-view-library-1.1.0-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

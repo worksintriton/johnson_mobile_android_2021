@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/login_main_layout"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:orientation="vertical">
-
-
-
-
+    android:orientation="vertical"
+    tools:context=".DownloadapkfileActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -178,21 +175,6 @@
                             android:textSize="12sp"
                             android:visibility="visible" />
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                     </LinearLayout>
 
                 </LinearLayout>
@@ -200,6 +182,5 @@
         </RelativeLayout>
 
     </RelativeLayout>
-
 
 </LinearLayout>

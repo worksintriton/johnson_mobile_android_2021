@@ -3,9 +3,42 @@
   <component name="WizardSettings">
     <option name="children">
       <map>
-        <entry key="imageWizard">
+        <entry key="vectorWizard">
           <value>
-            <PersistentState />
+            <PersistentState>
+              <option name="children">
+                <map>
+                  <entry key="vectorAssetStep">
+                    <value>
+                      <PersistentState>
+                        <option name="children">
+                          <map>
+                            <entry key="clipartAsset">
+                              <value>
+                                <PersistentState>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="url" value="file:/C:/Users/Triton%20-%20DotNet/AppData/Local/Android/Sdk/icons/material/materialicons/account_circle/baseline_account_circle_24.xml" />
+                                    </map>
+                                  </option>
+                                </PersistentState>
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                        <option name="values">
+                          <map>
+                            <entry key="color" value="33ba19" />
+                            <entry key="outputName" value="ic_profile_green" />
+                            <entry key="sourceFile" value="D:\Android Project\johnson\johnsontap-9.5.22\johnsonapp_2022-main" />
+                          </map>
+                        </option>
+                      </PersistentState>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </PersistentState>
           </value>
         </entry>
       </map>
