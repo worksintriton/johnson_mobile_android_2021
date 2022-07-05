@@ -16,10 +16,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/_20dp"
+        android:layout_marginBottom="@dimen/_60dp"
         android:fontFamily="@font/sourcesanspro_regular"
         android:padding="15dp"
-        android:text="16.05.2022.1"
+        android:text="24.06.2022"
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"
@@ -34,12 +34,24 @@
         android:layout_marginBottom="@dimen/_20dp"
         android:fontFamily="@font/sourcesanspro_regular"
         android:padding="15dp"
-        android:text="16.05.2022.1"
+        android:text="24.06.2022"
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"
         android:textStyle="bold"
         android:visibility="invisible" />
+    <TextView
+        android:id="@+id/device_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:fontFamily="@font/sourcesanspro_regular"
+        android:padding="15dp"
+        android:text="abcd"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <ImageView
         android:layout_width="match_parent"

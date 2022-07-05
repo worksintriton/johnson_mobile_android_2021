@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/ll_drpdown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/child_back_ground"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        >
+
+        <Spinner
+            android:id="@+id/spr_dropdown"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/sourcesanspro_regular"
+            android:textSize="16sp" />
+
+
+
+
+
+
+    </LinearLayout>
+
+</LinearLayout>

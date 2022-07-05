@@ -58,7 +58,7 @@
                 android:fontFamily="@font/sourcesanspro_regular"/>
 
             <TextView
-                android:id="@+id/txt_success_msg"
+                android:id="@+id/txt_clear_msg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -72,6 +72,26 @@
                 android:textStyle="normal"
                 android:fontFamily="@font/sourcesanspro_regular"/>
 
+            <TextView
+                android:id="@+id/txt_job_id"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                 android:layout_marginBottom="@dimen/_20dp"
+                 android:fontFamily="@font/sourcesanspro_regular"
+                android:padding="5dp"
+                android:text="Job-N0"
+                android:textColor="@color/johnson_green"
+                 android:textSize="18sp"
+                android:textStyle="bold"
+                 android:maxLines="2"
+                 />
+<Space
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_10dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

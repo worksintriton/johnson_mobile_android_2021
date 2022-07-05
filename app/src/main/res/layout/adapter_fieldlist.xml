@@ -120,6 +120,14 @@
                     android:fontFamily="@font/sourcesanspro_regular"
                     android:textSize="16sp" />
 
+                <ImageView
+                    android:id="@+id/edit"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:visibility="gone"
+                    android:src="@drawable/ic_edit"/>
+
+
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"

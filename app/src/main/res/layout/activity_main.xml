@@ -1,46 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_main_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <com.google.android.material.appbar.AppBarLayout
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+    <Button
+        android:id="@+id/btn_goback"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/main_bar">
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/iv_back"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:src="@drawable/ic_back_arrow"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="General Menu"
-                android:textSize="18sp"
-                android:layout_marginLeft="10dp"
-                android:textColor="#ffffff"
-                android:textStyle="bold"/>
+        android:layout_height="@dimen/_35dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="60dp"
+        android:background="@drawable/blue_button_background_with_radius"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:text="Go Back"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:layout_marginTop="@dimen/_10dp">
 
-        </androidx.appcompat.widget.Toolbar>
-    </com.google.android.material.appbar.AppBarLayout>
 
-    <ScrollView
+    </Button>
+
+
+    <WebView
+        android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/main_bar">
+        android:layout_marginTop="@dimen/_10dp"
 
-        <LinearLayout
-            android:id="@+id/login_main_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            android:orientation="vertical">
+        />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -51,14 +45,51 @@
             android:layout_height="match_parent"
             android:scaleType="fitXY"
             android:src="@drawable/metroimage"
-            android:visibility="gone"
-            tools:ignore="MissingClass" />
+            android:visibility="gone"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white">
+            <LinearLayout
+                android:id="@+id/ll_logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:ignore="RtlHardcoded"
+                android:gravity="end"
+                android:layout_marginEnd="@dimen/_20dp"
+                android:layout_marginTop="@dimen/_20dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end">
+                    <ImageView
+                        android:id="@+id/img_logout"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical"
+                        android:contentDescription="@string/image"
+                        android:gravity="end|center_vertical"
+                        app:srcCompat="@drawable/logout_color"
+                        android:layout_marginEnd="@dimen/_10dp"
+                        />
+                </RelativeLayout>
 
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sourcesanspro_regular"
+                    android:text="@string/logout"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:visibility="visible"
+                    />
+
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/logo_layout"
                 android:layout_width="match_parent"
@@ -137,12 +168,13 @@
                             android:background="@drawable/johnson_login_background"
                             android:elevation="1dp"
                             android:stateListAnimator="@animator/button_elevation"
-                            android:text="Lift Enquiry Form"
+                            android:text="Activity"
                             android:textAlignment="center"
                             android:textAllCaps="false"
                             android:textColor="#FFFFFF"
                             android:textSize="16dp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                             />
 
 <!--                        <LinearLayout-->
 <!--                            android:layout_width="match_parent"-->
@@ -180,7 +212,7 @@
                             android:background="@drawable/cmrl_login_background"
                             android:elevation="1dp"
                             android:stateListAnimator="@animator/button_elevation"
-                            android:text="Lead Enquiry Entry"
+                            android:text="Job"
                             android:textAlignment="center"
                             android:textAllCaps="false"
                             android:textColor="#FFFFFF"
@@ -201,54 +233,17 @@
                             android:background="@drawable/general_login_background"
                             android:elevation="1dp"
                             android:stateListAnimator="@animator/button_elevation"
-                            android:text="Daily Collection Details"
+                            android:text="General"
                             android:textAlignment="center"
                             android:textAllCaps="false"
                             android:textColor="#FFFFFF"
                             android:textSize="16dp"
                             android:textStyle="bold" />
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="10dp"></LinearLayout>
 
-                        <Button
-                            android:id="@+id/btn_enquiry"
-                            android:layout_width="match_parent"
-                            android:layout_height="45dp"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp"
-                            android:background="#D6D3D3"
-                            android:elevation="1dp"
-                            android:stateListAnimator="@animator/button_elevation"
-                            android:text="Enquiry Status Review"
-                            android:textAlignment="center"
-                            android:textAllCaps="false"
-                            android:textColor="#FFFFFF"
-                            android:textSize="16dp"
-                            android:textStyle="bold" />
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="10dp"></LinearLayout>
 
-                        <Button
-                            android:id="@+id/btn_pending"
-                            android:layout_width="match_parent"
-                            android:layout_height="45dp"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp"
-                            android:background="#0080ff"
-                            android:elevation="1dp"
-                            android:stateListAnimator="@animator/button_elevation"
-                            android:text="Pending Collection Review"
-                            android:textAlignment="center"
-                            android:textAllCaps="false"
-                            android:textColor="#FFFFFF"
-                            android:textSize="16dp"
-                            android:textStyle="bold" />
+
 
                     </LinearLayout>
 
@@ -258,8 +253,5 @@
 
     </RelativeLayout>
 
-        </LinearLayout>
-    </ScrollView>
 
-
-</RelativeLayout>
+</LinearLayout>

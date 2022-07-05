@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/button_text_color"
+    android:orientation="vertical"
+    android:focusableInTouchMode="true">
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardBackgroundColor="@color/white"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:id="@+id/rl_root"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/sourcesanspro_regular"
+                    android:maxLines="1"
+                    android:text="SL No "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14sp"
+                    android:visibility="visible"
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:layout_marginStart="@dimen/_10dp"
+                    android:id="@+id/txt_sl_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/sourcesanspro_regular"
+                    android:maxLines="1"
+                    android:text="SL NO "
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_14sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:layout_marginStart="@dimen/_10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/sourcesanspro_regular"
+                    android:maxLines="1"
+                    android:text="Part No "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14sp"
+                    android:visibility="visible"
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:layout_marginStart="@dimen/_10dp"
+                    android:id="@+id/txt_part_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/sourcesanspro_regular"
+                    android:maxLines="1"
+                    android:text="PART NO "
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_14sp"
+                    android:visibility="visible" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/sourcesanspro_regular"
+                    android:maxLines="1"
+                    android:text="Material Desc"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14sp"
+                    android:visibility="visible"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_marginStart="@dimen/_10dp"
+                    android:id="@+id/txt_material_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/sourcesanspro_regular"
+                    android:maxLines="3"
+                    android:text="MATERIAL DESCRIPTION"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_14sp"
+                    android:visibility="visible" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/sourcesanspro_regular"
+                    android:maxLines="1"
+                    android:text="Desp Qty"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14sp"
+                    android:visibility="visible"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_marginStart="@dimen/_10dp"
+                    android:id="@+id/txt_desp_qty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/sourcesanspro_regular"
+                    android:maxLines="1"
+                    android:text="DESP QTY"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_14sp"
+                    android:visibility="visible" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+                <TextView
+                    android:layout_width="@dimen/_90dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/sourcesanspro_regular"
+                    android:maxLines="1"
+                    android:text="Accept Qty : "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14sp"
+                    android:visibility="visible"
+                    android:textStyle="bold"
+                   />
+                <EditText
+                    android:id="@+id/edt_accept_qty"
+                    android:layout_width="@dimen/_60dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/child_back_ground"
+                    android:hint="@string/input"
+                    android:inputType="numberDecimal"
+                    android:padding="@dimen/_5dp"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_14sp"
+                    android:maxLength="5"
+                    />
+
+                <TextView
+                    android:layout_width="@dimen/_90dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/sourcesanspro_regular"
+                    android:maxLines="1"
+                    android:text="Damage Qty : "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14sp"
+                    android:visibility="visible"
+                    android:textStyle="bold"
+                    android:layout_marginStart="@dimen/_5dp"/>
+                <EditText
+                    android:id="@+id/edt_damageqty"
+                    android:layout_width="@dimen/_60dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/child_back_ground"
+                    android:hint="@string/input"
+                    android:inputType="number"
+                    android:padding="@dimen/_5dp"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_14sp"
+                    android:maxLength="5"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+                <TextView
+                    android:layout_width="@dimen/_90dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/sourcesanspro_regular"
+                    android:maxLines="1"
+                    android:text="Short / Excess  : "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14sp"
+                    android:visibility="visible"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:text="0"
+                    android:id="@+id/edt_short"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/child_back_ground"
+                    android:hint=""
+                    android:inputType="none"
+                    android:padding="@dimen/_5dp"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_14sp"
+                    android:maxLength="5"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:clickable="false"
+                    tools:ignore="Deprecated"
+                    android:layout_marginEnd="20dp"/>
+
+                <TextView
+                    android:layout_width="@dimen/_90dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/sourcesanspro_regular"
+                    android:maxLines="1"
+                    android:text="Excess : "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14sp"
+                    android:visibility="gone"
+                    android:textStyle="bold"
+                    android:layout_marginStart="@dimen/_5dp"
+                    />
+                <EditText
+                    android:text="0"
+                    android:id="@+id/edt_excess"
+                    android:layout_width="@dimen/_60dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/child_back_ground"
+                    android:hint="@string/input"
+                    android:inputType="none"
+                    android:padding="@dimen/_5dp"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_14sp"
+                    android:maxLength="5"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:clickable="false"
+                    tools:ignore="Deprecated"
+                    android:visibility="gone"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="10dp"
+                android:id="@+id/ll_remarks">
+                <TextView
+                    android:id="@+id/txt_lbl_remarks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/remarks"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14sp"
+                    android:visibility="visible"
+                    android:textStyle="bold"
+                    />
+                <EditText
+                    android:id="@+id/edt_textarea_remarks"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/child_back_ground"
+                    android:gravity="start"
+                    android:hint="@string/remarks"
+                    android:inputType="text"
+                    android:padding="15dp"
+                    android:layout_marginBottom="@dimen/_10dp"
+                    android:focusableInTouchMode="true"
+                    android:focusable="true"
+                    />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+
+
+</LinearLayout>

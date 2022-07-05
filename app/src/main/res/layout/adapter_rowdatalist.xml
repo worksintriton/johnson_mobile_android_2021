@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/button_text_color"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/textView"
+                    style="@style/table_header"
+                    android:layout_width="@dimen/_60dp"
+                    android:layout_height="@dimen/_35dp"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:text="@string/nob"
+                    android:textAlignment="center"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/edt_sno"
+                    style="@style/table_row_item"
+                    android:layout_width="@dimen/_60dp"
+                    android:layout_height="@dimen/_40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:hint="@string/s_no"
+                    android:maxLength="6"
+                    android:maxLines="1"
+                    android:textAlignment="center"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_dimx1"
+                    style="@style/table_header"
+                    android:layout_width="@dimen/_60dp"
+                    android:layout_height="@dimen/_35dp"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:text="@string/dim_x1"
+                    android:textAlignment="center"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/edt_dimx1"
+                    style="@style/table_row_item"
+                    android:layout_width="@dimen/_60dp"
+                    android:layout_height="@dimen/_40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:hint="@string/dim_x1"
+                    android:maxLength="6"
+                    android:maxLines="1"
+                    android:textAlignment="center"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_dimx2"
+                    style="@style/table_header"
+                    android:layout_width="@dimen/_60dp"
+                    android:layout_height="@dimen/_35dp"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:text="@string/dim_x2"
+                    android:textAlignment="center"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/edt_dimx2"
+                    style="@style/table_row_item"
+                    android:layout_width="@dimen/_60dp"
+                    android:layout_height="@dimen/_40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:hint="@string/dim_x2"
+                    android:maxLength="6"
+                    android:maxLines="1"
+                    android:textAlignment="center"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_dimx3"
+                    style="@style/table_header"
+                    android:layout_width="@dimen/_60dp"
+                    android:layout_height="@dimen/_35dp"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:text="@string/dim_x3"
+                    android:textAlignment="center"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/edt_dimx3"
+                    style="@style/table_row_item"
+                    android:layout_width="@dimen/_60dp"
+                    android:layout_height="@dimen/_40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:hint="@string/dim_x3"
+                    android:maxLength="6"
+                    android:maxLines="1"
+                    android:textAlignment="center"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_dimx4"
+                    style="@style/table_header"
+                    android:layout_width="@dimen/_60dp"
+                    android:layout_height="@dimen/_35dp"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:text="@string/dim_x4"
+                    android:textAlignment="center"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/edt_dimx4"
+                    style="@style/table_row_item"
+                    android:layout_width="@dimen/_60dp"
+                    android:layout_height="@dimen/_40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:hint="@string/dim_x4"
+                    android:maxLength="6"
+                    android:maxLines="1"
+                    android:textAlignment="center"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_dimy1"
+                    style="@style/table_header"
+                    android:layout_width="@dimen/_60dp"
+                    android:layout_height="@dimen/_35dp"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:text="@string/dim_y1"
+                    android:textAlignment="center"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/edt_dimy1"
+                    style="@style/table_row_item"
+                    android:layout_width="@dimen/_60dp"
+                    android:layout_height="@dimen/_40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:hint="@string/dim_y1"
+                    android:maxLength="6"
+                    android:maxLines="1"
+                    android:textAlignment="center"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_dimy2"
+                    style="@style/table_header"
+                    android:layout_width="@dimen/_60dp"
+                    android:layout_height="@dimen/_35dp"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:text="@string/dim_y2"
+                    android:textAlignment="center"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/edt_dimy2"
+                    style="@style/table_row_item"
+                    android:layout_width="@dimen/_60dp"
+                    android:layout_height="@dimen/_40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:hint="@string/dim_y2"
+                    android:maxLength="6"
+                    android:maxLines="1"
+                    android:textAlignment="center"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_rem"
+                    style="@style/table_header"
+                    android:layout_width="@dimen/_60dp"
+                    android:layout_height="@dimen/_35dp"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:text="@string/remarks"
+                    android:textAlignment="center"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/edt_rem"
+                    style="@style/table_row_item"
+                    android:layout_width="@dimen/_60dp"
+                    android:layout_height="@dimen/_40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:hint="@string/remarks"
+                    android:maxLength="25"
+                    android:maxLines="1"
+                    android:textAlignment="center"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView11"
+                    style="@style/table_header"
+                    android:layout_width="@dimen/_60dp"
+                    android:layout_height="@dimen/_35dp"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:text="Action"
+                    android:visibility="gone"/>
+
+                <RelativeLayout
+                    android:layout_width="@dimen/_60dp"
+                    android:layout_height="@dimen/_35dp"
+                    android:gravity="center">
+
+
+                    <ImageView
+                        android:layout_marginStart="@dimen/_5dp"
+                        android:id="@+id/img_delete"
+                        android:layout_width="@dimen/_24dp"
+                        android:layout_height="@dimen/_24dp"
+                        android:layout_gravity="center|center_horizontal"
+                        android:gravity="center"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_baseline_delete_forever_24" />
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/layout1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbarStyle="outsideInset"
+            android:scrollbars="horizontal|vertical">
+
+            <HorizontalScrollView
+                android:id="@+id/horizontalView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal|vertical">
+
+            </HorizontalScrollView>
+
+        </ScrollView>
+
+
+    </LinearLayout>
+</LinearLayout>

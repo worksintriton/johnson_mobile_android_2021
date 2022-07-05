@@ -3,6 +3,11 @@
   <component name="WizardSettings">
     <option name="children">
       <map>
+        <entry key="imageWizard">
+          <value>
+            <PersistentState />
+          </value>
+        </entry>
         <entry key="vectorWizard">
           <value>
             <PersistentState>
@@ -18,7 +23,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/C:/Users/Triton%20-%20DotNet/AppData/Local/Android/Sdk/icons/material/materialicons/account_circle/baseline_account_circle_24.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/edit/baseline_edit_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,9 +33,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="33ba19" />
-                            <entry key="outputName" value="ic_profile_green" />
-                            <entry key="sourceFile" value="D:\Android Project\johnson\johnsontap-9.5.22\johnsonapp_2022-main" />
+                            <entry key="outputName" value="ic_edit" />
+                            <entry key="sourceFile" value="C:\Android Program\21.6.22\jhonsons_pramya2022-main (1)\jhonsons_pramya2022-main" />
                           </map>
                         </option>
                       </PersistentState>
