@@ -15,6 +15,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.triton.johnsonapp.R;
+
 public class DownloadapkfileActivity extends AppCompatActivity {
 
     private String TAG ="DownloadapkfileActivity";

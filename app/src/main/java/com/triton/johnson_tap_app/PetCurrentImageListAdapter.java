@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.triton.johnson_tap_app.api.RetrofitClient;
+import com.triton.johnsonapp.R;
+
 import java.util.List;
 
 public class PetCurrentImageListAdapter extends RecyclerView.Adapter<PetCurrentImageListAdapter.AddImageListHolder> {

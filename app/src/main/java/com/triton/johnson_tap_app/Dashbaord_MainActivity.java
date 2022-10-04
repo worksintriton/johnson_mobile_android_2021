@@ -13,6 +13,7 @@ import com.triton.johnson_tap_app.activity.MainActivity;
 import com.triton.johnson_tap_app.activity.UI_Serv_LeadsActivity;
 import com.triton.johnson_tap_app.activity.UI_Servenq_RequestActivity;
 import com.triton.johnson_tap_app.session.SessionManager;
+import com.triton.johnsonapp.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

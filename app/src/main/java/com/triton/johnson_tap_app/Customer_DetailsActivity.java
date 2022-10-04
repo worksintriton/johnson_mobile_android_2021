@@ -15,6 +15,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.triton.johnsonapp.R;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.triton.johnson_tap_app.activity.Daily_Collection_DetailsActivity;
 import com.triton.johnson_tap_app.activity.MainActivity;
 import com.triton.johnson_tap_app.responsepojo.JobNoManagementResponse;
+import com.triton.johnsonapp.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

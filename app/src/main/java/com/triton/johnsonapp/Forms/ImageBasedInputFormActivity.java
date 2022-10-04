@@ -133,6 +133,7 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
     private int pause_count;
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,6 +157,7 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
             activity_id = extras.getString("activity_id");
 
             job_id = extras.getString("job_id");
+           // Log.e("JobID" , " " + job_id);
             job_detail_no = extras.getString("job_detail_no");
             //  UKEY = extras.getString("ESPD-ACTIMF");
             UKEY_DESC = extras.getString("UKEY_DESC");
@@ -171,7 +173,7 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
 
 
             Log.w(TAG,"UKEY -->"+UKEY);
-            Log.w(TAG,"job_id -->"+job_id);
+            Log.e(TAG,"JobID -->"+job_id);
             Log.w(TAG,"fromactivity -->"+fromactivity);
             Log.w(TAG,"fromto -->"+fromto);
 
@@ -503,6 +505,7 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
         imageBasedStroeDataRequest.setCreated_by("ESPD-ACTIMF");
         imageBasedStroeDataRequest.setUpdated_by("");
         imageBasedStroeDataRequest.setUpdate_reason("");
+        Log.e("JobID","" + job_id);
 
         Log.w(TAG, "data_store_management/create_Request " + new Gson().toJson(imageBasedStroeDataRequest));
         return imageBasedStroeDataRequest;

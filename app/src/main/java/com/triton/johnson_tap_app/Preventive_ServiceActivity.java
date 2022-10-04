@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.triton.johnsonapp.R;
+
 public class Preventive_ServiceActivity extends AppCompatActivity {
 
     ImageView iv_back;

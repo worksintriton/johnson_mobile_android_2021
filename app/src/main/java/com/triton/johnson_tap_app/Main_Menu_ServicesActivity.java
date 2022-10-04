@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.triton.johnson_tap_app.activity.MainActivity;
+import com.triton.johnsonapp.R;
 
 import java.util.ArrayList;
 import java.util.List;

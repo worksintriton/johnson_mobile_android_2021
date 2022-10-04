@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.triton.johnson_tap_app.interfaces.EditTextValueChangedListener;
 import com.triton.johnson_tap_app.responsepojo.GetFieldListResponse;
+import com.triton.johnsonapp.R;
+
 import java.util.List;
 
 

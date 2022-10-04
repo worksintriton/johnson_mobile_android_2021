@@ -16,8 +16,8 @@ import android.widget.ImageView;
 
 import com.triton.johnson_tap_app.Dashbaord_MainActivity;
 import com.triton.johnson_tap_app.Main_Menu_ServicesActivity;
-import com.triton.johnson_tap_app.R;
 import com.triton.johnson_tap_app.session.SessionManager;
+import com.triton.johnsonapp.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     Button btn_job;
 
     @SuppressLint("NonConstantResourceId")
-    @BindView(R.id.btn_enquiry)
+  //  @BindView(R.id.btn_enquiry)
     Button btn_enquird;
 
     @SuppressLint("NonConstantResourceId")

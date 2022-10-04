@@ -18,8 +18,8 @@ import androidx.annotation.Nullable;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 
-import com.triton.johnson_tap_app.R;
 import com.triton.johnson_tap_app.materialprogressbar.internal.ThemeUtils;
+import com.triton.johnsonapp.R;
 
 
 /**

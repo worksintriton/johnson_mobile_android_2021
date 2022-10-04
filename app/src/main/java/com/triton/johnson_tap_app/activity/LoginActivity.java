@@ -50,7 +50,8 @@ import com.triton.johnson_tap_app.utils.ConnectionDetector;
 import com.google.android.material.snackbar.Snackbar;
 import com.triton.johnson_tap_app.utils.NumericKeyBoardTransformationMethod;
 import com.triton.johnson_tap_app.utils.RestUtils;
-import com.triton.johnson_tap_app.R;
+import com.triton.johnsonapp.R;
+
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -304,7 +305,6 @@ public class LoginActivity extends AppCompatActivity {
         Log.w(TAG,"loginRequest "+ new Gson().toJson(loginRequest));
         return loginRequest;
     }
-
 
 
     @SuppressLint("LogNotTimber")

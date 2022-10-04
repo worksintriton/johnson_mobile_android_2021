@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.triton.johnsonapp.R;
+
 public class Job_StatusActivity extends AppCompatActivity {
 
     ImageView iv_back;

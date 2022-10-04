@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.triton.johnson_tap_app.activity.Daily_Collection_DetailsActivity;
 import com.triton.johnson_tap_app.activity.MainActivity;
+import com.triton.johnsonapp.R;
 
 public class Change_PasswordActivity extends AppCompatActivity {
 

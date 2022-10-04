@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.triton.johnsonapp.R;
+
 public class MyListAdapter1 extends RecyclerView.Adapter<MyListAdapter1.ViewHolder>{
 
     private MyListData1[] listdata;

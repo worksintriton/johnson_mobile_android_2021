@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
-import com.triton.johnson_tap_app.R;
+import com.triton.johnsonapp.R;
 
 public class UI_Servenq_RequestActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 

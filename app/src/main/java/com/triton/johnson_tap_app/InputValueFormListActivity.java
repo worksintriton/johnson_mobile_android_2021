@@ -67,6 +67,7 @@ import com.triton.johnson_tap_app.responsepojo.FormDataStoreResponse;
 import com.triton.johnson_tap_app.responsepojo.GetFieldListResponse;
 import com.triton.johnson_tap_app.session.SessionManager;
 import com.triton.johnson_tap_app.utils.ConnectionDetector;
+import com.triton.johnsonapp.R;
 
 import java.io.File;
 import java.io.FileOutputStream;

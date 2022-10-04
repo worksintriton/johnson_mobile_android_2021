@@ -35,7 +35,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 
-import com.triton.johnson_tap_app.R;
+import com.triton.johnsonapp.R;
 
 import java.util.ArrayList;
 import java.util.List;

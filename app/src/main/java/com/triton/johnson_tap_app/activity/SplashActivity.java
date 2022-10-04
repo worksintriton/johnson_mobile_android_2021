@@ -18,7 +18,7 @@ import com.triton.johnson_tap_app.Getlatestversionrequest;
 import com.triton.johnson_tap_app.api.APIInterface;
 import com.triton.johnson_tap_app.api.RetrofitClient;
 import com.triton.johnson_tap_app.session.SessionManager;
-import com.triton.johnson_tap_app.R;
+import com.triton.johnsonapp.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

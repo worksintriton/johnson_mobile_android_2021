@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.triton.johnsonapp.R;
+
 public class ServicesActivity extends AppCompatActivity {
 
     ImageView iv_back;

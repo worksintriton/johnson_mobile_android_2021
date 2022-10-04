@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.triton.johnsonapp.R;
+
 public class Preventive_MaintenanceActivity extends AppCompatActivity {
 
     @Override

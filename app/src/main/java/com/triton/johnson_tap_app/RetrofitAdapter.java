@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.triton.johnson_tap_app.activity.Daily_Collection_DetailsActivity;
+import com.triton.johnsonapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
