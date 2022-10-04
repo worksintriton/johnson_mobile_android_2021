@@ -1,7 +1,10 @@
 package com.triton.johnsonapp.activity;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -13,10 +16,15 @@ import com.triton.johnsonapp.DownloadapkfileActivity;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.api.APIInterface;
 import com.triton.johnsonapp.api.RetrofitClient;
+import com.triton.johnsonapp.db.CommonUtil;
+import com.triton.johnsonapp.db.DbHelper;
+import com.triton.johnsonapp.db.DbUtil;
 import com.triton.johnsonapp.requestpojo.Getlatestversionrequest;
 import com.triton.johnsonapp.session.SessionManager;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,16 +36,34 @@ public class SplashActivity extends AppCompatActivity {
     int haslocationpermission;
     String TAG = "SplashActivity";
     private String VersionUpdate,VersionUpdate1;
+    Context context;
+    String thisDate;
+    String mydate;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        SimpleDateFormat currentDate = new SimpleDateFormat("dd.MM.yy");
-        Date todayDate = new Date();
-        String thisDate = currentDate.format(todayDate);
+        context = this;
+
+//        SimpleDateFormat currentDate = new SimpleDateFormat("dd.MM.yy ");
+//        Date todayDate = new Date();
+//        thisDate = currentDate.format(todayDate);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+        thisDate = sdf.format(new Date());
+        Log.e("Nish" , "" + thisDate);
+
+
         TextView txt_version = (TextView)findViewById(R.id.txt_version);
         TextView txt_version1 = (TextView)findViewById(R.id.txt_version1);
         TextView device_id = (TextView)findViewById(R.id.device_id);
+
+        CommonUtil.dbUtil = new DbUtil(context);
+        CommonUtil.dbUtil.open();
+        CommonUtil.dbHelper = new DbHelper(context);
+
+        getDate();
 
         String Version1 = txt_version1.getText().toString();
         Log.w(TAG,"VERSION1--"+Version1);
@@ -60,6 +86,20 @@ public class SplashActivity extends AppCompatActivity {
         getlatestversion();
 
 
+    }
+
+    @SuppressLint("Range")
+    private void getDate() {
+
+        Cursor cursor = CommonUtil.dbUtil.getDate();
+
+        Log.e("Nish Data"," " +  cursor.getCount());
+
+        if (cursor.moveToLast()){
+
+            mydate = cursor.getString(cursor.getColumnIndex(DbHelper.CURRENT_DATE));
+            Log.e("My Date Nish",""+mydate);
+        }
     }
 
     private void getlatestversion() {
@@ -90,19 +130,23 @@ public class SplashActivity extends AppCompatActivity {
                                         e.printStackTrace();
                                     } finally {
 
+                                       // Log.e(TAG,"ELSE"+sessionManager.isLoggedIn());
 
-                                        Log.w(TAG,"ELSE"+sessionManager.isLoggedIn());
+//                                        // check whether user is logged in or not
+//                                        if (sessionManager.isLoggedIn()) {
+//                                            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+//                                            startActivity(intent);
+//                                            overridePendingTransition(R.anim.new_right, R.anim.new_left);
+//                                        }
 
-
-                                        // check whether user is logged in or not
-                                        if (sessionManager.isLoggedIn()) {
+                                        Log.e("This Date",""+thisDate);
+                                        Log.e("MyDate","" + mydate);
+                                        if (thisDate.equals(mydate)){
                                             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                                             startActivity(intent);
                                             overridePendingTransition(R.anim.new_right, R.anim.new_left);
                                         }
-
                                         else {
-
                                             Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                                             startActivity(intent);
                                             overridePendingTransition(R.anim.new_right, R.anim.new_left);

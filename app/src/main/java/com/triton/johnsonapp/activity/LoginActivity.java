@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
@@ -52,6 +53,9 @@ import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.api.APIInterface;
 import com.triton.johnsonapp.api.RetrofitClient;
+import com.triton.johnsonapp.db.CommonUtil;
+import com.triton.johnsonapp.db.DbHelper;
+import com.triton.johnsonapp.db.DbUtil;
 import com.triton.johnsonapp.materialeditext.MaterialEditText;
 import com.triton.johnsonapp.materialspinner.MaterialSpinner;
 import com.triton.johnsonapp.requestpojo.AttendanceCreateRequest;
@@ -119,6 +123,7 @@ public class LoginActivity extends AppCompatActivity implements OnMapReadyCallba
     private double longitude;
     String ID;
     private String VersionUpdate, VersionUpdate1;
+    Context context;
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -126,6 +131,12 @@ public class LoginActivity extends AppCompatActivity implements OnMapReadyCallba
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        context = this;
+
+        CommonUtil.dbUtil = new DbUtil(context);
+        CommonUtil.dbUtil.open();
+        CommonUtil.dbHelper = new DbHelper(context);
+
         Log.w(TAG, "onCreate-->");
         TextView device_id = (TextView) findViewById(R.id.device_id);
         TextView txt_version = (TextView) findViewById(R.id.txt_version);
@@ -228,8 +239,9 @@ public class LoginActivity extends AppCompatActivity implements OnMapReadyCallba
                 } else {
 
 
-                    Log.w(TAG, "loginButton latitude : " + latitude + " longitude : " + longitude);
-                    if (latitude != 0 && longitude != 0) {
+                    Log.e(TAG, "loginButton latitude : " + latitude + " longitude : " + longitude);
+                    if (latitude == 0 && longitude == 0) {
+// change form not equal to Zero to equal to Zero
                         LoginResponseCall();
                     } else {
                         googleApiConnected();
@@ -428,10 +440,28 @@ private void ShowPopup()
             @Override
             public void onResponse(@NonNull Call<SuccessResponse> call, @NonNull Response<SuccessResponse> response) {
 
-                Log.w(TAG, "attendanceCreateRequest" + new Gson().toJson(response.body()));
+                Log.w(TAG, "attendance Response" + new Gson().toJson(response.body()));
                 if (response.body() != null) {
                     message = response.body().getMessage();
                     if (200 == response.body().getCode()) {
+
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+                        String currentDateandTime = sdf.format(new Date());
+                        Log.e("Nish" , "" + currentDateandTime);
+
+                        CommonUtil.dbUtil.addDate(currentDateandTime);
+
+                        Cursor cursor = CommonUtil.dbUtil.getDate();
+
+                        Log.e("Nish Data"," " +  cursor.getCount());
+
+                        if (cursor.moveToLast()){
+
+                            @SuppressLint("Range")
+                            String mydate = cursor.getString(cursor.getColumnIndex(DbHelper.CURRENT_DATE));
+                            Log.e("My Date Nish",""+mydate);
+                        }
+
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
 

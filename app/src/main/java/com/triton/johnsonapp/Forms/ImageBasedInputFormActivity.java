@@ -469,6 +469,7 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("LongLogTag")
     private ImageBasedStroeDataRequest imageBasedStroeDataRequest() {
 
         /*
@@ -506,6 +507,8 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
         imageBasedStroeDataRequest.setUpdated_by("");
         imageBasedStroeDataRequest.setUpdate_reason("");
         Log.e("JobID","" + job_id);
+
+        Log.e("data_store_management/create_Request " ,"" + new Gson().toJson(imageBasedStroeDataRequest));
 
         Log.w(TAG, "data_store_management/create_Request " + new Gson().toJson(imageBasedStroeDataRequest));
         return imageBasedStroeDataRequest;
