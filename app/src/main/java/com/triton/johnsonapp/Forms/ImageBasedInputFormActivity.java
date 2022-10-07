@@ -139,6 +139,8 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_based_input_form);
         Log.w(TAG,"Oncreate -->");
+
+        Log.e("Hi Nish","Image Based Input");
         ButterKnife.bind(this);
 
         SessionManager session = new SessionManager(getApplicationContext());
@@ -293,7 +295,7 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         // super.onBackPressed();
-        // showWarningExit();
+        showWarningExit();
     }
 
     private void showWarningExit() {
@@ -303,7 +305,7 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-                        if(fromactivity != null && fromactivity.equalsIgnoreCase("ABCustomerDetailsActivity")){
+//                        if(fromactivity != null && fromactivity.equalsIgnoreCase("ABCustomerDetailsActivity")){
                             Intent intent = new Intent(ImageBasedInputFormActivity.this, ActivityJobListActivity.class);
                             intent.putExtra("activity_id", activity_id);
                             intent.putExtra("job_id", job_id);
@@ -314,19 +316,20 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
                             startActivity(intent);
                             overridePendingTransition(R.anim.new_right, R.anim.new_left);
                             finish();
-                        }else{
-                            Intent intent = new Intent(ImageBasedInputFormActivity.this, GroupListActivity.class);
-                            intent.putExtra("activity_id", activity_id);
-                            intent.putExtra("job_id", job_id);
-                            intent.putExtra("status", status);
-                            intent.putExtra("fromactivity", fromactivity);
-                            intent.putExtra("UKEY", UKEY);
-                            intent.putExtra("new_count", new_count);
-                            intent.putExtra("pause_count", pause_count);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.new_right, R.anim.new_left);
-                            finish();
-                        }
+ //                       }
+//                        else{
+//                            Intent intent = new Intent(ImageBasedInputFormActivity.this, GroupListActivity.class);
+//                            intent.putExtra("activity_id", activity_id);
+//                            intent.putExtra("job_id", job_id);
+//                            intent.putExtra("status", status);
+//                            intent.putExtra("fromactivity", fromactivity);
+//                            intent.putExtra("UKEY", UKEY);
+//                            intent.putExtra("new_count", new_count);
+//                            intent.putExtra("pause_count", pause_count);
+//                            startActivity(intent);
+//                            overridePendingTransition(R.anim.new_right, R.anim.new_left);
+//                            finish();
+//                        }
 
                     }
                 })
@@ -417,7 +420,7 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
                             Toasty.success(getApplicationContext(), "" + message, Toasty.LENGTH_LONG).show();
                             dialog.dismiss();
 
-                            if(fromactivity != null && fromactivity.equalsIgnoreCase("ABCustomerDetailsActivity")){
+//                            if(fromactivity != null && fromactivity.equalsIgnoreCase("ABCustomerDetailsActivity")){
                                 Intent intent = new Intent(ImageBasedInputFormActivity.this, ActivityJobListActivity.class);
                                 intent.putExtra("activity_id", activity_id);
                                 intent.putExtra("job_id", job_id);
@@ -428,21 +431,20 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 overridePendingTransition(R.anim.new_right, R.anim.new_left);
                                 finish();
-                            }else{
-                                Intent intent = new Intent(ImageBasedInputFormActivity.this, GroupListActivity.class);
-                                intent.putExtra("activity_id", activity_id);
-                                intent.putExtra("job_id", job_id);
-                                intent.putExtra("status", status);
-                                intent.putExtra("fromactivity", fromactivity);
-                                intent.putExtra("UKEY", UKEY);
-                                intent.putExtra("new_count", new_count);
-                                intent.putExtra("pause_count", pause_count);
-                                startActivity(intent);
-                                overridePendingTransition(R.anim.new_right, R.anim.new_left);
-                                finish();
-                            }
-
-
+//                            }
+//                            else{
+//                                Intent intent = new Intent(ImageBasedInputFormActivity.this, GroupListActivity.class);
+//                                intent.putExtra("activity_id", activity_id);
+//                                intent.putExtra("job_id", job_id);
+//                                intent.putExtra("status", status);
+//                                intent.putExtra("fromactivity", fromactivity);
+//                                intent.putExtra("UKEY", UKEY);
+//                                intent.putExtra("new_count", new_count);
+//                                intent.putExtra("pause_count", pause_count);
+//                                startActivity(intent);
+//                                overridePendingTransition(R.anim.new_right, R.anim.new_left);
+//                                finish();
+//                            }
 
                         }
 

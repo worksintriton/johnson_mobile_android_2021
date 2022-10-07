@@ -50,7 +50,7 @@ public class SplashActivity extends AppCompatActivity {
 //        Date todayDate = new Date();
 //        thisDate = currentDate.format(todayDate);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         thisDate = sdf.format(new Date());
         Log.e("Nish" , "" + thisDate);
 

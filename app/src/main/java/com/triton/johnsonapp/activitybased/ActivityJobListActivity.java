@@ -156,6 +156,9 @@ public class ActivityJobListActivity extends AppCompatActivity implements OnMapR
         ButterKnife.bind(this);
         Log.w(TAG,"Oncreate -->");
 
+        Log.e("Hi Nish","JobList");
+
+
         googleApiConnected();
 
         session = new SessionManager(getApplicationContext());

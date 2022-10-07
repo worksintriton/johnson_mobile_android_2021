@@ -143,6 +143,7 @@ public class ActivityBasedActivity extends AppCompatActivity  implements OnMapRe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_based);
         ButterKnife.bind(this);
+        Log.e("Hi Nish","Activity Based Page");
         Log.w(TAG,"Oncreate -->");
 
         googleApiConnected();
@@ -301,7 +302,6 @@ public class ActivityBasedActivity extends AppCompatActivity  implements OnMapRe
 
                         }
 
-
                     } else {
                         dialog.dismiss();
                         Toasty.warning(getApplicationContext(),""+message,Toasty.LENGTH_LONG).show();
@@ -309,8 +309,6 @@ public class ActivityBasedActivity extends AppCompatActivity  implements OnMapRe
                         //showErrorLoading(response.body().getMessage());
                     }
                 }
-
-
             }
 
             @SuppressLint("LongLogTag")

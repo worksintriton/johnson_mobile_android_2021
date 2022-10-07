@@ -2,6 +2,7 @@ package com.triton.johnsonapp.Forms;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -174,6 +175,8 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
     private String engineerPhone;
     private String image;
 
+    Context context;
+
     RowBasedStroeDataRequest.DataBean dataBean;
 
     @Override
@@ -181,6 +184,7 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_row_based_input_form);
         ButterKnife.bind(this);
+        context = this;
         Log.w(TAG, "Oncreate -->");
 
         SessionManager session = new SessionManager(getApplicationContext());
@@ -197,10 +201,11 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
             activity_id = extras.getString("activity_id");
 
             job_id = extras.getString("job_id");
-
+            Log.e("JOBID",""+job_id);
             subgroup_id = extras.getString("subgroup_id");
             status = extras.getString("status");
             fromactivity = extras.getString("fromactivity");
+            Log.e("FORM ACTIVITY",""+fromactivity);
             UKEY = extras.getString("UKEY");
             form_type = extras.getInt("form_type");
             job_detail_no = extras.getString("job_detail_no");
@@ -686,7 +691,8 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 submittedSuccessfulalertdialog.dismiss();
-                Intent intent = new Intent(RowBasedInputFormActivity.this, GroupListActivity.class);
+              //  Intent intent = new Intent(RowBasedInputFormActivity.this, GroupListActivity.class);
+                Intent intent = new Intent(context, ActivityJobListActivity.class);
                 intent.putExtra("activity_id", activity_id);
                 intent.putExtra("job_id", job_id);
                 intent.putExtra("group_id", group_id);

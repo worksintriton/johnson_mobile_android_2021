@@ -174,6 +174,8 @@ GroupListActivity extends AppCompatActivity  implements OnMapReadyCallback, Goog
         ButterKnife.bind(this);
         Log.w(TAG,"Oncreate -->");
 
+        Log.e("Hi Nish","Group list");
+
         SessionManager session = new SessionManager(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
         userid = user.get(SessionManager.KEY_ID);

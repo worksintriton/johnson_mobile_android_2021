@@ -54,6 +54,7 @@ import com.triton.johnsonapp.activity.GroupListActivity;
 import com.triton.johnsonapp.activity.MainActivity;
 import com.triton.johnsonapp.activity.SubGroupListActivity;
 import com.triton.johnsonapp.activitybased.ABCustomerDetailsActivity;
+import com.triton.johnsonapp.activitybased.ActivityJobListActivity;
 import com.triton.johnsonapp.adapter.FieldListAdapter;
 import com.triton.johnsonapp.adapter.LiftInputTypeListAdapter;
 import com.triton.johnsonapp.api.APIInterface;
@@ -241,6 +242,9 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_value_form_list);
         ButterKnife.bind(this);
+
+        Log.e("Hi Nish","Input Value Form");
+
         myDb = new DatabaseHelper(this);
         img_save = (ImageView) findViewById(R.id.img_save);
 
@@ -1756,8 +1760,23 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                                 intent.putExtra("job_id", job_id);
                                 startActivity(intent);
                             }
+                            else if (fromactivity != null && fromactivity.equalsIgnoreCase("ABCustomerDetailsActivity")) {
+                                Intent intent = new Intent(InputValueFormListActivity.this, ActivityJobListActivity.class);
+                                intent.putExtra("activity_id", activity_id);
+                                intent.putExtra("job_id", job_id);
+                                intent.putExtra("status", status);
+                                intent.putExtra("UKEY", activity_ukey);
+                                intent.putExtra("UKEY_DESC", UKEY_DESC);
+                                intent.putExtra("new_count", new_count);
+                                intent.putExtra("pause_count", pause_count);
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.new_right, R.anim.new_left);
+                                finish();
+                                dialog.dismiss();
+                            }
+
 //                            else if (fromactivity != null && fromactivity.equalsIgnoreCase("ABCustomerDetailsActivity")) {
-//                                Intent intent = new Intent(InputValueFormListActivity.this, ActivityJobListActivity.class);
+//                                Intent intent = new Intent(InputValueFormListActivity.this, MainActivity.class);
 //                                intent.putExtra("activity_id", activity_id);
 //                                intent.putExtra("job_id", job_id);
 //                                intent.putExtra("status", status);
@@ -1770,22 +1789,9 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 //                                finish();
 //                                dialog.dismiss();
 //                            }
-//
-                            else if (fromactivity != null && fromactivity.equalsIgnoreCase("ABCustomerDetailsActivity")) {
-                                Intent intent = new Intent(InputValueFormListActivity.this, MainActivity.class);
-                                intent.putExtra("activity_id", activity_id);
-                                intent.putExtra("job_id", job_id);
-                                intent.putExtra("status", status);
-                                intent.putExtra("UKEY", activity_ukey);
-                                intent.putExtra("UKEY_DESC", UKEY_DESC);
-                                intent.putExtra("new_count", new_count);
-                                intent.putExtra("pause_count", pause_count);
-                                startActivity(intent);
-                                overridePendingTransition(R.anim.new_right, R.anim.new_left);
-                                finish();
-                                dialog.dismiss();
-                            } else {
-                                Intent intent = new Intent(InputValueFormListActivity.this, GroupListActivity.class);
+                            else {
+                                //Intent intent = new Intent(InputValueFormListActivity.this, GroupListActivity.class);
+                                Intent intent = new Intent(InputValueFormListActivity.this, ActivityJobListActivity.class);
                                 intent.putExtra("fromactivity", fromactivity);
                                 intent.putExtra("activity_id", activity_id);
                                 intent.putExtra("job_id", job_id);
@@ -1868,7 +1874,8 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 //                            }
 //
                             else if (fromactivity != null && fromactivity.equalsIgnoreCase("ABCustomerDetailsActivity")) {
-                                Intent intent = new Intent(InputValueFormListActivity.this, MainActivity.class);
+                             //   Intent intent = new Intent(InputValueFormListActivity.this, MainActivity.class);
+                                Intent intent = new Intent(InputValueFormListActivity.this, ActivityJobListActivity.class);
                                 intent.putExtra("activity_id", activity_id);
                                 intent.putExtra("job_id", job_id);
                                 intent.putExtra("status", status);
@@ -1881,7 +1888,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                                 finish();
                                 dialog.dismiss();
                             } else {
-                                Intent intent = new Intent(InputValueFormListActivity.this, GroupListActivity.class);
+                                Intent intent = new Intent(InputValueFormListActivity.this, ActivityJobListActivity.class);
                                 intent.putExtra("fromactivity", fromactivity);
                                 intent.putExtra("activity_id", activity_id);
                                 intent.putExtra("job_id", job_id);
@@ -2209,7 +2216,8 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                             overridePendingTransition(R.anim.new_right, R.anim.new_left);
                             finish();
                         } else {
-                            Intent intent = new Intent(InputValueFormListActivity.this, GroupListActivity.class);
+                          //  Intent intent = new Intent(InputValueFormListActivity.this, GroupListActivity.class);
+                            Intent intent = new Intent(InputValueFormListActivity.this, ActivityJobListActivity.class);
                             intent.putExtra("activity_id", activity_id);
                             intent.putExtra("job_id", job_id);
                             intent.putExtra("group_id", group_id);
@@ -2591,7 +2599,8 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                                 Log.w(TAG, "ukey_val" + activity_ukey);
                                 startActivity(intent);
                             } else {
-                                Intent intent = new Intent(InputValueFormListActivity.this, SubGroupListActivity.class);
+                               // Intent intent = new Intent(InputValueFormListActivity.this, SubGroupListActivity.class);
+                                Intent intent = new Intent(InputValueFormListActivity.this, ActivityJobListActivity.class);
                                 intent.putExtra("activity_id", activity_id);
                                 intent.putExtra("job_id", job_id);
                                 intent.putExtra("status", status);
@@ -2666,7 +2675,8 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
             @Override
             public void onClick(View view) {
                 alertdialog.dismiss();
-                Intent intent = new Intent(InputValueFormListActivity.this, SubGroupListActivity.class);
+              //  Intent intent = new Intent(InputValueFormListActivity.this, SubGroupListActivity.class);
+                Intent intent = new Intent(InputValueFormListActivity.this, ActivityJobListActivity.class);
                 intent.putExtra("activity_id", activity_id);
                 intent.putExtra("job_id", job_id);
                 intent.putExtra("group_id", group_id);

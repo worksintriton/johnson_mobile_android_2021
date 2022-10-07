@@ -108,6 +108,8 @@ public class ABCustomerDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_details);
 
+        Log.e("Hi Nish","Customer Details Page");
+
         Pbar = (ProgressBar)findViewById(R.id.progressBar1);
      //   Pbar.setVisibility(View.GONE);
 

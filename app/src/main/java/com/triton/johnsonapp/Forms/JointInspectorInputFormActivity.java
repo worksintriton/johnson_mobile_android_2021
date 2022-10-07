@@ -21,6 +21,7 @@ public class JointInspectorInputFormActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_joint_inspector_input_form);
+        Log.e("Hi Nish","Joint Inspection");
         Log.w(TAG,"Oncreate -->");
 
 

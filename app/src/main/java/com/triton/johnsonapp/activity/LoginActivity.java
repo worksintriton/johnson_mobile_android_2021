@@ -445,7 +445,7 @@ private void ShowPopup()
                     message = response.body().getMessage();
                     if (200 == response.body().getCode()) {
 
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                         String currentDateandTime = sdf.format(new Date());
                         Log.e("Nish" , "" + currentDateandTime);
 

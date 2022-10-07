@@ -3,7 +3,9 @@ package com.triton.johnsonapp.activity;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -40,6 +42,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class StatusActivity extends AppCompatActivity {
+
+
+    SharedPreferences sharedPreferences;
     private String TAG ="StatusActivity";
 
     @SuppressLint("NonConstantResourceId")
@@ -58,6 +63,7 @@ public class StatusActivity extends AppCompatActivity {
     private Dialog dialog;
     private String userid;
     private String networkStatus = "";
+    String Test;
 
 
     @Override
@@ -72,6 +78,10 @@ public class StatusActivity extends AppCompatActivity {
         SessionManager  session = new SessionManager(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
         userid = user.get(SessionManager.KEY_ID);
+//
+//        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        Test = sharedPreferences.getString("test","defalut");
+//        Log.e("Way",""+Test);
 
         ll_logout.setOnClickListener(new View.OnClickListener() {
             @Override

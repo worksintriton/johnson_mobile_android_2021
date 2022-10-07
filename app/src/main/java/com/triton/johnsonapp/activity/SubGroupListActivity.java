@@ -139,6 +139,7 @@ public class SubGroupListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sub_group_list);
         ButterKnife.bind(this);
+        Log.e("Hi Nish","Sub GroupList");
         Log.w(TAG, "Oncreate -->");
         SessionManager session = new SessionManager(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
