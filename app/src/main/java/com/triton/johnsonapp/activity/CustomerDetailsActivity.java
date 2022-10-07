@@ -40,7 +40,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CustomerDetailsActivity extends AppCompatActivity {
+public class  CustomerDetailsActivity extends AppCompatActivity {
 
     private String TAG ="CustomerDetailsActivity";
 
@@ -90,6 +90,7 @@ public class CustomerDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_customer_details);
         ButterKnife.bind(this);
         Log.w(TAG,"Oncreate -->");
+        Log.e("Hi Nish" ,"Job Customer Details");
 
         SessionManager session = new SessionManager(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();

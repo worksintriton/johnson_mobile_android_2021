@@ -40,6 +40,7 @@ import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.activity.GroupListActivity;
 import com.triton.johnsonapp.activity.SubGroupListActivity;
 import com.triton.johnsonapp.activity.ViewInfoDetailsActivity;
+import com.triton.johnsonapp.activitybased.ActivityJobListActivity;
 import com.triton.johnsonapp.adapter.FormFiveListAdapter;
 import com.triton.johnsonapp.api.APIInterface;
 import com.triton.johnsonapp.api.RetrofitClient;
@@ -181,6 +182,7 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
         ButterKnife.bind(this);
 
         Log.w(TAG,"Oncreate -->");
+        Log.e("Hi Nish","Input Form 5");
 
         footerView.setVisibility(View.GONE);
 
@@ -785,7 +787,8 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
                         dialog.dismiss();
                         if (response.body().getData() != null) {
                             Toasty.success(getApplicationContext(), "" + message, Toasty.LENGTH_LONG).show();
-                            Intent intent = new Intent(InputFormFiveActivity.this, GroupListActivity.class);
+                           // Intent intent = new Intent(InputFormFiveActivity.this, GroupListActivity.class);
+                            Intent intent = new Intent(InputFormFiveActivity.this, ActivityJobListActivity.class);
                             intent.putExtra("activity_id",activity_id);
                             intent.putExtra("job_id",job_id);
                             intent.putExtra("status",status);

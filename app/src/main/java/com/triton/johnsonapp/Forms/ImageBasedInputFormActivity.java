@@ -9,12 +9,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
@@ -32,6 +35,7 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
+import com.triton.johnsonapp.activity.AllJobListActivity;
 import com.triton.johnsonapp.activity.GroupListActivity;
 import com.triton.johnsonapp.activitybased.ActivityJobListActivity;
 import com.triton.johnsonapp.adapter.ImageBasedArrayListAdapter;
@@ -132,12 +136,17 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
     private int new_count;
     private int pause_count;
 
+    SharedPreferences sharedPreferences;
+    String s1;
+    Context context;
+
 
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_based_input_form);
+        context = this;
         Log.w(TAG,"Oncreate -->");
 
         Log.e("Hi Nish","Image Based Input");
@@ -148,6 +157,12 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
         userid = user.get(SessionManager.KEY_ID);
 
 
+        SharedPreferences sh2 = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+
+        String pending = sh2.getString("pending", "");
+        Log.e("pending", pending);
+        s1 = sh2.getString("test", "activity");
+        Log.e("test", s1);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -420,7 +435,22 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
                             Toasty.success(getApplicationContext(), "" + message, Toasty.LENGTH_LONG).show();
                             dialog.dismiss();
 
-//                            if(fromactivity != null && fromactivity.equalsIgnoreCase("ABCustomerDetailsActivity")){
+                            if (s1.equals("Job")){
+                                Intent intent = new Intent(ImageBasedInputFormActivity.this, AllJobListActivity.class);
+                                intent.putExtra("activity_id", activity_id);
+                                intent.putExtra("job_id", job_id);
+                                intent.putExtra("status", status);
+                                intent.putExtra("UKEY", UKEY);
+                                intent.putExtra("UKEY_DESC", UKEY_DESC);
+                                intent.putExtra("new_count", new_count);
+                                intent.putExtra("pause_count", pause_count);
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.new_right, R.anim.new_left);
+                                finish();
+                                dialog.dismiss();
+                            }
+                            else{
+
                                 Intent intent = new Intent(ImageBasedInputFormActivity.this, ActivityJobListActivity.class);
                                 intent.putExtra("activity_id", activity_id);
                                 intent.putExtra("job_id", job_id);
@@ -431,6 +461,10 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 overridePendingTransition(R.anim.new_right, R.anim.new_left);
                                 finish();
+                            }
+
+//                            if(fromactivity != null && fromactivity.equalsIgnoreCase("ABCustomerDetailsActivity")){
+
 //                            }
 //                            else{
 //                                Intent intent = new Intent(ImageBasedInputFormActivity.this, GroupListActivity.class);

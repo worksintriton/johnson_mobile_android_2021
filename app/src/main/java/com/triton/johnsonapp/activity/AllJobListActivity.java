@@ -137,6 +137,7 @@ public class AllJobListActivity extends AppCompatActivity implements OnMapReadyC
         setContentView(R.layout.activity_all_job_list);
         ButterKnife.bind(this);
         Log.w(TAG,"Oncreate -->");
+        Log.e("Hi Nish" ,"All Job list");
 
         googleApiConnected();
 

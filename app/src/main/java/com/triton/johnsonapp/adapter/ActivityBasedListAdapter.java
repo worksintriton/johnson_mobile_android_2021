@@ -3,6 +3,8 @@ package com.triton.johnsonapp.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +33,7 @@ public class ActivityBasedListAdapter extends  RecyclerView.Adapter<RecyclerView
     private Context context;
 
     ActivityGetListNumberResponse.DataBean currentItem;
+    SharedPreferences sharedPreferences;
 
     private int size;
 
@@ -112,6 +115,14 @@ public class ActivityBasedListAdapter extends  RecyclerView.Adapter<RecyclerView
             intent.putExtra("UKEY",dataBeanList.get(position).getUKEY());
             intent.putExtra("UKEY_DESC",dataBeanList.get(position).getUKEY_DESC());
             intent.putExtra("form_type",dataBeanList.get(position).getForm_type());
+
+            String formtype = String.valueOf(dataBeanList.get(position).getForm_type());
+            Log.e("Data 1",""+ formtype);
+
+            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("form_type",formtype);
+            editor.apply();
             context.startActivity(intent);
 
              Log.d("id_dddddd",dataBeanList.get(position).get_id());

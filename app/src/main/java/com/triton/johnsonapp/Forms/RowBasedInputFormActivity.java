@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -41,6 +42,7 @@ import com.bumptech.glide.Glide;
 import com.github.tntkhang.fullscreenimageview.library.FullScreenImageViewActivity;
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
+import com.triton.johnsonapp.activity.AllJobListActivity;
 import com.triton.johnsonapp.activity.FullScreenImageActivity;
 import com.triton.johnsonapp.activity.GroupListActivity;
 import com.triton.johnsonapp.activitybased.ActivityJobListActivity;
@@ -176,6 +178,7 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
     private String image;
 
     Context context;
+    String s1;
 
     RowBasedStroeDataRequest.DataBean dataBean;
 
@@ -190,6 +193,13 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
         SessionManager session = new SessionManager(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
         userid = user.get(SessionManager.KEY_ID);
+
+        SharedPreferences sh2 = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+
+        String pending = sh2.getString("pending", "");
+        Log.e("pending", pending);
+        s1 = sh2.getString("test", "activity");
+        Log.e("test", s1);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -627,8 +637,24 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
                         if (200 == response.body().getCode()) {
                             if (response.body().getData() != null) {
                                 Toasty.success(getApplicationContext(), "" + message, Toasty.LENGTH_LONG).show();
-                                if (fromactivity != null && fromactivity.equalsIgnoreCase("ABCustomerDetailsActivity")) {
-                                    Intent intent = new Intent(RowBasedInputFormActivity.this, ActivityJobListActivity.class);
+
+                                if (s1.equals("Job")){
+                                    Intent intent = new Intent(context, AllJobListActivity.class);
+                                    intent.putExtra("activity_id", activity_id);
+                                    intent.putExtra("job_id", job_id);
+                                    intent.putExtra("status", status);
+                                    intent.putExtra("UKEY", UKEY);
+                                    intent.putExtra("UKEY_DESC", UKEY_DESC);
+                                    intent.putExtra("new_count", new_count);
+                                    intent.putExtra("pause_count", pause_count);
+                                    startActivity(intent);
+                                    overridePendingTransition(R.anim.new_right, R.anim.new_left);
+                                    finish();
+                                    dialog.dismiss();
+                                }
+                                else{
+
+                                    Intent intent = new Intent(context, ActivityJobListActivity.class);
                                     intent.putExtra("activity_id", activity_id);
                                     intent.putExtra("job_id", job_id);
                                     intent.putExtra("status", status);
@@ -638,20 +664,33 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
                                     startActivity(intent);
                                     overridePendingTransition(R.anim.new_right, R.anim.new_left);
                                     finish();
-                                    dialog.dismiss();
-                                } else {
-                                    Intent intent = new Intent(RowBasedInputFormActivity.this, GroupListActivity.class);
-                                    intent.putExtra("activity_id", activity_id);
-                                    intent.putExtra("job_id", job_id);
-                                    intent.putExtra("status", status);
-                                    intent.putExtra("fromactivity", fromactivity);
-                                    intent.putExtra("UKEY", UKEY);
-                                    intent.putExtra("new_count", new_count);
-                                    intent.putExtra("pause_count", pause_count);
-                                    startActivity(intent);
-                                    finish();
-                                    dialog.dismiss();
                                 }
+//                                if (fromactivity != null && fromactivity.equalsIgnoreCase("ABCustomerDetailsActivity")) {
+//                                    Intent intent = new Intent(RowBasedInputFormActivity.this, ActivityJobListActivity.class);
+//                                    intent.putExtra("activity_id", activity_id);
+//                                    intent.putExtra("job_id", job_id);
+//                                    intent.putExtra("status", status);
+//                                    intent.putExtra("UKEY", UKEY);
+//                                    intent.putExtra("new_count", new_count);
+//                                    intent.putExtra("pause_count", pause_count);
+//                                    startActivity(intent);
+//                                    overridePendingTransition(R.anim.new_right, R.anim.new_left);
+//                                    finish();
+//                                    dialog.dismiss();
+//                                }
+//                                else {
+//                                    Intent intent = new Intent(RowBasedInputFormActivity.this, GroupListActivity.class);
+//                                    intent.putExtra("activity_id", activity_id);
+//                                    intent.putExtra("job_id", job_id);
+//                                    intent.putExtra("status", status);
+//                                    intent.putExtra("fromactivity", fromactivity);
+//                                    intent.putExtra("UKEY", UKEY);
+//                                    intent.putExtra("new_count", new_count);
+//                                    intent.putExtra("pause_count", pause_count);
+//                                    startActivity(intent);
+//                                    finish();
+//                                    dialog.dismiss();
+//                                }
                             }
 
 

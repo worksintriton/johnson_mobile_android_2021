@@ -18,6 +18,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -149,6 +150,7 @@ public class ActivityJobListActivity extends AppCompatActivity implements OnMapR
     SharedPreferences sharedpreferences;
     List<GetJobDetailByActivityResponse.DataBean> dataBeanList;
     ABJobDetailListAdapter abJobDetailListAdapter;
+    SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -179,9 +181,9 @@ public class ActivityJobListActivity extends AppCompatActivity implements OnMapR
             back =extras.getString("back");
             UKEY_DESC = extras.getString("UKEY_DESC");
             form_type = extras.getInt("form_type");
-            Log.w(TAG,"ftype"+form_type);
+            Log.e(TAG,"ftype"+form_type);
 
-            Log.e("activity_id -->" , activity_id);
+          //  Log.e("activity_id -->" , activity_id);
 
 
          //   Log.d("gggggggggggg",Group_id);
@@ -191,6 +193,10 @@ public class ActivityJobListActivity extends AppCompatActivity implements OnMapR
             Log.w(TAG,"ukey"+UKEY);
             pause_count = extras.getInt("pause_count");
         }
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ActivityJobListActivity.this);
+        form_type = Integer.parseInt(sharedPreferences.getString("form_type","1"));
+        Log.e("Data 2",""+form_type);
 
        // Toasty.warning(getApplicationContext(),"back----->" + back,Toasty.LENGTH_LONG).show();
 

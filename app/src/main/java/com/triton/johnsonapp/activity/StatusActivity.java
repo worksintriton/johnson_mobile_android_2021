@@ -74,6 +74,7 @@ public class StatusActivity extends AppCompatActivity {
         img_back.setVisibility(View.VISIBLE);
         ButterKnife.bind(this);
         Log.w(TAG,"Oncreate -->");
+        Log.e("Hi Nish" ,"Status Activity");
 
         SessionManager  session = new SessionManager(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();

@@ -87,6 +87,8 @@ public class Fetch_RM_Info_ListActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         ButterKnife.bind(this);
 
+        Log.e("Hi Nish","Fetch RM Info");
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             _id = extras.getString("_id");

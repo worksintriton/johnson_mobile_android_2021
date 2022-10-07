@@ -122,6 +122,7 @@ public class GroupListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHol
                     if(dataBeanList.get(position).getForm_type().equals("1")){
                         form_type= Integer.parseInt(dataBeanList.get(position).getForm_type());
                         Ukey=dataBeanList.get(position).getActivity_ukey();
+
                         Intent intent = new Intent(context, InputValueFormListActivity.class);
                         intent.putExtra("activity_id",dataBeanList.get(position).getActivity_id());
                         intent.putExtra("job_id",job_id);

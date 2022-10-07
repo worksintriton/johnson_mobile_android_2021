@@ -50,6 +50,7 @@ import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.google.android.gms.common.util.IOUtils;
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
+import com.triton.johnsonapp.activity.AllJobListActivity;
 import com.triton.johnsonapp.activity.GroupListActivity;
 import com.triton.johnsonapp.activity.MainActivity;
 import com.triton.johnsonapp.activity.SubGroupListActivity;
@@ -255,7 +256,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         String pending = sh2.getString("pending", "");
         Log.e("pending", pending);
         s1 = sh2.getString("test", "");
-        Log.d("test", s1);
+        Log.e("test", s1);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -1875,7 +1876,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 //
                             else if (fromactivity != null && fromactivity.equalsIgnoreCase("ABCustomerDetailsActivity")) {
                              //   Intent intent = new Intent(InputValueFormListActivity.this, MainActivity.class);
-                                Intent intent = new Intent(InputValueFormListActivity.this, ActivityJobListActivity.class);
+                                Intent intent = new Intent(InputValueFormListActivity.this, AllJobListActivity.class);
                                 intent.putExtra("activity_id", activity_id);
                                 intent.putExtra("job_id", job_id);
                                 intent.putExtra("status", status);
@@ -1888,7 +1889,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                                 finish();
                                 dialog.dismiss();
                             } else {
-                                Intent intent = new Intent(InputValueFormListActivity.this, ActivityJobListActivity.class);
+                                Intent intent = new Intent(InputValueFormListActivity.this, AllJobListActivity.class);
                                 intent.putExtra("fromactivity", fromactivity);
                                 intent.putExtra("activity_id", activity_id);
                                 intent.putExtra("job_id", job_id);
