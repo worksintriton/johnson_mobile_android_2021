@@ -189,6 +189,7 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         context = this;
         Log.w(TAG, "Oncreate -->");
+        Log.e("Hi Nish","RowBasedForm");
 
         SessionManager session = new SessionManager(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
@@ -445,7 +446,7 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
         //Creating an object of our api interface
         APIInterface apiInterface = RetrofitClient.getClient().create(APIInterface.class);
         Call<GetFieldListResponse> call = apiInterface.getfieldListResponseCall(RestUtils.getContentType(), getFieldListRequest());
-        Log.w(TAG, "url  :%s" + call.request().url().toString());
+        Log.e(TAG, "url  :%s" + call.request().url().toString());
         dialog.dismiss();
         call.enqueue(new Callback<GetFieldListResponse>() {
             @SuppressLint("LogNotTimber")
@@ -454,7 +455,7 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
 
 
                 if (response.body() != null) {
-                    Log.w(TAG, "Submitted_status " + response.body().getSubmitted_status());
+                    Log.e(TAG, "Submitted_status " + response.body().getSubmitted_status());
                     if (response.body().getSubmitted_status() != null) {
                         String Submitted_status = response.body().getSubmitted_status();
                         if (Submitted_status != null && Submitted_status.equalsIgnoreCase("Not Submitted")) {
@@ -499,7 +500,7 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
         getFieldListRequest.setUser_id(userid);
         getFieldListRequest.setUser_role(userrole);
 
-        Log.w(TAG, "GetFieldListRequest " + new Gson().toJson(getFieldListRequest));
+        Log.e(TAG, "GetFieldListRequest " + new Gson().toJson(getFieldListRequest));
         return getFieldListRequest;
     }
 
@@ -510,11 +511,11 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
         dialog.show();
         APIInterface apiInterface = RetrofitClient.getClient().create(APIInterface.class);
         Call<ActivityPumpChartDropdown> call = apiInterface.activityGetPumpChartDropdownResponseCall();
-        Log.w(TAG, "Pumbchart Dropdown url  :%s" + " " + call.request().url().toString());
+        Log.e(TAG, "Pumbchart Dropdown url  :%s" + " " + call.request().url().toString());
         call.enqueue(new Callback<ActivityPumpChartDropdown>() {
             @Override
             public void onResponse(Call<ActivityPumpChartDropdown> call, Response<ActivityPumpChartDropdown> response) {
-                Log.w(TAG, "Pumbchart Dropdown Response" + new Gson().toJson(response.body()));
+                Log.e(TAG, "Pumbchart Dropdown Response" + new Gson().toJson(response.body()));
                 if (response.body() != null) {
                     message = response.body().getMessage();
                     if (200 == response.body().getCode()) {
@@ -592,8 +593,10 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
                             overridePendingTransition(R.anim.new_right, R.anim.new_left);
                             finish();
                             dialog.dismiss();
-                        } else {
-                            Intent intent = new Intent(RowBasedInputFormActivity.this, GroupListActivity.class);
+                        }
+                        else {
+                           // Intent intent = new Intent(RowBasedInputFormActivity.this, GroupListActivity.class);
+                            Intent intent = new Intent(RowBasedInputFormActivity.this, AllJobListActivity.class);
                             intent.putExtra("activity_id", activity_id);
                             intent.putExtra("job_id", job_id);
                             intent.putExtra("status", status);
@@ -623,7 +626,7 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
 
         APIInterface apiInterface = RetrofitClient.getClient().create(APIInterface.class);
         Call<FormDataStoreResponse> call = apiInterface.rowBasedStroeDataRequestCall(RestUtils.getContentType(), rowBasedStroeDataRequest());
-        Log.w(TAG, "rowBasedStroeDataRequestCall url  :%s" + " " + call.request().url().toString());
+        Log.e(TAG, "rowBasedStroeDataRequestCall url  :%s" + " " + call.request().url().toString());
 
         call.enqueue(new Callback<FormDataStoreResponse>() {
             @SuppressLint("LogNotTimber")
@@ -730,19 +733,47 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 submittedSuccessfulalertdialog.dismiss();
+
+                if (s1.equals("Job")){
+                    Intent intent = new Intent(context, AllJobListActivity.class);
+                    intent.putExtra("activity_id", activity_id);
+                    intent.putExtra("job_id", job_id);
+                    intent.putExtra("status", status);
+                    intent.putExtra("UKEY", UKEY);
+                    intent.putExtra("UKEY_DESC", UKEY_DESC);
+                    intent.putExtra("new_count", new_count);
+                    intent.putExtra("pause_count", pause_count);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.new_right, R.anim.new_left);
+                    finish();
+                    dialog.dismiss();
+                }
+                else{
+
+                    Intent intent = new Intent(context, ActivityJobListActivity.class);
+                    intent.putExtra("activity_id", activity_id);
+                    intent.putExtra("job_id", job_id);
+                    intent.putExtra("status", status);
+                    intent.putExtra("UKEY", UKEY);
+                    intent.putExtra("new_count", new_count);
+                    intent.putExtra("pause_count", pause_count);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.new_right, R.anim.new_left);
+                    finish();
+                }
               //  Intent intent = new Intent(RowBasedInputFormActivity.this, GroupListActivity.class);
-                Intent intent = new Intent(context, ActivityJobListActivity.class);
-                intent.putExtra("activity_id", activity_id);
-                intent.putExtra("job_id", job_id);
-                intent.putExtra("group_id", group_id);
-                intent.putExtra("status", status);
-                intent.putExtra("fromactivity", fromactivity);
-                intent.putExtra("UKEY", UKEY);
-                intent.putExtra("new_count", new_count);
-                intent.putExtra("pause_count", pause_count);
-                startActivity(intent);
-                overridePendingTransition(R.anim.new_right, R.anim.new_left);
-                finish();
+//                Intent intent = new Intent(context, ActivityJobListActivity.class);
+//                intent.putExtra("activity_id", activity_id);
+//                intent.putExtra("job_id", job_id);
+//                intent.putExtra("group_id", group_id);
+//                intent.putExtra("status", status);
+//                intent.putExtra("fromactivity", fromactivity);
+//                intent.putExtra("UKEY", UKEY);
+//                intent.putExtra("new_count", new_count);
+//                intent.putExtra("pause_count", pause_count);
+//                startActivity(intent);
+//                overridePendingTransition(R.anim.new_right, R.anim.new_left);
+//                finish();
 
             }
         });
@@ -788,7 +819,7 @@ public class RowBasedInputFormActivity extends AppCompatActivity {
         rowBasedStroeDataRequest.setUpdated_by("");
         rowBasedStroeDataRequest.setUpdate_reason("");
 
-        Log.w(TAG, "data_store_management/create_Request " + new Gson().toJson(rowBasedStroeDataRequest));
+        Log.e(TAG, "data_store_management/create_Request " + new Gson().toJson(rowBasedStroeDataRequest));
         return rowBasedStroeDataRequest;
     }
 

@@ -37,6 +37,7 @@ import com.android.volley.VolleyLog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
+import com.triton.johnsonapp.activity.AllJobListActivity;
 import com.triton.johnsonapp.activity.GroupListActivity;
 import com.triton.johnsonapp.activity.SubGroupListActivity;
 import com.triton.johnsonapp.activity.ViewInfoDetailsActivity;
@@ -137,7 +138,7 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
     Dialog dialog;
     Dialog alertdialog;
 
-    String networkStatus = "",message,job_id;
+    String networkStatus = "",message,job_id,s1;
 
     int number=0;
     private final String search_string = "";
@@ -212,6 +213,13 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
 
 
         }
+
+        SharedPreferences sh2 = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+
+        String pending = sh2.getString("pending", "");
+        Log.e("pending", pending);
+        s1 = sh2.getString("test", "");
+        Log.e("test", s1);
 
         if(group_detail_name != null){
             txt_toolbar_title.setText(group_detail_name);
@@ -788,16 +796,44 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
                         if (response.body().getData() != null) {
                             Toasty.success(getApplicationContext(), "" + message, Toasty.LENGTH_LONG).show();
                            // Intent intent = new Intent(InputFormFiveActivity.this, GroupListActivity.class);
-                            Intent intent = new Intent(InputFormFiveActivity.this, ActivityJobListActivity.class);
-                            intent.putExtra("activity_id",activity_id);
-                            intent.putExtra("job_id",job_id);
-                            intent.putExtra("status",status);
-                            intent.putExtra("fromactivity",fromactivity);
-                            intent.putExtra("UKEY",UKEY);
-                            intent.putExtra("new_count",new_count);
-                            intent.putExtra("pause_count",pause_count);
-                            startActivity(intent);
+//                            Intent intent = new Intent(InputFormFiveActivity.this, ActivityJobListActivity.class);
+//                            intent.putExtra("activity_id",activity_id);
+//                            intent.putExtra("job_id",job_id);
+//                            intent.putExtra("status",status);
+//                            intent.putExtra("fromactivity",fromactivity);
+//                            intent.putExtra("UKEY",UKEY);
+//                            intent.putExtra("new_count",new_count);
+//                            intent.putExtra("pause_count",pause_count);
+//                            startActivity(intent);
+//                            finish();
+
+
+                            if(s1.equals("Job")){
+                                Intent intent = new Intent(InputFormFiveActivity.this, AllJobListActivity.class);
+                                intent.putExtra("activity_id",activity_id);
+                                intent.putExtra("job_id",job_id);
+                                intent.putExtra("status",status);
+                                intent.putExtra("fromactivity",fromactivity);
+                                intent.putExtra("UKEY",UKEY);
+                                intent.putExtra("new_count",new_count);
+                                intent.putExtra("pause_count",pause_count);
+                                startActivity(intent);
+                            }
+                            else{
+                                Intent intent = new Intent(InputFormFiveActivity.this, ActivityJobListActivity.class);
+                                intent.putExtra("activity_id",activity_id);
+                                intent.putExtra("job_id",job_id);
+                                intent.putExtra("status",status);
+                                intent.putExtra("fromactivity",fromactivity);
+                                intent.putExtra("UKEY",UKEY);
+                                intent.putExtra("new_count",new_count);
+                                intent.putExtra("pause_count",pause_count);
+                                startActivity(intent);
+                            }
+
+                            overridePendingTransition(R.anim.new_right, R.anim.new_left);
                             finish();
+                            dialog.dismiss();
 
 
                         }

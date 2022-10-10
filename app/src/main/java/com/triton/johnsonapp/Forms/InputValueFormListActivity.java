@@ -2601,20 +2601,36 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                                 startActivity(intent);
                             } else {
                                // Intent intent = new Intent(InputValueFormListActivity.this, SubGroupListActivity.class);
-                                Intent intent = new Intent(InputValueFormListActivity.this, ActivityJobListActivity.class);
-                                intent.putExtra("activity_id", activity_id);
-                                intent.putExtra("job_id", job_id);
-                                intent.putExtra("status", status);
-                                intent.putExtra("UKEY_DESC", UKEY_DESC);
-                                intent.putExtra("new_count", new_count);
-                                intent.putExtra("pause_count", pause_count);
-                                intent.putExtra("work_status", work_status);
-                                intent.putExtra("UKEY", activity_ukey);
-                                Log.w(TAG, "work_statuss" + work_status);
-                                Log.w(TAG, "ukey_val" + activity_ukey);
 
+                                if(s1.equals("Job")){
+                                    Intent intent = new Intent(InputValueFormListActivity.this, AllJobListActivity.class);
+                                    intent.putExtra("activity_id", activity_id);
+                                    intent.putExtra("job_id", job_id);
+                                    intent.putExtra("status", status);
+                                    intent.putExtra("UKEY_DESC", UKEY_DESC);
+                                    intent.putExtra("new_count", new_count);
+                                    intent.putExtra("pause_count", pause_count);
+                                    intent.putExtra("work_status", work_status);
+                                    intent.putExtra("UKEY", activity_ukey);
+                                    Log.w(TAG, "work_statuss" + work_status);
+                                    Log.w(TAG, "ukey_val" + activity_ukey);
+                                    startActivity(intent);
+                                }
+                                else{
+                                    Intent intent = new Intent(InputValueFormListActivity.this, ActivityJobListActivity.class);
+                                    intent.putExtra("activity_id", activity_id);
+                                    intent.putExtra("job_id", job_id);
+                                    intent.putExtra("status", status);
+                                    intent.putExtra("UKEY_DESC", UKEY_DESC);
+                                    intent.putExtra("new_count", new_count);
+                                    intent.putExtra("pause_count", pause_count);
+                                    intent.putExtra("work_status", work_status);
+                                    intent.putExtra("UKEY", activity_ukey);
+                                    Log.w(TAG, "work_statuss" + work_status);
+                                    Log.w(TAG, "ukey_val" + activity_ukey);
+                                    startActivity(intent);
+                                }
 
-                                startActivity(intent);
                                 overridePendingTransition(R.anim.new_right, R.anim.new_left);
                                 finish();
                                 dialog.dismiss();
