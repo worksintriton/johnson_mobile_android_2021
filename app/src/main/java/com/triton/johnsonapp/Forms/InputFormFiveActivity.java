@@ -41,6 +41,7 @@ import com.triton.johnsonapp.activity.AllJobListActivity;
 import com.triton.johnsonapp.activity.GroupListActivity;
 import com.triton.johnsonapp.activity.SubGroupListActivity;
 import com.triton.johnsonapp.activity.ViewInfoDetailsActivity;
+import com.triton.johnsonapp.activitybased.ActivityBasedActivity;
 import com.triton.johnsonapp.activitybased.ActivityJobListActivity;
 import com.triton.johnsonapp.adapter.FormFiveListAdapter;
 import com.triton.johnsonapp.api.APIInterface;
@@ -820,7 +821,7 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
                                 startActivity(intent);
                             }
                             else{
-                                Intent intent = new Intent(InputFormFiveActivity.this, ActivityJobListActivity.class);
+                                Intent intent = new Intent(InputFormFiveActivity.this, ActivityBasedActivity.class);
                                 intent.putExtra("activity_id",activity_id);
                                 intent.putExtra("job_id",job_id);
                                 intent.putExtra("status",status);
@@ -1272,7 +1273,6 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
                         }
                     }
 
-
                 }
             }
 
@@ -1294,7 +1294,7 @@ public class InputFormFiveActivity extends AppCompatActivity implements GetAccep
         return custom;
     }
 
-
+    @SuppressLint("SetTextI18n")
     private void showSubmittedSuccessful() {
         Log.w(TAG, "showSubmittedSuccessful -->+");
         submittedSuccessfulalertdialog = new Dialog(InputFormFiveActivity.this);

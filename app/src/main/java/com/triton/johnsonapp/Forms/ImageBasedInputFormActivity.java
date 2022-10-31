@@ -37,6 +37,7 @@ import com.google.gson.Gson;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.activity.AllJobListActivity;
 import com.triton.johnsonapp.activity.GroupListActivity;
+import com.triton.johnsonapp.activitybased.ActivityBasedActivity;
 import com.triton.johnsonapp.activitybased.ActivityJobListActivity;
 import com.triton.johnsonapp.adapter.ImageBasedArrayListAdapter;
 import com.triton.johnsonapp.api.APIInterface;
@@ -321,7 +322,7 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
 
 //                        if(fromactivity != null && fromactivity.equalsIgnoreCase("ABCustomerDetailsActivity")){
-                            Intent intent = new Intent(ImageBasedInputFormActivity.this, ActivityJobListActivity.class);
+                            Intent intent = new Intent(ImageBasedInputFormActivity.this, ActivityBasedActivity.class);
                             intent.putExtra("activity_id", activity_id);
                             intent.putExtra("job_id", job_id);
                             intent.putExtra("status", status);
@@ -451,7 +452,7 @@ public class ImageBasedInputFormActivity extends AppCompatActivity {
                             }
                             else{
 
-                                Intent intent = new Intent(ImageBasedInputFormActivity.this, ActivityJobListActivity.class);
+                                Intent intent = new Intent(ImageBasedInputFormActivity.this, ActivityBasedActivity.class);
                                 intent.putExtra("activity_id", activity_id);
                                 intent.putExtra("job_id", job_id);
                                 intent.putExtra("status", status);

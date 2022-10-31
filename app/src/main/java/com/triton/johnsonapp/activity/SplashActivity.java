@@ -12,6 +12,8 @@ import android.util.Log;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.multidex.BuildConfig;
+
+import com.google.gson.Gson;
 import com.triton.johnsonapp.DownloadapkfileActivity;
 import com.triton.johnsonapp.R;
 import com.triton.johnsonapp.api.APIInterface;
@@ -41,6 +43,7 @@ public class SplashActivity extends AppCompatActivity {
     String mydate;
 
 
+    @SuppressLint("SetTextI18n")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
@@ -73,11 +76,14 @@ public class SplashActivity extends AppCompatActivity {
         VersionUpdate = Version+"."+versionCode;
         VersionUpdate1 = Version1+"."+versionCode;
         txt_version.setText("Version "+VersionUpdate);
-        Log.w(TAG,"Version Code----"+VersionUpdate);
-        String ID = Settings.Secure.getString(getContentResolver(),
+        Log.e(TAG,"Version Code----"+VersionUpdate);
+        @SuppressLint("HardwareIds")
+//        String ID = Settings.Secure.getString(getContentResolver(),
+//                Settings.Secure.ANDROID_ID);
+        String deviceId = Settings.Secure.getString(this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
-        device_id.setText(ID);
-        Log.e("deviceid",ID);
+        device_id.setText(deviceId);
+        Log.e("deviceid",deviceId);
         String versionName = BuildConfig.VERSION_NAME;
 
 
@@ -105,11 +111,11 @@ public class SplashActivity extends AppCompatActivity {
     private void getlatestversion() {
         APIInterface apiInterface = RetrofitClient.getClient().create(APIInterface.class);
         Call<GetFetchLatestVersionResponse> call = apiInterface.getlatestversionrequestcall();
-        Log.w(TAG, "url  :%s" + call.request().url().toString());
+        Log.w(TAG, "url  :%s " + call.request().url().toString());
         call.enqueue(new Callback<GetFetchLatestVersionResponse>() {
             @Override
             public void onResponse(Call<GetFetchLatestVersionResponse> call, Response<GetFetchLatestVersionResponse> response) {
-                Log.w(TAG, "Submitted_status ---");
+                Log.w(TAG, "Submitted_status ---" + new Gson().toJson(response.body()));
                 if(response.body() !=null)
                 {
                     Log.w(TAG, "Submitted_status ---" +response.body().getMessage());
@@ -120,7 +126,7 @@ public class SplashActivity extends AppCompatActivity {
                     {
                         Log.w(TAG,"dATA"+response.body().getData().getVersion());
 
-                        if(response.body().getData().getVersion().equals("26.09.2022")){
+                        if(response.body().getData().getVersion().equals("20.10.2022")){
                             Thread timerThread = new Thread() {
                                 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
                                 public void run() {
@@ -141,7 +147,7 @@ public class SplashActivity extends AppCompatActivity {
 
                                         Log.e("This Date",""+thisDate);
                                         Log.e("MyDate","" + mydate);
-                                        if (thisDate.equals(mydate)){
+                                        if (thisDate.equals(mydate) && sessionManager.isLoggedIn()){
                                             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                                             startActivity(intent);
                                             overridePendingTransition(R.anim.new_right, R.anim.new_left);

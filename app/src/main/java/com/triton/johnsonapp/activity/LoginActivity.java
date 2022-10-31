@@ -240,7 +240,7 @@ public class LoginActivity extends AppCompatActivity implements OnMapReadyCallba
 
 
                     Log.e(TAG, "loginButton latitude : " + latitude + " longitude : " + longitude);
-                    if (latitude == 0 && longitude == 0) {
+                    if (latitude >=0 && longitude >= 0) {
 // change form not equal to Zero to equal to Zero
                         LoginResponseCall();
                     } else {

@@ -55,6 +55,7 @@ import com.triton.johnsonapp.activity.GroupListActivity;
 import com.triton.johnsonapp.activity.MainActivity;
 import com.triton.johnsonapp.activity.SubGroupListActivity;
 import com.triton.johnsonapp.activitybased.ABCustomerDetailsActivity;
+import com.triton.johnsonapp.activitybased.ActivityBasedActivity;
 import com.triton.johnsonapp.activitybased.ActivityJobListActivity;
 import com.triton.johnsonapp.adapter.FieldListAdapter;
 import com.triton.johnsonapp.adapter.LiftInputTypeListAdapter;
@@ -1762,7 +1763,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                                 startActivity(intent);
                             }
                             else if (fromactivity != null && fromactivity.equalsIgnoreCase("ABCustomerDetailsActivity")) {
-                                Intent intent = new Intent(InputValueFormListActivity.this, ActivityJobListActivity.class);
+                                Intent intent = new Intent(InputValueFormListActivity.this, ActivityBasedActivity.class);
                                 intent.putExtra("activity_id", activity_id);
                                 intent.putExtra("job_id", job_id);
                                 intent.putExtra("status", status);
@@ -1792,7 +1793,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
 //                            }
                             else {
                                 //Intent intent = new Intent(InputValueFormListActivity.this, GroupListActivity.class);
-                                Intent intent = new Intent(InputValueFormListActivity.this, ActivityJobListActivity.class);
+                                Intent intent = new Intent(InputValueFormListActivity.this, ActivityBasedActivity.class);
                                 intent.putExtra("fromactivity", fromactivity);
                                 intent.putExtra("activity_id", activity_id);
                                 intent.putExtra("job_id", job_id);
@@ -2122,7 +2123,6 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm aa", Locale.getDefault());
         String currentDateandTime = sdf.format(new Date());
 
-
         GetFieldListResponse getFieldListResponse = new GetFieldListResponse();
         getFieldListResponse.setUser_id(_id);
         getFieldListResponse.setActivity_id(activity_id);
@@ -2218,7 +2218,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                             finish();
                         } else {
                           //  Intent intent = new Intent(InputValueFormListActivity.this, GroupListActivity.class);
-                            Intent intent = new Intent(InputValueFormListActivity.this, ActivityJobListActivity.class);
+                            Intent intent = new Intent(InputValueFormListActivity.this, ActivityBasedActivity.class);
                             intent.putExtra("activity_id", activity_id);
                             intent.putExtra("job_id", job_id);
                             intent.putExtra("group_id", group_id);
@@ -2617,7 +2617,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
                                     startActivity(intent);
                                 }
                                 else{
-                                    Intent intent = new Intent(InputValueFormListActivity.this, ActivityJobListActivity.class);
+                                    Intent intent = new Intent(InputValueFormListActivity.this, ActivityBasedActivity.class);
                                     intent.putExtra("activity_id", activity_id);
                                     intent.putExtra("job_id", job_id);
                                     intent.putExtra("status", status);
@@ -2693,7 +2693,7 @@ public class InputValueFormListActivity extends AppCompatActivity implements Get
             public void onClick(View view) {
                 alertdialog.dismiss();
               //  Intent intent = new Intent(InputValueFormListActivity.this, SubGroupListActivity.class);
-                Intent intent = new Intent(InputValueFormListActivity.this, ActivityJobListActivity.class);
+                Intent intent = new Intent(InputValueFormListActivity.this, ActivityBasedActivity.class);
                 intent.putExtra("activity_id", activity_id);
                 intent.putExtra("job_id", job_id);
                 intent.putExtra("group_id", group_id);
