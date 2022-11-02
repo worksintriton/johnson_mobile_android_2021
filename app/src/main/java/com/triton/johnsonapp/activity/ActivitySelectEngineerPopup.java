@@ -1,23 +1,16 @@
 package com.triton.johnsonapp.activity;
 
-import static android.content.ContentValues.TAG;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -36,25 +29,17 @@ import retrofit2.Response;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
-import com.triton.johnsonapp.Forms.RowBasedInputFormActivity;
 import com.triton.johnsonapp.R;
-import com.triton.johnsonapp.activitybased.ABCustomerDetailsActivity;
 import com.triton.johnsonapp.adapter.petBreedTypeListAdapter;
 import com.triton.johnsonapp.api.APIInterface;
 import com.triton.johnsonapp.api.RetrofitClient;
 import com.triton.johnsonapp.interfaces.PetBreedTypeSelectListener;
 import com.triton.johnsonapp.requestpojo.BreedTypeRequest1;
 import com.triton.johnsonapp.requestpojo.JoinInspectionRequest;
-import com.triton.johnsonapp.requestpojo.RowBasedStroeDataRequest;
-import com.triton.johnsonapp.responsepojo.ActivityPumpChartDropdown;
 import com.triton.johnsonapp.responsepojo.BreedTypeResponse1;
-import com.triton.johnsonapp.responsepojo.FormDataStoreResponse;
 import com.triton.johnsonapp.responsepojo.JoinInspectionResponse;
 import com.triton.johnsonapp.session.SessionManager;
 import com.triton.johnsonapp.utils.ConnectionDetector;
@@ -101,10 +86,12 @@ public class ActivitySelectEngineerPopup extends AppCompatActivity implements Pe
     @BindView(R.id.edt_search)
     EditText edt_search;
     String userid, username;
-    String Valueeee;
+    String Valueeee, str_user_mobileno, str_user_location;
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.txt_toolbar_title)
     TextView txt_toolbar_title;
+
+    SharedPreferences sharedPreferencess;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,7 +100,6 @@ public class ActivitySelectEngineerPopup extends AppCompatActivity implements Pe
         SessionManager session = new SessionManager(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
         userid = user.get(SessionManager.KEY_ID);
-        breedTypeResponseByPetIdCall();
         username = user.get(SessionManager.KEY_USERNAME);
         llpettypeandbreed = (LinearLayout) findViewById(R.id.ll_dropdown);
         drp_value = findViewById(R.id.spr_dropdown);
@@ -141,7 +127,8 @@ public class ActivitySelectEngineerPopup extends AppCompatActivity implements Pe
                 onBackPressed();
             }
         });*/
-  /*      edt_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+       /*      edt_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -165,9 +152,24 @@ public class ActivitySelectEngineerPopup extends AppCompatActivity implements Pe
         ukeyy = sharedPreferences.getString("ukey", "");
         Log.e("ukey", ukeyy);
 
+
+
+
+        sharedPreferencess = PreferenceManager.getDefaultSharedPreferences(ActivitySelectEngineerPopup.this);
+
+        str_user_mobileno = sharedPreferencess.getString("mobile","1234567890");
+        str_user_location = sharedPreferencess.getString("location","ABCD");
+        Log.e(  "Mobile Number 2",""+ str_user_mobileno);
+        Log.e("Location 2",""+ str_user_location);
+
+
+
         if (job_no != null) {
             jobno.setText("Job No : " + job_no);
         }
+
+        breedTypeResponseByPetIdCall();
+
         drp_value.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -419,6 +421,8 @@ public class ActivitySelectEngineerPopup extends AppCompatActivity implements Pe
         BreedTypeRequest1 breedTypeRequest = new BreedTypeRequest1();
         breedTypeRequest.setJob_id(job_no);
         breedTypeRequest.setName(string);
+        breedTypeRequest.setUser_mobile_no(str_user_mobileno);
+        breedTypeRequest.setUser_location(str_user_location);
         Log.w(TAG, "breedTypeRequest" + "--->" + new Gson().toJson(breedTypeRequest));
         return breedTypeRequest;
     }

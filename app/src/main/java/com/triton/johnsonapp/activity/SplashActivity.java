@@ -126,7 +126,7 @@ public class SplashActivity extends AppCompatActivity {
                     {
                         Log.w(TAG,"dATA"+response.body().getData().getVersion());
 
-                        if(response.body().getData().getVersion().equals("20.10.2022")){
+                        if(response.body().getData().getVersion().equals("21.10.2022")){
                             Thread timerThread = new Thread() {
                                 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
                                 public void run() {

@@ -401,19 +401,19 @@
                         <TextView
                             android:layout_width="@dimen/_100dp"
                             android:layout_height="wrap_content"
-                            android:text="Title"
+                            android:text="Column"
                             android:textAlignment="textStart"/>
 
                         <TextView
                             android:layout_width="@dimen/_100dp"
                             android:layout_height="wrap_content"
-                            android:text="Value 1"
+                            android:text="Width"
                             android:textAlignment="textStart"/>
 
                         <TextView
                             android:layout_width="@dimen/_100dp"
                             android:layout_height="wrap_content"
-                            android:text="Value 2"
+                            android:text="Depth"
                             android:textAlignment="textStart"/>
 
                     </TableRow>

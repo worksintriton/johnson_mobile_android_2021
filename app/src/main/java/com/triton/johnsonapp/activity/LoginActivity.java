@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -17,6 +18,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
@@ -124,6 +126,7 @@ public class LoginActivity extends AppCompatActivity implements OnMapReadyCallba
     String ID;
     private String VersionUpdate, VersionUpdate1;
     Context context;
+    SharedPreferences sharedPreferences;
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -351,6 +354,7 @@ private void ShowPopup()
                             Log.e("_id", response.body().getData().get_id());
 
                                  userid = response.body().getData().get_id();
+                                 String location = response.body().getData().getLocation();
                             sessionManager.createSessionLogin(
                                     response.body().getData().get_id(),
                                     String.valueOf(response.body().getData().getUser_id()),
@@ -365,7 +369,22 @@ private void ShowPopup()
                                     response.body().getData().getLocation(),
                                     response.body().getData().getUser_role()
 
+
+
+
                             );
+
+                            String usermobile = userNameMaterialEditText.getText().toString();
+                            Log.e("Mobile Number",""+usermobile);
+                            Log.e("Location",""+location);
+
+                            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("mobile", userNameMaterialEditText.getText().toString());
+                            editor.putString("location", location);
+                            Log.e("Mobile Number 1",""+ usermobile);
+                            Log.e("Location 1",""+location);
+                            editor.apply();
 
                             attendanceCreateRequestCall(response.body().getData().get_id(), response.body().getData().getUser_name());
                             Log.e("UserId", response.body().getData().get_id());
